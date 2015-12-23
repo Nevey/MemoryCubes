@@ -56,15 +56,15 @@ public class Selector : MonoBehaviour
 				Select();
 			}
 		}
-	}
+
+        canSelect = true;
+    }
 	
 	private void Select()
 	{
 		// If swiping, don't select anything
 		if (!canSelect)
 		{
-			canSelect = true;
-			
 			return;
 		}
 		
