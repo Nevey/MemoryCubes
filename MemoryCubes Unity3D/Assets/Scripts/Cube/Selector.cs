@@ -22,6 +22,11 @@ public class Selector : MonoBehaviour
 	
 	private bool canSelect = true;
 	
+    public SelectionState CurrentSelection
+    {
+        get { return selectionState; }
+    }
+    
 	public event EventHandler<SelectorArgs> SelectEvent;
 	
 	// Use this for initialization
@@ -68,15 +73,8 @@ public class Selector : MonoBehaviour
 			return;
 		}
 		
-		// Set selection state
-		if (selectionState == SelectionState.notSelected)
-		{
-			selectionState = SelectionState.selected;
-		}
-		else
-		{
-			selectionState = SelectionState.notSelected;
-		}
+        // Set selection state
+		ToggleSelect();
 		
 		// Create selector event args
 		SelectorArgs selectorArgs = new SelectorArgs();
@@ -91,6 +89,18 @@ public class Selector : MonoBehaviour
 			SelectEvent(this, selectorArgs);
 		}
 	}
+    
+    private void ToggleSelect()
+    {
+		if (selectionState == SelectionState.notSelected)
+		{
+			selectionState = SelectionState.selected;
+		}
+		else
+		{
+			selectionState = SelectionState.notSelected;
+		}
+    }
 	
 	private void OnSwipeEvent(object sender, SwipeEventArgs e)
 	{
