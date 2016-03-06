@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Destroyer : MonoBehaviour {
 
@@ -8,16 +7,13 @@ public class Destroyer : MonoBehaviour {
 	// Use this for initialization
 	void Start() 
     {
+       GameObject.Find("GridParent").GetComponent<GridCollector>().CollectEvent += OnCollectEvent;
+        
 	   selector = this.GetComponent<Selector>();
-       
-       Debug.Log(selector);
 	}
     
-    public void DestroyMe()
+    private void OnCollectEvent(object sender, CollectEventArgs e)
     {
-        selector = this.GetComponent<Selector>();
-        Debug.Log(selector.CurrentSelection);
-        
         if (selector.CurrentSelection == SelectionState.selected)
         {
             Destroy(this.gameObject);
