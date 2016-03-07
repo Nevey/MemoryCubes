@@ -2,26 +2,33 @@
 
 public class ColorChanger : MonoBehaviour 
 {
-	private int colorCount;
+	private int materialCount;
 	
 	private float colorFadeVelocity;
 	
 	private Deadzone deadzone = new Deadzone();
 	
 	private bool isChangingColor = false;
+    
+    private Material selectedMaterial;
 	
 	public float colorFadeSmoothTime = 1f;
 	
 	public float maxColorFadeSpeed = 1f;
 	
 	public Material[] materials;
+    
+    public Material SelectedMaterial
+    {
+        get { return selectedMaterial; }
+    }
 	
 	// Use this for initialization
-	void Start() 
+	void Awake() 
 	{
 		SetColorCount();
 		
-		ApplyRandomMaterial();
+		ApplyRandomColorToMaterial();
 		
 		OnStartColorChange();
 	}
@@ -35,14 +42,16 @@ public class ColorChanger : MonoBehaviour
 	private void SetColorCount()
 	{
 		// TODO: based on level editor/difficulty
-		colorCount = materials.Length;
+		materialCount = materials.Length;
 	}
 	
-	private void ApplyRandomMaterial()
+	private void ApplyRandomColorToMaterial()
 	{
-		int randomIndex = Random.Range(0, colorCount);
-		
-		GetComponent<Renderer>().materials[1].color = materials[randomIndex].color;
+		int randomIndex = Random.Range(0, materialCount);
+        
+        selectedMaterial = materials[randomIndex];
+        
+		GetComponent<Renderer>().materials[1].color = selectedMaterial.color;
 	}
 	
 	private void FadeWhiteMaterial()
@@ -58,7 +67,12 @@ public class ColorChanger : MonoBehaviour
 		
 		if (deadzone.OutOfReach(color.a, targetAlpha))
 		{
-			color.a = Mathf.SmoothDamp(color.a, targetAlpha, ref colorFadeVelocity, colorFadeSmoothTime, maxColorFadeSpeed);
+			color.a = Mathf.SmoothDamp(
+                color.a, 
+                targetAlpha, 
+                ref colorFadeVelocity, 
+                colorFadeSmoothTime, 
+                maxColorFadeSpeed);
 		
 			GetComponent<Renderer>().materials[0].color = color;
 		}

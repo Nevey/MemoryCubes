@@ -61,9 +61,9 @@ public class TargetSelector : MonoBehaviour {
     {
         TargetColors targetColor = new TargetColors();
         
-        Material randomCubeMaterial = randomCube.GetComponent<Material>();
+        Material randomCubeMaterial = randomCube.GetComponent<ColorChanger>().SelectedMaterial;
         
-        Debug.Log(randomCubeMaterial.name);
+        targetColor = (TargetColors)Enum.Parse(typeof(TargetColors), randomCubeMaterial.name);
         
         return targetColor;
     }
