@@ -1,4 +1,10 @@
 ﻿using UnityEngine;
+using System;
+
+public class ColorChangeReadyEventArgs : EventArgs
+{
+    public GameObject cube { get; set; }
+}
 
 public class ColorChanger : MonoBehaviour 
 {
@@ -11,6 +17,8 @@ public class ColorChanger : MonoBehaviour
 	private bool isChangingColor = false;
     
     private Material selectedMaterial;
+    
+    private Material[] storedMaterials;
 	
 	public float colorFadeSmoothTime = 1f;
 	
@@ -18,26 +26,31 @@ public class ColorChanger : MonoBehaviour
 	
 	public Material[] materials;
     
-    public Material SelectedMaterial
-    {
-        get { return selectedMaterial; }
-    }
+    public event EventHandler<ColorChangeReadyEventArgs> ColorChangeReadyEvent;
 	
 	// Use this for initialization
-	void Awake() 
+	void Start() 
 	{
+        StoreMaterials();
+        
 		SetColorCount();
 		
-		ApplyRandomColorToMaterial();
+		ApplyRandomMaterial();
 		
-		OnStartColorChange();
+		StartColorChange();
 	}
 	
 	// Update is called once per frame
 	void Update() 
 	{
-		FadeWhiteMaterial();
+		UpdateColor();
 	}
+    
+    private void StoreMaterials()
+    {
+        // Store the materials array before doing anything
+        storedMaterials = GetComponent<Renderer>().materials;
+    }
 	
 	private void SetColorCount()
 	{
@@ -45,22 +58,29 @@ public class ColorChanger : MonoBehaviour
 		materialCount = materials.Length;
 	}
 	
-	private void ApplyRandomColorToMaterial()
+	private void ApplyRandomMaterial()
 	{
-		int randomIndex = Random.Range(0, materialCount);
+		int randomIndex = UnityEngine.Random.Range(0, materialCount);
         
         selectedMaterial = materials[randomIndex];
         
-		GetComponent<Renderer>().materials[1].color = selectedMaterial.color;
+        GetComponent<Renderer>().materials = new Material[] { storedMaterials[0], selectedMaterial };
+	}
+    
+    private void StartColorChange()
+	{
+		isChangingColor = true;
 	}
 	
-	private void FadeWhiteMaterial()
+	private void UpdateColor()
 	{
 		if (!isChangingColor)
 		{
 			return;
 		}
 		
+        // We're not really changing color, but just fading out the white material on top...
+        
 		Color color = GetComponent<Renderer>().materials[0].color;
 		
 		float targetAlpha = 0f;
@@ -78,23 +98,24 @@ public class ColorChanger : MonoBehaviour
 		}
 		else
 		{
-			OnColorChangeReady();
+			ColorChangeReady();
 		}
 	}
 	
-	private void OnStartColorChange()
+	private void ColorChangeReady()
 	{
-		isChangingColor = true;
-	}
-	
-	private void OnColorChangeReady()
-	{
-		isChangingColor = false;
+        isChangingColor = false;
 		
-		// Get materials array
-		Material[] materials = GetComponent<Renderer>().materials;
-		
-		// Replace materials array with a new array, containing only the dynamic material
- 		GetComponent<Renderer>().materials = new Material[] { materials[1] };
+        // Replace materials array with a new array, containing only the dynamic material
+ 		GetComponent<Renderer>().materials = new Material[] { selectedMaterial };
+        
+        ColorChangeReadyEventArgs args = new ColorChangeReadyEventArgs();
+        
+        args.cube = this.gameObject;
+        
+        if (ColorChangeReadyEvent != null)
+        {
+            ColorChangeReadyEvent(this, args);
+        }
 	}
 }

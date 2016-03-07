@@ -1,25 +1,29 @@
 ﻿using UnityEngine;
+using System;
+
+public class BuilderReadyEventArgs : EventArgs
+{
+    
+}
 
 public class Builder : MonoBehaviour 
 {
 	private GameObject[,,] grid;
+    
+    private int tilesInitializingCount = 0;
 	
 	public int gridSize = 3;
 	
 	public GameObject tilePrefab;
 	
 	public float spaceBetweenTiles = 0.2f;
+    
+    public event EventHandler<BuilderReadyEventArgs> BuilderReadyEvent;
 	
 	// Use this for initialization
 	void Start() 
 	{
 		CreateGrid();
-	}
-	
-	// Update is called once per frame
-	void Update() 
-	{
-		
 	}
 	
 	private void CreateGrid()
@@ -34,6 +38,8 @@ public class Builder : MonoBehaviour
 			{
 				for (int z = 0; z < gridSize; z++)
 				{
+                    tilesInitializingCount++;
+                    
 					grid[x, y, z] = CreateTile(x, y, z, i);
 					
 					i++;
@@ -46,6 +52,8 @@ public class Builder : MonoBehaviour
 	{
 		// Instantiate tilePrefab
 		GameObject tile = Instantiate(tilePrefab);
+        
+        tile.GetComponent<ColorChanger>().ColorChangeReadyEvent += OnColorChangeReadyEvent;
 					
 		// Get the tile's renderer
 		Renderer tileRenderer = tile.GetComponent<Renderer>();
@@ -65,4 +73,26 @@ public class Builder : MonoBehaviour
 		
 		return tile;
 	}
+    
+    private void OnColorChangeReadyEvent(object sender, ColorChangeReadyEventArgs e)
+    {
+        tilesInitializingCount--;
+        
+        if (tilesInitializingCount == 0)
+        {
+            BuilderReady();
+        }
+        
+        e.cube.GetComponent<ColorChanger>().ColorChangeReadyEvent -= OnColorChangeReadyEvent;
+    }
+    
+    private void BuilderReady()
+    {
+        BuilderReadyEventArgs args = new BuilderReadyEventArgs();
+        
+        if (BuilderReadyEvent != null)
+        {
+            BuilderReadyEvent(this, args);
+        }
+    }
 }

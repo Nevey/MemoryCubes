@@ -22,10 +22,17 @@ public class TargetSelector : MonoBehaviour {
 	// Use this for initialization
 	void Start() 
     {
-       GameObject.Find("GridParent").GetComponent<GridCollector>().CollectEvent += OnCollectEvent;
-       
-	   SetNextTarget();
+        GameObject gridParent = GameObject.Find("GridParent");
+        
+        gridParent.GetComponent<Builder>().BuilderReadyEvent += OnBuilderReadyEvent;
+        
+        gridParent.GetComponent<GridCollector>().CollectEvent += OnCollectEvent;
 	}
+    
+    private void OnBuilderReadyEvent(object sender, BuilderReadyEventArgs e)
+    {
+        SetNextTarget();
+    }
     
     private void OnCollectEvent(object sender, CollectEventArgs e)
     {
@@ -39,6 +46,8 @@ public class TargetSelector : MonoBehaviour {
         GameObject randomCube = GetRandomCube();
         
         args.targetColor = GetTargetColor(randomCube);
+        
+        Debug.Log("New target set: " + args.targetColor);
         
         if (NextTargetEvent != null)
         {
@@ -61,9 +70,13 @@ public class TargetSelector : MonoBehaviour {
     {
         TargetColors targetColor = new TargetColors();
         
-        Material randomCubeMaterial = randomCube.GetComponent<ColorChanger>().SelectedMaterial;
+        Material cubeMaterial = randomCube.GetComponent<Renderer>().material;
         
-        targetColor = (TargetColors)Enum.Parse(typeof(TargetColors), randomCubeMaterial.name);
+        string[] materialNameSplitted = cubeMaterial.name.Split(' ');
+        
+        string materialName = materialNameSplitted[0];
+        
+        targetColor = (TargetColors)Enum.Parse(typeof(TargetColors), materialName);
         
         return targetColor;
     }
