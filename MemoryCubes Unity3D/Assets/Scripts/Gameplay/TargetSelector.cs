@@ -15,12 +15,6 @@ public class TargetSelector : MonoBehaviour {
     {
 	   SetNextTarget();
 	}
-	
-	// Update is called once per frame
-	void Update() 
-    {
-	
-	}
     
     private void SetNextTarget()
     {
