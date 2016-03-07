@@ -13,8 +13,15 @@ public class TargetSelector : MonoBehaviour {
 	// Use this for initialization
 	void Start() 
     {
+       GameObject.Find("GridParent").GetComponent<GridCollector>().CollectEvent += OnCollectEvent;
+       
 	   SetNextTarget();
 	}
+    
+    private void OnCollectEvent(object sender, CollectEventArgs e)
+    {
+        SetNextTarget();
+    }
     
     private void SetNextTarget()
     {
