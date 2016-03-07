@@ -3,14 +3,26 @@
 public class Destroyer : MonoBehaviour {
 
     private Selector selector;
+    
+    private GameObject gridParent;
 
 	// Use this for initialization
-	void Start() 
+	void Awake() 
     {
-       GameObject.Find("GridParent").GetComponent<GridCollector>().CollectEvent += OnCollectEvent;
+        gridParent = GameObject.Find("GridParent");
         
-	   selector = this.GetComponent<Selector>();
+	    selector = this.GetComponent<Selector>();
 	}
+    
+    void OnEnable()
+    {
+        gridParent.GetComponent<GridCollector>().CollectEvent += OnCollectEvent;
+    }
+    
+    void OnDisable()
+    {
+        gridParent.GetComponent<GridCollector>().CollectEvent -= OnCollectEvent;
+    }
     
     private void OnCollectEvent(object sender, CollectEventArgs e)
     {
