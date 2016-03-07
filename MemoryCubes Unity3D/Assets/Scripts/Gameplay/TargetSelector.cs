@@ -1,9 +1,18 @@
 ﻿using UnityEngine;
 using System;
 
+public enum TargetColors
+{
+    Blue,
+    Green,
+    Purple,
+    Red,
+    Yellow
+}
+
 public class NextTargetEventArgs : EventArgs
 {
-    public GameObject targetCube { get; set; }
+    public TargetColors targetColor { get; set; }
 }
 
 public class TargetSelector : MonoBehaviour {
@@ -27,7 +36,9 @@ public class TargetSelector : MonoBehaviour {
     {
         NextTargetEventArgs args = new NextTargetEventArgs();
         
-        args.targetCube = GetRandomCube();
+        GameObject randomCube = GetRandomCube();
+        
+        args.targetColor = GetTargetColor(randomCube);
         
         if (NextTargetEvent != null)
         {
@@ -44,5 +55,16 @@ public class TargetSelector : MonoBehaviour {
         GameObject cube = gridParent.transform.GetChild(randomIndex).gameObject;
         
         return cube;
+    }
+    
+    private TargetColors GetTargetColor(GameObject randomCube)
+    {
+        TargetColors targetColor = new TargetColors();
+        
+        Material randomCubeMaterial = randomCube.GetComponent<Material>();
+        
+        Debug.Log(randomCubeMaterial.name);
+        
+        return targetColor;
     }
 }
