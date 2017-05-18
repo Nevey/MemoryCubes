@@ -13,25 +13,28 @@ public enum TargetColors
 public class NextTargetEventArgs : EventArgs
 {
     public TargetColors targetColor { get; set; }
+    public bool isFirstTarget { get; set; }
 }
 
-public class TargetSelector : MonoBehaviour {
+public class TargetSelector : MonoBehaviour
+{
+    [SerializeField] Builder builder;
+
+    [SerializeField] GridCollector gridCollector;
 
     public event EventHandler<NextTargetEventArgs> NextTargetEvent;
 
 	// Use this for initialization
 	void Start() 
     {
-        GameObject gridParent = GameObject.Find("GridParent");
+        builder.BuilderReadyEvent += OnBuilderReadyEvent;
         
-        gridParent.GetComponent<Builder>().BuilderReadyEvent += OnBuilderReadyEvent;
-        
-        gridParent.GetComponent<GridCollector>().CollectEvent += OnCollectEvent;
+        gridCollector.CollectEvent += OnCollectEvent;
 	}
     
     private void OnBuilderReadyEvent(object sender, BuilderReadyEventArgs e)
     {
-        SetNextTarget();
+        SetNextTarget(true);
     }
     
     private void OnCollectEvent(object sender, CollectEventArgs e)
@@ -39,13 +42,15 @@ public class TargetSelector : MonoBehaviour {
         SetNextTarget();
     }
     
-    private void SetNextTarget()
+    private void SetNextTarget(bool isFirstTarget = false)
     {
         NextTargetEventArgs args = new NextTargetEventArgs();
         
         GameObject randomCube = GetRandomCube();
         
         args.targetColor = GetTargetColor(randomCube);
+
+        args.isFirstTarget = isFirstTarget;
         
         Debug.Log("New target set: " + args.targetColor);
         
