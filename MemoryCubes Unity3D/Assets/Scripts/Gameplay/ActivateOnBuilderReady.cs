@@ -10,10 +10,10 @@ public class ActivateOnBuilderReady : MonoBehaviour
     {
         gameObject.SetActive(false);
 
-        builder.BuilderReadyEvent += Builder_BuilderReadyEvent;
+        builder.BuilderReadyEvent += OnBuilderReady;
 	}
 
-    private void Builder_BuilderReadyEvent(object sender, BuilderReadyEventArgs e)
+    private void OnBuilderReady(object sender, BuilderReadyEventArgs e)
     {
         gameObject.SetActive(true);
     }
