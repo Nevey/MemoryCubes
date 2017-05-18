@@ -2,11 +2,11 @@
 
 public class Rotator : MonoBehaviour 
 {
-	public Transform rotationHelper;
+	[SerializeField] private Transform rotationHelper;
 	
-	public float smoothStrength = 0.1f;
+	[SerializeField] private float smoothStrength = 0.1f;
 	
-	public float rotationAngle = 90f;
+	[SerializeField] private Vector2 rotationAmount;
 	
 	// Use this for initialization
 	void Start()
@@ -32,19 +32,19 @@ public class Rotator : MonoBehaviour
 		switch (swipeDirection)
 		{
 			case SwipeDirection.up:
-				rotationHelper.Rotate(new Vector3(rotationAngle, 0, 0), Space.World);
+				rotationHelper.Rotate(new Vector3(rotationAmount.y, 0, 0), Space.World);
 			break;
 			
 			case SwipeDirection.down:
-				rotationHelper.Rotate(new Vector3(-rotationAngle, 0, 0), Space.World);
+				rotationHelper.Rotate(new Vector3(-rotationAmount.y, 0, 0), Space.World);
 			break;
 			
 			case SwipeDirection.left:
-				rotationHelper.Rotate(new Vector3(0, rotationAngle, 0), Space.World);
+				rotationHelper.Rotate(new Vector3(0, rotationAmount.x, 0), Space.World);
 			break;
 			
 			case SwipeDirection.right:
-				rotationHelper.Rotate(new Vector3(0, -rotationAngle, 0), Space.World);
+				rotationHelper.Rotate(new Vector3(0, -rotationAmount.x, 0), Space.World);
 			break;
 		}
 	}
