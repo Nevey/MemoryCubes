@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class Destroyer : MonoBehaviour {
-
-    private Selector selector;
+public class Destroyer : MonoBehaviour
+{
+    [SerializeField] private Selector selector;
     
     private GameObject gridParent;
 
@@ -10,8 +10,6 @@ public class Destroyer : MonoBehaviour {
 	void Awake() 
     {
         gridParent = GameObject.Find("GridParent");
-        
-	    selector = this.GetComponent<Selector>();
 	}
     
     void OnEnable()

@@ -1,28 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SpriteFinder
-{
-    public SpriteFinder()
-    {
-
-    }
-
-    public Sprite FindSprite(TargetColors color)
-    {
-        string name = color.ToString();
-
-        return FindSprite(name);
-    }
-
-    public Sprite FindSprite(string name)
-    {
-        return Resources.Load<Sprite>("Images/TargetBar/" + name);
-    }
-}
-
-public class TargetPainter : MonoBehaviour
+public class TargetView : MonoBehaviour
 {
     [SerializeField] private GameObject targetSpritePrefab;
 
