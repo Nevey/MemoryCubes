@@ -14,15 +14,15 @@ public class Destroyer : MonoBehaviour
     
     void OnEnable()
     {
-        gridParent.GetComponent<GridCollector>().CollectEvent += OnCollectEvent;
+        PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
     }
-    
+
     void OnDisable()
     {
-        gridParent.GetComponent<GridCollector>().CollectEvent -= OnCollectEvent;
+        PlayerCollectingCubesState.CollectingCubesStateStartedEvent -= OnCollectingCubesStateStarted;
     }
-    
-    private void OnCollectEvent(object sender, CollectEventArgs e)
+
+    private void OnCollectingCubesStateStarted()
     {
         if (selector.CurrentSelection == SelectionState.selected)
         {

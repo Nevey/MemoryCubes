@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TargetView : MonoBehaviour
@@ -21,8 +22,10 @@ public class TargetView : MonoBehaviour
 
     private SpriteFinder spriteFinder = new SpriteFinder();
 
-	// Use this for initialization
-	void Start() 
+    public static event Action TargetColorUpdatedEvent;
+
+    // Use this for initialization
+    void Start() 
     {
         targetBarArraySize.x = targetBarHeight;
         targetBarArraySize.y = targetBarWidth;
@@ -85,6 +88,14 @@ public class TargetView : MonoBehaviour
         foreach(GameObject targetBarSprite in targetBarSprites)
         {
             targetBarSprite.GetComponent<Image>().sprite = spriteFinder.FindSprite(e.targetColor);
+        }
+
+        // Based on this event the state machine knows target color selecting is done
+        // Keep it in this class in case we want to delay firing of this
+        // event due to visual effects
+        if (TargetColorUpdatedEvent != null)
+        {
+            TargetColorUpdatedEvent();    
         }
     }
 }

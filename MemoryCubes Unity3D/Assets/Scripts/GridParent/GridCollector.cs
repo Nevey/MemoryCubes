@@ -8,7 +8,9 @@ public class CollectEventArgs : EventArgs
 
 public class GridCollector : MonoBehaviour
 {
-    public event EventHandler<CollectEventArgs> CollectEvent;
+    //public event EventHandler<CollectEventArgs> CollectEvent;
+
+    public static event Action CollectEvent;
 
     // TODO: keep a list of collected cubes?
 
@@ -18,7 +20,7 @@ public class GridCollector : MonoBehaviour
         
         if (CollectEvent != null)
         {
-            CollectEvent(this, args);
+            CollectEvent();
         }
     }
 }

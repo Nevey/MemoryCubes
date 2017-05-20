@@ -32,14 +32,28 @@ public class GameStateController : MonoBehaviour
     {
         stateHandlerList.Add(new BuildCubeState(GameStateEnum.buildCube));
 
-        stateHandlerList.Add(new SelectingCubesState(GameStateEnum.selectingCubes));
+        stateHandlerList.Add(new SelectColorTargetState(GameStateEnum.selectColorTarget));
+
+        stateHandlerList.Add(new PlayerSelectingCubesState(GameStateEnum.playerSelectingCubes));
+
+        stateHandlerList.Add(new PlayerCollectingCubesState(GameStateEnum.playerCollectingCubes));
     }
 
     private void CreateStateFlow()
     {
+        // Move from cube building to target color selecting
         stateFlowList.Add(new StateFlow(
             GameStateEventEnum.cubeBuildingReady,
-            GameStateEnum.selectingCubes));
+            GameStateEnum.selectColorTarget));
+
+        // Move from target color selecting to player cube selecting
+        stateFlowList.Add(new StateFlow(
+            GameStateEventEnum.selectColorTargetReady, 
+            GameStateEnum.playerSelectingCubes));
+
+        stateFlowList.Add(new StateFlow(
+            GameStateEventEnum.playerSelectingCubesReady, 
+            GameStateEnum.playerCollectingCubes));
     }
 
     private void StartListeningToEvents()

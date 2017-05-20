@@ -1,5 +1,7 @@
 ﻿public enum GameStateEnum
 {
     buildCube,
-    selectingCubes
+    selectColorTarget,
+    playerSelectingCubes,
+    playerCollectingCubes
 }

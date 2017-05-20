@@ -20,23 +20,23 @@ public class TargetSelector : MonoBehaviour
 {
     [SerializeField] GridCollector gridCollector;
 
-    public event EventHandler<NextTargetEventArgs> NextTargetEvent;
+    public event EventHandler<NextTargetEventArgs> NextTargetEvent;    
 
 	// Use this for pre-initialization
 	void Awake() 
     {
-        SelectingCubesState.SelectingCubesStateStartedEvent += OnSelectingCubesStateStarted;
+        SelectColorTargetState.SelectColorTargetStateStartedEvent += OnSelectColorTargetStateStarted;
         
-        // TODO: listen to a state event instead
-        gridCollector.CollectEvent += OnCollectEvent;
+        // TODO: select new target whenever collecting cubes state is finished instead
+        PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollect;
 	}
 
-    private void OnSelectingCubesStateStarted()
+    private void OnSelectColorTargetStateStarted()
     {
         SetNextTarget(true);
     }
     
-    private void OnCollectEvent(object sender, CollectEventArgs e)
+    private void OnCollect()
     {
         SetNextTarget();
     }

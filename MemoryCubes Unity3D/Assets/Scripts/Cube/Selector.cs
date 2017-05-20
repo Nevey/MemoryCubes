@@ -19,7 +19,8 @@ public class Selector : MonoBehaviour
 	private Swiper swiper;
 	
 	private SelectionState selectionState = new SelectionState();
-	
+
+    private bool isEnabled = false;
 	private bool canSelect = true;
 	
     public SelectionState CurrentSelection
@@ -30,21 +31,47 @@ public class Selector : MonoBehaviour
 	public event EventHandler<SelectorArgs> SelectEvent;
 	
 	// Use this for initialization
-	void Start() 
+	void Awake() 
 	{
 		swiper = GameObject.Find("GridParent").GetComponent<Swiper>();
-		
-		swiper.SwipeEvent += OnSwipeEvent;
+
+        PlayerSelectingCubesState.SelectingCubesStateStartedEvent += OnSelectingCubesStateStarted;
+
+        // TODO: on collect state started, disable selecting
 	}
-	
-	// Update is called once per frame
-	void Update() 
+
+    private void OnSelectingCubesStateStarted()
+    {
+        EnableSelecting();
+    }
+
+    // Update is called once per frame
+    void Update() 
 	{
-		if (Input.GetMouseButtonUp(0))
+        if (!isEnabled)
+        {
+            return;
+        }
+
+        if (Input.GetMouseButtonUp(0))
 		{
 			TapMe();
 		}
 	}
+
+    private void EnableSelecting()
+    {
+        isEnabled = true;
+
+        swiper.SwipeEvent += OnSwipeEvent;
+    }
+
+    private void DisableSelecting()
+    {
+        isEnabled = false;
+
+        swiper.SwipeEvent -= OnSwipeEvent;
+    }
 	
 	private void TapMe()
 	{
@@ -67,14 +94,14 @@ public class Selector : MonoBehaviour
 	
 	private void Select()
 	{
-		// If swiping, don't select anything
-		if (!canSelect)
-		{
-			return;
-		}
-		
+        // If cannot select, return
+        if (!canSelect)
+        {
+            return;
+        }
+
         // Set selection state
-		ToggleSelect();
+        ToggleSelect();
 		
 		// Create selector event args
 		SelectorArgs selectorArgs = new SelectorArgs();
