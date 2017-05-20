@@ -37,12 +37,17 @@ public class Selector : MonoBehaviour
 
         PlayerSelectingCubesState.SelectingCubesStateStartedEvent += OnSelectingCubesStateStarted;
 
-        // TODO: on collect state started, disable selecting
+        PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
 	}
-
+    
     private void OnSelectingCubesStateStarted()
     {
         EnableSelecting();
+    }
+
+    private void OnCollectingCubesStateStarted()
+    {
+        DisableSelecting();
     }
 
     // Update is called once per frame
