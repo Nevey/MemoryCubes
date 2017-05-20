@@ -20,13 +20,18 @@ public class Builder : MonoBehaviour
     
     public event EventHandler<BuilderReadyEventArgs> BuilderReadyEvent;
 	
-	// Use this for initialization
-	void Start() 
+	// Use this for pre-initialization
+	private void Awake() 
 	{
-		CreateGrid();
+        SelectingCubesState.BuildCubeStateStartedEvent += OnBuildCubeStateStarted;
 	}
-	
-	private void CreateGrid()
+
+    private void OnBuildCubeStateStarted()
+    {
+        CreateGrid();
+    }
+
+    private void CreateGrid()
 	{
 		grid = new GameObject[gridSize, gridSize, gridSize];
 		

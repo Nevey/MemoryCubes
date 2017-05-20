@@ -84,28 +84,32 @@ public class ColorChanger : MonoBehaviour
 		Color color = GetComponent<Renderer>().materials[0].color;
 		
 		float targetAlpha = 0f;
-		
-		if (deadzone.OutOfReach(color.a, targetAlpha))
-		{
-			color.a = Mathf.SmoothDamp(
-                color.a, 
-                targetAlpha, 
-                ref colorFadeVelocity, 
-                colorFadeSmoothTime, 
+
+        color.a = Mathf.SmoothDamp(
+                color.a,
+                targetAlpha,
+                ref colorFadeVelocity,
+                colorFadeSmoothTime,
                 maxColorFadeSpeed);
-		
-			GetComponent<Renderer>().materials[0].color = color;
-		}
-		else
+
+        GetComponent<Renderer>().materials[0].color = color;
+
+        // Use a bigger deadzone to send color change ready event
+        if (!deadzone.OutOfReach(color.a, targetAlpha, 1f))
 		{
-			ColorChangeReady();
-		}
+            ColorChangeReady();
+        }
+
+        // Use a smaller deadzone so the color change keeps going after the event was sent
+        // Otherwise the difference between current and target color may be too big
+        if (!deadzone.OutOfReach(color.a, targetAlpha))
+        {
+            isChangingColor = false;
+        }
 	}
 	
 	private void ColorChangeReady()
 	{
-        isChangingColor = false;
-		
         // Replace materials array with a new array, containing only the dynamic material
  		GetComponent<Renderer>().materials = new Material[] { selectedMaterial };
         
