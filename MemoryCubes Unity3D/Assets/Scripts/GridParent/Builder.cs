@@ -23,7 +23,7 @@ public class Builder : MonoBehaviour
 	// Use this for pre-initialization
 	private void Awake() 
 	{
-        SelectingCubesState.BuildCubeStateStartedEvent += OnBuildCubeStateStarted;
+        BuildCubeState.BuildCubeStateStartedEvent += OnBuildCubeStateStarted;
 	}
 
     private void OnBuildCubeStateStarted()

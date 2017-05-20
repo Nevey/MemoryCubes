@@ -95,7 +95,7 @@ public class ColorChanger : MonoBehaviour
         GetComponent<Renderer>().materials[0].color = color;
 
         // Use a bigger deadzone to send color change ready event
-        if (!deadzone.OutOfReach(color.a, targetAlpha, 1f))
+        if (!deadzone.OutOfReach(color.a, targetAlpha, 0.2f))
 		{
             ColorChangeReady();
         }

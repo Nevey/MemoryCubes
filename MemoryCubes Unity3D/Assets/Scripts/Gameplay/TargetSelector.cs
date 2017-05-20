@@ -18,21 +18,20 @@ public class NextTargetEventArgs : EventArgs
 
 public class TargetSelector : MonoBehaviour
 {
-    [SerializeField] Builder builder;
-
     [SerializeField] GridCollector gridCollector;
 
     public event EventHandler<NextTargetEventArgs> NextTargetEvent;
 
-	// Use this for initialization
-	void Start() 
+	// Use this for pre-initialization
+	void Awake() 
     {
-        builder.BuilderReadyEvent += OnBuilderReadyEvent;
+        SelectingCubesState.SelectingCubesStateStartedEvent += OnSelectingCubesStateStarted;
         
+        // TODO: listen to a state event instead
         gridCollector.CollectEvent += OnCollectEvent;
 	}
-    
-    private void OnBuilderReadyEvent(object sender, BuilderReadyEventArgs e)
+
+    private void OnSelectingCubesStateStarted()
     {
         SetNextTarget(true);
     }
