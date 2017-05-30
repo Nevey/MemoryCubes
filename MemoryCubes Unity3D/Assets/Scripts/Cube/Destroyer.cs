@@ -1,32 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Destroyer : MonoBehaviour
 {
-    [SerializeField] private Selector selector;
     
-    private GameObject gridParent;
-
 	// Use this for initialization
 	void Awake() 
     {
-        gridParent = GameObject.Find("GridParent");
+        
 	}
-    
-    void OnEnable()
-    {
-        PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
-    }
 
-    void OnDisable()
+    public void DestroyCube()
     {
-        PlayerCollectingCubesState.CollectingCubesStateStartedEvent -= OnCollectingCubesStateStarted;
-    }
-
-    private void OnCollectingCubesStateStarted()
-    {
-        if (selector.CurrentSelection == SelectionState.selected)
-        {
-            Destroy(this.gameObject);
-        }
+        // TODO: change to DestroyerView and do fancy VFX in here
+        Destroy(this.gameObject);
     }
 }

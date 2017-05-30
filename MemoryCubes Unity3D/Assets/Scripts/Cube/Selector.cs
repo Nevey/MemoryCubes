@@ -39,16 +39,6 @@ public class Selector : MonoBehaviour
 
         PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
 	}
-    
-    private void OnSelectingCubesStateStarted()
-    {
-        EnableSelecting();
-    }
-
-    private void OnCollectingCubesStateStarted()
-    {
-        DisableSelecting();
-    }
 
     // Update is called once per frame
     void Update() 
@@ -63,6 +53,16 @@ public class Selector : MonoBehaviour
 			TapMe();
 		}
 	}
+
+    private void OnSelectingCubesStateStarted()
+    {
+        EnableSelecting();
+    }
+
+    private void OnCollectingCubesStateStarted()
+    {
+        DisableSelecting();
+    }
 
     private void EnableSelecting()
     {

@@ -16,15 +16,17 @@ public class PlayerCollectingCubesState : GameStateHandler
 
         Debug.Log("PlayerCollectingCubesState:GameStateStarted");
 
-
+        DestroyController.DestroyFinishedEvent += OnDestroyFinished;
 
         CollectingCubesStateStartedEvent();
     }
 
-    private void WheneverThisShizzleIsDone()
+    private void OnDestroyFinished()
     {
-        Debug.Log("PlayerCollectingCubesState:WheneverThisShizzleIsDone");
+        Debug.Log("PlayerCollectingCubesState:GameStateStarted");
 
-        //GameStateFinished(GameStateEventEnum.cubeBuildingReady);
+        DestroyController.DestroyFinishedEvent -= OnDestroyFinished;
+
+        GameStateFinished(GameStateEventEnum.playerCollectingCubesReady);
     }
 }

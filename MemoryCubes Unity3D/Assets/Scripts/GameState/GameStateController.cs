@@ -51,9 +51,17 @@ public class GameStateController : MonoBehaviour
             GameStateEventEnum.selectColorTargetReady, 
             GameStateEnum.playerSelectingCubes));
 
+        // Move from player selecting cubes to player collecting cubes
         stateFlowList.Add(new StateFlow(
             GameStateEventEnum.playerSelectingCubesReady, 
             GameStateEnum.playerCollectingCubes));
+
+        // TODO: check for cube finished state here
+
+        // Move from player collecting cubes to target color selecting
+        stateFlowList.Add(new StateFlow(
+            GameStateEventEnum.playerCollectingCubesReady, 
+            GameStateEnum.selectColorTarget));
     }
 
     private void StartListeningToEvents()

@@ -19,7 +19,13 @@ public enum SwipeDirection
 
 public class Swiper : MonoBehaviour 
 {
-	private bool checkForSwipe = false;
+    [SerializeField] private float maxSwipeDistance = 200f;
+
+    [SerializeField] private float minSwipeDistance = 10f;
+
+    private bool isActive = false;
+
+    private bool checkForSwipe = false;
 	
 	private Vector2 inputOrigin = Vector2.zero;
 	
@@ -27,21 +33,26 @@ public class Swiper : MonoBehaviour
 	
 	private Viewport viewport;
 	
-	public float maxSwipeDistance = 200f;
-	
-	public float minSwipeDistance = 10f;
-	
 	public event EventHandler<SwipeEventArgs> SwipeEvent;
 		
 	// Use this for initialization
-	void Start() 
+	void Awake() 
 	{
 		viewport = Camera.main.GetComponent<Viewport>();
-	}
+
+        PlayerSelectingCubesState.SelectingCubesStateStartedEvent += OnSelectingCubesStateStarted;
+
+        PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
+    }
 	
 	// Update is called once per frame
 	void Update() 
 	{
+        if (!isActive)
+        {
+            return;
+        }
+
 		if (Input.GetMouseButtonDown(0))
 		{
 			StartSwipe();
@@ -54,8 +65,28 @@ public class Swiper : MonoBehaviour
 		
 		UpdateSwipe();
 	}
-	
-	private void StartSwipe()
+
+    private void OnSelectingCubesStateStarted()
+    {
+        EnableSwiping();
+    }
+
+    private void OnCollectingCubesStateStarted()
+    {
+        DisableSwiping();
+    }
+
+    private void EnableSwiping()
+    {
+        isActive = true;
+    }
+
+    private void DisableSwiping()
+    {
+        isActive = false;
+    }
+
+    private void StartSwipe()
 	{
 		inputOrigin = Input.mousePosition;
 		
