@@ -15,14 +15,9 @@ public enum SelectionState
 }
 
 public class Selector : MonoBehaviour 
-{	
-	private Swiper swiper;
-	
+{
 	private SelectionState selectionState = new SelectionState();
 
-    private bool isEnabled = false;
-	private bool canSelect = true;
-	
     public SelectionState CurrentSelection
     {
         get { return selectionState; }
@@ -30,85 +25,8 @@ public class Selector : MonoBehaviour
     
 	public event EventHandler<SelectorArgs> SelectEvent;
 	
-	// Use this for initialization
-	void Awake() 
+	public void Select()
 	{
-		swiper = GameObject.Find("GridParent").GetComponent<Swiper>();
-
-        PlayerSelectingCubesState.SelectingCubesStateStartedEvent += OnSelectingCubesStateStarted;
-
-        PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
-	}
-
-    // Update is called once per frame
-    void Update() 
-	{
-        if (!isEnabled)
-        {
-            return;
-        }
-
-        if (Input.GetMouseButtonUp(0))
-		{
-			TapMe();
-		}
-	}
-
-    private void OnSelectingCubesStateStarted()
-    {
-        EnableSelecting();
-
-		Debug.Log("ENABLE SELECTING");
-    }
-
-    private void OnCollectingCubesStateStarted()
-    {
-        DisableSelecting();
-
-		Debug.Log("SELECTING DISABLED!!!!");
-    }
-
-    private void EnableSelecting()
-    {
-        isEnabled = true;
-
-        swiper.SwipeEvent += OnSwipeEvent;
-    }
-
-    private void DisableSelecting()
-    {
-        isEnabled = false;
-
-        swiper.SwipeEvent -= OnSwipeEvent;
-    }
-	
-	private void TapMe()
-	{
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		
-		RaycastHit hit;
-		
-		float raycastDistance = 100f;
-		
-		if (Physics.Raycast(ray, out hit, raycastDistance)) 
-		{			
-			if (hit.collider.gameObject == gameObject)
-			{
-				Select();
-			}
-		}
-
-        canSelect = true;
-    }
-	
-	private void Select()
-	{
-        // If cannot select, return
-        if (!canSelect)
-        {
-            return;
-        }
-
         // Set selection state
         ToggleSelect();
 		
@@ -137,9 +55,4 @@ public class Selector : MonoBehaviour
 			selectionState = SelectionState.notSelected;
 		}
     }
-	
-	private void OnSwipeEvent(object sender, SwipeEventArgs e)
-	{
-		canSelect = false;
-	}
 }
