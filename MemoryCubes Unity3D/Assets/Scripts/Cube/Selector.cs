@@ -57,11 +57,15 @@ public class Selector : MonoBehaviour
     private void OnSelectingCubesStateStarted()
     {
         EnableSelecting();
+
+		Debug.Log("ENABLE SELECTING");
     }
 
     private void OnCollectingCubesStateStarted()
     {
         DisableSelecting();
+
+		Debug.Log("SELECTING DISABLED!!!!");
     }
 
     private void EnableSelecting()

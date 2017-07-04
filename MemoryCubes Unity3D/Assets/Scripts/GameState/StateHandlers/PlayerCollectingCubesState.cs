@@ -23,7 +23,7 @@ public class PlayerCollectingCubesState : GameStateHandler
 
     private void OnDestroyFinished()
     {
-        Debug.Log("PlayerCollectingCubesState:GameStateStarted");
+        Debug.Log("PlayerCollectingCubesState:OnDestroyFinished");
 
         DestroyController.DestroyFinishedEvent -= OnDestroyFinished;
 
