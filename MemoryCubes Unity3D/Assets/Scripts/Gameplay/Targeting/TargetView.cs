@@ -120,7 +120,7 @@ public class TargetView : MonoBehaviour
             {
                 float spritePercent = (100f / (targetBarArraySize.x + targetBarArraySize.y)) * (x + y);
 
-                bool isActive = spritePercent < targetTime.GetTimeLeftPercent();
+                bool isActive = spritePercent < targetTime.TimeLeftPercent;
 
                 targetBarSprites[x, y].SetActive(isActive);
             }

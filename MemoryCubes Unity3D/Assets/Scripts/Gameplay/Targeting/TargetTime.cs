@@ -12,6 +12,14 @@ public class TargetTime : MonoBehaviour
     
     private bool isActive = false;
 
+    public float TimeLeftPercent
+    {
+        get
+        {
+            return (100f / maxTime) * currentTime;
+        }
+    }
+
     public event Action OutOfTimeEvent;
 
     private void OnEnable()
@@ -60,12 +68,5 @@ public class TargetTime : MonoBehaviour
         currentTime = maxTime;
 
         isActive = true;
-    }
-
-    public float GetTimeLeftPercent()
-    {
-        float timeLeftPercent = (100f / maxTime) * currentTime;
-
-        return timeLeftPercent;
     }
 }
