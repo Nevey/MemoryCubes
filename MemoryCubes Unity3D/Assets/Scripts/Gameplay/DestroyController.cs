@@ -8,22 +8,6 @@ public class DestroyController : MonoBehaviour
 
     public static event Action DestroyFinishedEvent;
 
-	// Use this for initialization
-	private void OnEnable()
-    {
-        PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
-    }
-
-    private void OnDisable()
-    {
-        PlayerCollectingCubesState.CollectingCubesStateStartedEvent -= OnCollectingCubesStateStarted;
-    }
-
-    private void OnCollectingCubesStateStarted()
-    {
-        DestroyAllSelectedTiles();
-    }
-
     private void DestroyAllSelectedTiles()
     {
         for (int i = 0; i < tileSelector.SelectedTiles.Count; i++)
@@ -33,10 +17,17 @@ public class DestroyController : MonoBehaviour
             destroyer.DestroyCube();
         }
 
+        tileSelector.ClearSelectedTiles();
+
         // TODO: When all destroy animations are done OR after a short timer, send the below event
         if (DestroyFinishedEvent != null)
         {
             DestroyFinishedEvent();
         }
+    }
+
+    public void CollectCubes()
+    {
+        DestroyAllSelectedTiles();
     }
 }

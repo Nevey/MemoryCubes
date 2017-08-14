@@ -11,7 +11,7 @@ public class GameStateController : MonoBehaviour
     private List<StateFlow> stateFlowList = new List<StateFlow>();
 
 	// Use this for early initialization
-	void Awake()
+	private void Awake()
     {
         currentGameState = GameStateEnum.buildCube;
 
@@ -23,7 +23,7 @@ public class GameStateController : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
         UpdateStateHandler();
     }
@@ -35,8 +35,6 @@ public class GameStateController : MonoBehaviour
         stateHandlerList.Add(new SelectColorTargetState(GameStateEnum.selectColorTarget));
 
         stateHandlerList.Add(new PlayerSelectingCubesState(GameStateEnum.playerSelectingCubes));
-
-        stateHandlerList.Add(new PlayerCollectingCubesState(GameStateEnum.playerCollectingCubes));
     }
 
     private void CreateStateFlow()
@@ -54,14 +52,9 @@ public class GameStateController : MonoBehaviour
         // Move from player selecting cubes to player collecting cubes
         stateFlowList.Add(new StateFlow(
             GameStateEventEnum.playerSelectingCubesReady, 
-            GameStateEnum.playerCollectingCubes));
+            GameStateEnum.selectColorTarget));
 
         // TODO: check for cube finished state here
-
-        // Move from player collecting cubes to target color selecting
-        stateFlowList.Add(new StateFlow(
-            GameStateEventEnum.playerCollectingCubesReady, 
-            GameStateEnum.selectColorTarget));
     }
 
     private void StartListeningToEvents()

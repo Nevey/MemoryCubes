@@ -11,8 +11,6 @@ public class TargetSelector : MonoBehaviour
 {
     [SerializeField] private ColorConfig colorConfig;
 
-    [SerializeField] private GridCollector gridCollector;
-
     private bool isFirstTarget = true;
 
     public event EventHandler<NextTargetEventArgs> NextTargetEvent;    

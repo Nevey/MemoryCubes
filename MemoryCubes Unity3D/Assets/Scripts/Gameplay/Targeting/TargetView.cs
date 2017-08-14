@@ -12,9 +12,15 @@ public class TargetView : MonoBehaviour
 
     [SerializeField] private int targetBarWidth = 25;
 
-    [SerializeField] private int direction;
+    [SerializeField] private Direction direction;
 
     [SerializeField] private TargetSelector targetSelector;
+
+    private enum Direction
+    {
+        Left = -1,
+        Right = 1
+    }
 
     private GameObject[,] targetBarSprites;
     
@@ -71,7 +77,7 @@ public class TargetView : MonoBehaviour
 
                 // Horizontal position is based on y and vertical position is based on placeholder position
                 Vector2 position = new Vector2(
-                    targetBarPlaceholder.transform.position.x + (image.rectTransform.sizeDelta.x * y) * direction,
+                    targetBarPlaceholder.transform.position.x + (image.rectTransform.sizeDelta.x * y) * (float)direction,
                     targetBarPlaceholder.transform.position.y - (image.rectTransform.sizeDelta.y * x)
                 );
 

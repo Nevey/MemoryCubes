@@ -11,7 +11,7 @@ public class GridColoring : MonoBehaviour
 	private MaterialPropertyBlock propertyBlock;
 
 	// Use this for initialization
-	private void Start()
+	private void Awake()
 	{
 		propertyBlock = new MaterialPropertyBlock();
 

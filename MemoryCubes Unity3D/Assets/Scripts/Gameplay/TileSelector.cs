@@ -12,16 +12,6 @@ public class TileSelector : MonoBehaviour
 
 	public List<GameObject> SelectedTiles { get { return selectedTiles; } }
 	
-	private void OnEnable()
-	{
-        PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
-	}
-
-	private void OnDisable()
-	{
-        PlayerCollectingCubesState.CollectingCubesStateStartedEvent -= OnCollectingCubesStateStarted;
-	}
-	
 	// Update is called once per frame
 	private void Update()
 	{
@@ -37,11 +27,6 @@ public class TileSelector : MonoBehaviour
 			canSelect = true;
 		}
 	}
-
-    private void OnCollectingCubesStateStarted()
-    {
-        selectedTiles.Clear();
-    }
 
 	private void OnSwipeEvent(object sender, SwipeEventArgs e)
 	{
@@ -71,4 +56,9 @@ public class TileSelector : MonoBehaviour
 			}
 		}        
     }
+
+	public void ClearSelectedTiles()
+	{
+		selectedTiles.Clear();
+	}
 }

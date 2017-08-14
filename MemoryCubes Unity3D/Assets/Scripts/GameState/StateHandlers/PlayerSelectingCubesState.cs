@@ -3,8 +3,6 @@ using System;
 
 public class PlayerSelectingCubesState : GameStateHandler
 {
-    public static event Action SelectingCubesStateStartedEvent;
-
     public PlayerSelectingCubesState(GameStateEnum gameStateEnum) : base(gameStateEnum)
     {
         
@@ -16,17 +14,15 @@ public class PlayerSelectingCubesState : GameStateHandler
 
         Debug.Log("SelectingCubesState:GameStateStarted");
 
-        GridCollector.CollectEvent += OnCollect;
-
-        SelectingCubesStateStartedEvent();
+        DestroyController.DestroyFinishedEvent += OnDestroyFinished;
     }
 
-    private void OnCollect()
+    private void OnDestroyFinished()
     {
         Debug.Log("SelectingCubesState:OnCollect");
 
-        GridCollector.CollectEvent -= OnCollect;
+        DestroyController.DestroyFinishedEvent -= OnDestroyFinished;
 
-        GameStateFinished(GameStateEventEnum.playerSelectingCubesReady);
+        GameStateFinished(GameStateEventEnum.playerCollectingCubesReady);
     }
 }
