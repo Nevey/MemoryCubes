@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class PlayerSelectingCubesState : GameStateHandler
+public class PlayerInputState : GameStateHandler
 {
-    public PlayerSelectingCubesState(GameStateEnum gameStateEnum) : base(gameStateEnum)
+    public static event Action PlayerInputStateStartedEvent;
+
+    public PlayerInputState(GameStateEnum gameStateEnum) : base(gameStateEnum)
     {
         
     }
@@ -15,6 +17,8 @@ public class PlayerSelectingCubesState : GameStateHandler
         Debug.Log("SelectingCubesState:GameStateStarted");
 
         DestroyController.DestroyFinishedEvent += OnDestroyFinished;
+
+        PlayerInputStateStartedEvent();
     }
 
     private void OnDestroyFinished()
@@ -23,6 +27,6 @@ public class PlayerSelectingCubesState : GameStateHandler
 
         DestroyController.DestroyFinishedEvent -= OnDestroyFinished;
 
-        GameStateFinished(GameStateEventEnum.playerCollectingCubesReady);
+        GameStateFinished(GameStateEventEnum.playerInputStateFinished);
     }
 }

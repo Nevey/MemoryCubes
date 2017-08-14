@@ -16,6 +16,8 @@ public class TargetView : MonoBehaviour
 
     [SerializeField] private TargetSelector targetSelector;
 
+    [SerializeField] private TargetTime targetTime;
+
     private enum Direction
     {
         Left = -1,
@@ -50,7 +52,7 @@ public class TargetView : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
     {
-	
+        UpdateVisibility();
 	}
     
     private void OnNextTargetEvent(object sender, NextTargetEventArgs e)
@@ -107,6 +109,21 @@ public class TargetView : MonoBehaviour
         if (TargetColorUpdatedEvent != null)
         {
             TargetColorUpdatedEvent();
+        }
+    }
+
+    private void UpdateVisibility()
+    {
+        for (int x = 0; x < targetBarArraySize.x; x++)
+        {
+            for (int y = 0; y < targetBarArraySize.y; y++)
+            {
+                float spritePercent = (100f / (targetBarArraySize.x + targetBarArraySize.y)) * (x + y);
+
+                bool isActive = spritePercent < targetTime.GetTimeLeftPercent();
+
+                targetBarSprites[x, y].SetActive(isActive);
+            }
         }
     }
 

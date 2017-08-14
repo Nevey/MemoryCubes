@@ -27,7 +27,7 @@ public class SelectColorTargetState : GameStateHandler
 
         TargetView.TargetColorUpdatedEvent -= OnTargetColorUpdated;
 
-        GameStateFinished(GameStateEventEnum.selectColorTargetReady);
+        GameStateFinished(GameStateEventEnum.selectColorTargetFinished);
     }
 
     private void WheneverThisShizzleIsDone()

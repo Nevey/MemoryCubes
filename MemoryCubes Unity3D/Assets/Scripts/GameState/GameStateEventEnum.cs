@@ -1,7 +1,6 @@
 ﻿public enum GameStateEventEnum
 {
-    cubeBuildingReady,
-    selectColorTargetReady,
-    playerSelectingCubesReady,
-    playerCollectingCubesReady
+    cubeBuildingFinished,
+    selectColorTargetFinished,
+    playerInputStateFinished
 }

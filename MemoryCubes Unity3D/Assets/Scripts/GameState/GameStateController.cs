@@ -30,28 +30,28 @@ public class GameStateController : MonoBehaviour
 
     private void CreateGameStateHandlers()
     {
-        stateHandlerList.Add(new BuildCubeState(GameStateEnum.buildCube));
+        stateHandlerList.Add(new BuildGridState(GameStateEnum.buildCube));
 
         stateHandlerList.Add(new SelectColorTargetState(GameStateEnum.selectColorTarget));
 
-        stateHandlerList.Add(new PlayerSelectingCubesState(GameStateEnum.playerSelectingCubes));
+        stateHandlerList.Add(new PlayerInputState(GameStateEnum.playerInputState));
     }
 
     private void CreateStateFlow()
     {
         // Move from cube building to target color selecting
         stateFlowList.Add(new StateFlow(
-            GameStateEventEnum.cubeBuildingReady,
+            GameStateEventEnum.cubeBuildingFinished,
             GameStateEnum.selectColorTarget));
 
         // Move from target color selecting to player cube selecting
         stateFlowList.Add(new StateFlow(
-            GameStateEventEnum.selectColorTargetReady, 
-            GameStateEnum.playerSelectingCubes));
+            GameStateEventEnum.selectColorTargetFinished, 
+            GameStateEnum.playerInputState));
 
         // Move from player selecting cubes to player collecting cubes
         stateFlowList.Add(new StateFlow(
-            GameStateEventEnum.playerSelectingCubesReady, 
+            GameStateEventEnum.playerInputStateFinished, 
             GameStateEnum.selectColorTarget));
 
         // TODO: check for cube finished state here
@@ -65,7 +65,7 @@ public class GameStateController : MonoBehaviour
         }
     }
 
-    private void StopListeninToEvents()
+    private void StopListeningToEvents()
     {
         foreach (GameStateHandler stateHandler in stateHandlerList)
         {

@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System;
 
-public class BuildCubeState : GameStateHandler
+public class BuildGridState : GameStateHandler
 {
     private Builder builder;
 
-    public static event Action BuildCubeStateStartedEvent;
+    public static event Action BuildGridStateStartedEvent;
 
-    public BuildCubeState(GameStateEnum gameStateEnum) : base(gameStateEnum)
+    public BuildGridState(GameStateEnum gameStateEnum) : base(gameStateEnum)
     {
         builder = GameObject.Find("Grid").GetComponent<Builder>();
     }
@@ -20,7 +20,7 @@ public class BuildCubeState : GameStateHandler
 
         builder.BuilderReadyEvent += OnBuilderReady;
 
-        BuildCubeStateStartedEvent();
+        BuildGridStateStartedEvent();
     }
 
     private void OnBuilderReady(object sender, BuilderReadyEventArgs e)
@@ -29,6 +29,6 @@ public class BuildCubeState : GameStateHandler
 
         builder.BuilderReadyEvent -= OnBuilderReady;
 
-        GameStateFinished(GameStateEventEnum.cubeBuildingReady);
+        GameStateFinished(GameStateEventEnum.cubeBuildingFinished);
     }
 }

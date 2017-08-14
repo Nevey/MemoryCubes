@@ -2,6 +2,5 @@
 {
     buildCube,
     selectColorTarget,
-    playerSelectingCubes,
-    playerCollectingCubes
+    playerInputState
 }

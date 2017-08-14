@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class TargetTime : MonoBehaviour
 {
@@ -7,27 +8,24 @@ public class TargetTime : MonoBehaviour
 
     [SerializeField] private float scalePerLevel = 1f;
 
-    [SerializeField] private Builder builder;
-
     private float currentTime = 0f;
     
     private bool isActive = false;
 
-	// Use this for initialization
-	void Start ()
-    {
-        currentTime = maxTime;
+    public event Action OutOfTimeEvent;
 
-        builder.BuilderReadyEvent += OnBuilderReady;
-	}
-
-    private void OnBuilderReady(object sender, BuilderReadyEventArgs e)
+    private void OnEnable()
     {
-        isActive = true;
+        PlayerInputState.PlayerInputStateStartedEvent += OnPlayerInputStateStarted;
+    }
+
+    private void OnDisable()
+    {
+        PlayerInputState.PlayerInputStateStartedEvent -= OnPlayerInputStateStarted;
     }
 
     // Update is called once per frame
-    void Update ()
+    private void Update ()
     {
         if (!isActive)
         {
@@ -37,8 +35,37 @@ public class TargetTime : MonoBehaviour
         UpdateCurrentTime();
 	}
 
+    private void OnPlayerInputStateStarted()
+    {
+        ResetTimer();
+    }
+
     private void UpdateCurrentTime()
     {
         currentTime -= Time.deltaTime;
+
+        if (currentTime < 0f)
+        {
+            currentTime = 0f;
+
+            if (OutOfTimeEvent != null)
+            {
+                OutOfTimeEvent();
+            }
+        }
+    }
+
+    private void ResetTimer()
+    {
+        currentTime = maxTime;
+
+        isActive = true;
+    }
+
+    public float GetTimeLeftPercent()
+    {
+        float timeLeftPercent = (100f / maxTime) * currentTime;
+
+        return timeLeftPercent;
     }
 }

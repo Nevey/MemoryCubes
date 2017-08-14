@@ -37,7 +37,7 @@ public class Builder : MonoBehaviour
 	{
 		FlattenedGridList = new List<GameObject>();
 
-        BuildCubeState.BuildCubeStateStartedEvent += OnBuildCubeStateStarted;
+        BuildGridState.BuildGridStateStartedEvent += OnBuildCubeStateStarted;
 	}
 
     private void OnBuildCubeStateStarted()
