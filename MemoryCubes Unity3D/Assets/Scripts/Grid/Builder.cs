@@ -30,7 +30,7 @@ public class Builder : MonoBehaviour
     
 	public event EventHandler<GridBuildFinishedEventArgs> GridBuildFinishedEvent;
 
-    public event EventHandler<BuilderReadyEventArgs> BuilderReadyEvent;
+    public static event EventHandler<BuilderReadyEventArgs> BuilderReadyEvent;
 	
 	// Use this for pre-initialization
 	private void Awake()

@@ -36,11 +36,20 @@ public class GridColoring : MonoBehaviour
 	{
 		for (int i = 0; i < builder.FlattenedGridList.Count; i++)
 		{
-			propertyBlock.SetColor("_Color", colorConfig.GetRandomColor());
+			// Get the tile
+			GameObject tile = builder.FlattenedGridList[i];
 
-			Renderer tileRenderer = builder.FlattenedGridList[i].GetComponent<Renderer>();
+			// Get a random color
+			Color randomColor = colorConfig.GetRandomColor();
 
-			tileRenderer.SetPropertyBlock(propertyBlock);
+			// Set the color for the property block
+			propertyBlock.SetColor("_Color", randomColor);
+
+			// Apply property block to tile renderer
+			tile.GetComponent<Renderer>().SetPropertyBlock(propertyBlock);
+
+			// Store the selected tile color for easy access
+			tile.GetComponent<TileColor>().SetColor(randomColor);
 		}
 	}
 }

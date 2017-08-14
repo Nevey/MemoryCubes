@@ -6,7 +6,9 @@ public class TargetTime : MonoBehaviour
 {
     [SerializeField] private float maxTime = 5f;
 
-    [SerializeField] private float scalePerLevel = 1f;
+    [SerializeField] private float bonusStep = 0.1f;
+
+    [SerializeField] private float penaltyStep = 0.3f;
 
     private float currentTime = 0f;
     
@@ -24,28 +26,30 @@ public class TargetTime : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerInputState.PlayerInputStateStartedEvent += OnPlayerInputStateStarted;
+        SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
     }
 
     private void OnDisable()
     {
-        PlayerInputState.PlayerInputStateStartedEvent -= OnPlayerInputStateStarted;
+        SetupGameState.SetupGameStateStartedEvent -= OnSetupGameStateStarted;
     }
 
     // Update is called once per frame
-    private void Update ()
+    private void Update()
     {
-        if (!isActive)
-        {
-            return;
-        }
-
         UpdateCurrentTime();
 	}
 
-    private void OnPlayerInputStateStarted()
+    private void OnSetupGameStateStarted()
     {
         ResetTimer();
+    }
+
+    private void ResetTimer()
+    {
+        currentTime = maxTime;
+
+        isActive = true;
     }
 
     private void UpdateCurrentTime()
@@ -63,10 +67,13 @@ public class TargetTime : MonoBehaviour
         }
     }
 
-    private void ResetTimer()
+    public void ApplyBonus()
     {
-        currentTime = maxTime;
+        currentTime += bonusStep;
+    }
 
-        isActive = true;
+    public void ApplyPenalty()
+    {
+        currentTime -= penaltyStep;
     }
 }

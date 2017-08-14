@@ -95,7 +95,6 @@ public class TargetView : MonoBehaviour
     private void UpdateTargetBar(NextTargetEventArgs e)
     {
         // Set correct color based on target (image swap)
-        // TODO: Add a timer and based on time, set sprites visible/invisible
         foreach (GameObject targetBarSprite in targetBarSprites)
         {
             Image image = targetBarSprite.GetComponent<Image>();

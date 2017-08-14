@@ -9,7 +9,7 @@ public class BuildGridState : GameStateHandler
 
     public BuildGridState(GameStateEnum gameStateEnum) : base(gameStateEnum)
     {
-        builder = GameObject.Find("Grid").GetComponent<Builder>();
+        
     }
 
     public override void GameStateStarted()
@@ -18,7 +18,7 @@ public class BuildGridState : GameStateHandler
 
         Debug.Log("BuildCubeState:GameStateStarted");
 
-        builder.BuilderReadyEvent += OnBuilderReady;
+        Builder.BuilderReadyEvent += OnBuilderReady;
 
         BuildGridStateStartedEvent();
     }
@@ -27,7 +27,7 @@ public class BuildGridState : GameStateHandler
     {
         Debug.Log("BuildCubeState:OnBuilderReady");
 
-        builder.BuilderReadyEvent -= OnBuilderReady;
+        Builder.BuilderReadyEvent -= OnBuilderReady;
 
         GameStateFinished(GameStateEventEnum.cubeBuildingFinished);
     }

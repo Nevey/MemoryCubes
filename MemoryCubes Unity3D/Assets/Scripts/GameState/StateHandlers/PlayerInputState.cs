@@ -18,7 +18,7 @@ public class PlayerInputState : GameStateHandler
 
         DestroyController.DestroyFinishedEvent += OnDestroyFinished;
 
-        PlayerInputStateStartedEvent();
+        // PlayerInputStateStartedEvent();
     }
 
     private void OnDestroyFinished()

@@ -32,6 +32,8 @@ public class GameStateController : MonoBehaviour
     {
         stateHandlerList.Add(new BuildGridState(GameStateEnum.buildCube));
 
+        stateHandlerList.Add(new SetupGameState(GameStateEnum.setupGameState));
+
         stateHandlerList.Add(new SelectColorTargetState(GameStateEnum.selectColorTarget));
 
         stateHandlerList.Add(new PlayerInputState(GameStateEnum.playerInputState));
@@ -39,10 +41,24 @@ public class GameStateController : MonoBehaviour
 
     private void CreateStateFlow()
     {
+        // ---------- Game INIT STARTS here ---------- //
+
         // Move from cube building to target color selecting
         stateFlowList.Add(new StateFlow(
             GameStateEventEnum.cubeBuildingFinished,
-            GameStateEnum.selectColorTarget));
+            GameStateEnum.setupGameState));
+
+        // Setup game state values for start of the game
+        stateFlowList.Add(new StateFlow(
+            GameStateEventEnum.setupGameStateFinished,
+            GameStateEnum.selectColorTarget
+        ));
+
+        // ---------- Game INIT ENDS here ---------- //
+
+
+
+        // ---------- Game LOOP STARTS here ---------- //
 
         // Move from target color selecting to player cube selecting
         stateFlowList.Add(new StateFlow(
@@ -55,6 +71,8 @@ public class GameStateController : MonoBehaviour
             GameStateEnum.selectColorTarget));
 
         // TODO: check for cube finished state here
+
+        // ---------- Game LOOP ENDS here ---------- //
     }
 
     private void StartListeningToEvents()

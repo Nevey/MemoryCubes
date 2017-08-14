@@ -13,6 +13,8 @@ public class TargetSelector : MonoBehaviour
 
     private bool isFirstTarget = true;
 
+    public Color TargetColor { get; private set; }
+
     public event EventHandler<NextTargetEventArgs> NextTargetEvent;    
 
 	// Use this for pre-initialization
@@ -39,7 +41,9 @@ public class TargetSelector : MonoBehaviour
     {
         NextTargetEventArgs args = new NextTargetEventArgs();
         
-        args.targetColor = colorConfig.GetRandomColor();
+        TargetColor = colorConfig.GetRandomColor();
+
+        args.targetColor = TargetColor;
 
         args.isFirstTarget = isFirstTarget;
         

@@ -6,13 +6,29 @@ public class DestroyController : MonoBehaviour
 {
     [SerializeField] private TileSelector tileSelector;
 
+    [SerializeField] private TargetSelector targetSelector;
+
+    [SerializeField] private TargetTime targetTime;
+
     public static event Action DestroyFinishedEvent;
 
     private void DestroyAllSelectedTiles()
     {
         for (int i = 0; i < tileSelector.SelectedTiles.Count; i++)
         {
-            Destroyer destroyer = tileSelector.SelectedTiles[i].GetComponent<Destroyer>();
+            GameObject selectedTile = tileSelector.SelectedTiles[i];
+
+            if (targetSelector.TargetColor != selectedTile.GetComponent<TileColor>().MyColor)
+            {
+                targetTime.ApplyPenalty();
+            }
+            else
+            {
+                targetTime.ApplyBonus();
+                // Give points!!!
+            }
+
+            Destroyer destroyer = selectedTile.GetComponent<Destroyer>();
 
             destroyer.DestroyCube();
         }
