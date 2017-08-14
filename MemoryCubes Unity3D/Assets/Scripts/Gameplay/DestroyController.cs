@@ -4,14 +4,19 @@ using System.Collections.Generic;
 
 public class DestroyController : MonoBehaviour
 {
-    [SerializeField] private SelectedTiles selectedTiles;
+    [SerializeField] private TileSelector tileSelector;
 
     public static event Action DestroyFinishedEvent;
 
 	// Use this for initialization
-	void Start ()
+	private void OnEnable()
     {
         PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
+    }
+
+    private void OnDisable()
+    {
+        PlayerCollectingCubesState.CollectingCubesStateStartedEvent -= OnCollectingCubesStateStarted;
     }
 
     private void OnCollectingCubesStateStarted()
@@ -21,13 +26,14 @@ public class DestroyController : MonoBehaviour
 
     private void DestroyAllSelectedTiles()
     {
-        for (int i = 0; i < selectedTiles.SelectedCubesList.Count; i++)
+        for (int i = 0; i < tileSelector.SelectedTiles.Count; i++)
         {
-            Destroyer destroyer = selectedTiles.SelectedCubesList[i].GetComponent<Destroyer>();
+            Destroyer destroyer = tileSelector.SelectedTiles[i].GetComponent<Destroyer>();
 
             destroyer.DestroyCube();
         }
 
+        // TODO: When all destroy animations are done OR after a short timer, send the below event
         if (DestroyFinishedEvent != null)
         {
             DestroyFinishedEvent();

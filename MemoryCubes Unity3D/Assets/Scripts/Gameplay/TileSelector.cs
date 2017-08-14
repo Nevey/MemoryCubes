@@ -4,23 +4,32 @@ using UnityEngine;
 
 public class TileSelector : MonoBehaviour
 {
-	private Swiper swiper;
+	[SerializeField] private Swiper swiper;
+
+	private List<GameObject> selectedTiles = new List<GameObject>();
 
 	private bool isEnabled = false;
 
 	private bool canSelect = true;
-	
-	void Awake()
-	{
-		swiper = GameObject.Find("GridParent").GetComponent<Swiper>();
 
+	public List<GameObject> SelectedTiles { get { return selectedTiles; } }
+	
+	private void OnEnable()
+	{
         PlayerSelectingCubesState.SelectingCubesStateStartedEvent += OnSelectingCubesStateStarted;
 
         PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
 	}
+
+	private void OnDisable()
+	{
+		PlayerSelectingCubesState.SelectingCubesStateStartedEvent -= OnSelectingCubesStateStarted;
+
+        PlayerCollectingCubesState.CollectingCubesStateStartedEvent -= OnCollectingCubesStateStarted;
+	}
 	
 	// Update is called once per frame
-	void Update()
+	private void Update()
 	{
 		if (!isEnabled)
         {
@@ -86,6 +95,8 @@ public class TileSelector : MonoBehaviour
 				if (canSelect)
 				{
 					selector.Select();
+
+					selectedTiles.Add(hit.collider.gameObject);
 				}
 			}
 		}        

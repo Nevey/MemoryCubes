@@ -9,7 +9,7 @@ public class BuildCubeState : GameStateHandler
 
     public BuildCubeState(GameStateEnum gameStateEnum) : base(gameStateEnum)
     {
-        builder = GameObject.Find("GridParent").GetComponent<Builder>();
+        builder = GameObject.Find("Grid").GetComponent<Builder>();
     }
 
     public override void GameStateStarted()
