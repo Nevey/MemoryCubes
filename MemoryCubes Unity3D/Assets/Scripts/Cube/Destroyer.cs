@@ -3,16 +3,13 @@ using UnityEngine;
 
 public class Destroyer : MonoBehaviour
 {
-    
-	// Use this for initialization
-	void Awake() 
-    {
-        
-	}
-
     public void DestroyCube()
     {
         // TODO: change to DestroyerView and do fancy VFX in here
-        Destroy(this.gameObject);
+        Destroy(gameObject);
+
+        // TODO: disable mesh renderer
+        // TODO: play particles animation
+        // TODO: after a short time, destroy gameObject
     }
 }
