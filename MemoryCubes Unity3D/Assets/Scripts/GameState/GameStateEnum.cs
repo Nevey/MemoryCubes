@@ -3,5 +3,6 @@
     buildCube,
     setupGameState,
     selectColorTarget,
-    playerInputState
+    playerInputState,
+    gameOverState
 }

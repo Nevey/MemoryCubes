@@ -8,13 +8,36 @@ public class TileSelector : MonoBehaviour
 
 	private List<GameObject> selectedTiles = new List<GameObject>();
 
-	private bool canSelect = true;
+	private bool canSelect;
+
+	private bool isActive;
 
 	public List<GameObject> SelectedTiles { get { return selectedTiles; } }
+
+	private void OnEnable()
+	{
+		canSelect = true;
+
+		PlayerInputState.PlayerInputStateStartedEvent += OnPlayerInputStateStarted;
+
+		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+	}
+
+	private void OnDisable()
+	{
+		PlayerInputState.PlayerInputStateStartedEvent -= OnPlayerInputStateStarted;
+
+		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
+	}
 	
 	// Update is called once per frame
 	private void Update()
 	{
+		if (!isActive)
+		{
+			return;
+		}
+		
         if (Input.GetMouseButtonUp(0))
 		{
 			// Try tapping a tile
@@ -26,6 +49,30 @@ public class TileSelector : MonoBehaviour
 			// TODO: Only works when not releasing input before swiping was done
 			canSelect = true;
 		}
+	}
+
+	private void OnPlayerInputStateStarted()
+	{
+		EnableInput();
+	}
+
+	private void OnGameOverStateStarted()
+	{
+		DisableInput();
+	}
+
+	private void EnableInput()
+	{
+		isActive = true;
+
+		swiper.SwipeEvent += OnSwipeEvent;
+	}
+
+	private void DisableInput()
+	{
+		isActive = false;
+
+		swiper.SwipeEvent -= OnSwipeEvent;
 	}
 
 	private void OnSwipeEvent(object sender, SwipeEventArgs e)

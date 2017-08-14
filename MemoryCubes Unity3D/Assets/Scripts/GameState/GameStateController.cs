@@ -37,22 +37,19 @@ public class GameStateController : MonoBehaviour
         stateHandlerList.Add(new SelectColorTargetState(GameStateEnum.selectColorTarget));
 
         stateHandlerList.Add(new PlayerInputState(GameStateEnum.playerInputState));
+
+        stateHandlerList.Add(new GameOverState(GameStateEnum.gameOverState));
     }
 
     private void CreateStateFlow()
     {
         // ---------- Game INIT STARTS here ---------- //
 
-        // Move from cube building to target color selecting
-        stateFlowList.Add(new StateFlow(
-            GameStateEventEnum.cubeBuildingFinished,
-            GameStateEnum.setupGameState));
+        // Move from "cube building" to "setup game state values"
+        AddStateFlow(GameStateEventEnum.cubeBuildingFinished, GameStateEnum.setupGameState);
 
-        // Setup game state values for start of the game
-        stateFlowList.Add(new StateFlow(
-            GameStateEventEnum.setupGameStateFinished,
-            GameStateEnum.selectColorTarget
-        ));
+        // Move from "setup game state values" to "select target color"
+        AddStateFlow(GameStateEventEnum.setupGameStateFinished, GameStateEnum.selectColorTarget);
 
         // ---------- Game INIT ENDS here ---------- //
 
@@ -60,19 +57,21 @@ public class GameStateController : MonoBehaviour
 
         // ---------- Game LOOP STARTS here ---------- //
 
-        // Move from target color selecting to player cube selecting
-        stateFlowList.Add(new StateFlow(
-            GameStateEventEnum.selectColorTargetFinished, 
-            GameStateEnum.playerInputState));
+        // Move from "select target color" to "player input"
+        AddStateFlow(GameStateEventEnum.selectColorTargetFinished, GameStateEnum.playerInputState);
 
-        // Move from player selecting cubes to player collecting cubes
-        stateFlowList.Add(new StateFlow(
-            GameStateEventEnum.playerInputStateFinished, 
-            GameStateEnum.selectColorTarget));
+        // Move from "player input" to "select target color"
+        AddStateFlow(GameStateEventEnum.playerInputStateFinished, GameStateEnum.selectColorTarget);
 
-        // TODO: check for cube finished state here
+        // Move from "player input" to "game over state"
+        AddStateFlow(GameStateEventEnum.outOfTime, GameStateEnum.gameOverState);
 
         // ---------- Game LOOP ENDS here ---------- //
+    }
+
+    private void AddStateFlow(GameStateEventEnum stateEvent, GameStateEnum state)
+    {
+        stateFlowList.Add(new StateFlow(stateEvent, state));
     }
 
     private void StartListeningToEvents()

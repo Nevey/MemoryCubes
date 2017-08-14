@@ -14,19 +14,37 @@ public class PlayerInputState : GameStateHandler
     {
         base.GameStateStarted();
 
-        Debug.Log("SelectingCubesState:GameStateStarted");
+        Debug.Log("PlayerInputState:GameStateStarted");
 
         DestroyController.DestroyFinishedEvent += OnDestroyFinished;
 
-        // PlayerInputStateStartedEvent();
+        TargetTime.OutOfTimeEvent += OnOutOfTime;
+
+        if (PlayerInputStateStartedEvent != null)
+        {
+            PlayerInputStateStartedEvent();
+        }
     }
 
     private void OnDestroyFinished()
     {
-        Debug.Log("SelectingCubesState:OnCollect");
+        Debug.Log("PlayerInputState:OnCollect");
 
         DestroyController.DestroyFinishedEvent -= OnDestroyFinished;
 
+        TargetTime.OutOfTimeEvent -= OnOutOfTime;
+
         GameStateFinished(GameStateEventEnum.playerInputStateFinished);
+    }
+
+    private void OnOutOfTime()
+    {
+        Debug.Log("PlayerInputState:OnOutOfTime");
+
+        DestroyController.DestroyFinishedEvent -= OnDestroyFinished;
+
+        TargetTime.OutOfTimeEvent -= OnOutOfTime;
+
+        GameStateFinished(GameStateEventEnum.outOfTime);
     }
 }

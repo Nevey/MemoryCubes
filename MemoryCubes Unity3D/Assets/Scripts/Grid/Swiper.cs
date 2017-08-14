@@ -19,9 +19,13 @@ public enum SwipeDirection
 
 public class Swiper : MonoBehaviour 
 {
+	[SerializeField] private bool debugLogs = false;
+
     [SerializeField] private float maxSwipeDistance = 200f;
 
     [SerializeField] private float minSwipeDistance = 10f;
+
+	private bool isActive;
 
     private bool checkForSwipe = false;
 	
@@ -38,10 +42,29 @@ public class Swiper : MonoBehaviour
 	{
 		viewport = Camera.main.GetComponent<Viewport>();
     }
+
+	private void OnEnable()
+	{
+		SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
+
+		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+	}
+
+	private void OnDisable()
+	{
+		SetupGameState.SetupGameStateStartedEvent -= OnSetupGameStateStarted;
+
+		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
+	}
 	
 	// Update is called once per frame
 	private void Update() 
 	{
+		if (!isActive)
+		{
+			return;
+		}
+
 		if (Input.GetMouseButtonDown(0))
 		{
 			StartSwipe();
@@ -53,6 +76,26 @@ public class Swiper : MonoBehaviour
 		}
 		
 		UpdateSwipe();
+	}
+
+	private void OnSetupGameStateStarted()
+	{
+		EnableSwiping();
+	}
+
+	private void OnGameOverStateStarted()
+	{
+		DisableSwiping();
+	}
+
+	private void EnableSwiping()
+	{
+		isActive = true;
+	}
+
+	private void DisableSwiping()
+	{
+		isActive = false;
 	}
 
     private void StartSwipe()
@@ -83,7 +126,10 @@ public class Swiper : MonoBehaviour
 		
 		swipeDistance /= viewport.Scale;
 		
-		// Debug.Log(swipeDistance);
+		if (debugLogs)
+		{
+			Debug.Log(swipeDistance);
+		}
 		
 		if (swipeDistance >= maxSwipeDistance)
 		{

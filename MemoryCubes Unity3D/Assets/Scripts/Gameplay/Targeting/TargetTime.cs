@@ -22,7 +22,7 @@ public class TargetTime : MonoBehaviour
         }
     }
 
-    public event Action OutOfTimeEvent;
+    public static event Action OutOfTimeEvent;
 
     private void OnEnable()
     {
@@ -37,6 +37,11 @@ public class TargetTime : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (!isActive)
+        {
+            return;
+        }
+
         UpdateCurrentTime();
 	}
 
@@ -50,6 +55,11 @@ public class TargetTime : MonoBehaviour
         currentTime = maxTime;
 
         isActive = true;
+    }
+
+    private void StopTimer()
+    {
+        isActive = false;
     }
 
     private void UpdateCurrentTime()

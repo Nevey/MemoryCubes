@@ -3,5 +3,6 @@
     cubeBuildingFinished,
     setupGameStateFinished,
     selectColorTargetFinished,
-    playerInputStateFinished
+    playerInputStateFinished,
+    outOfTime
 }
