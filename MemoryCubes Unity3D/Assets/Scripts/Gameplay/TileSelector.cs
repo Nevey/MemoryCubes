@@ -8,34 +8,23 @@ public class TileSelector : MonoBehaviour
 
 	private List<GameObject> selectedTiles = new List<GameObject>();
 
-	private bool isEnabled = false;
-
 	private bool canSelect = true;
 
 	public List<GameObject> SelectedTiles { get { return selectedTiles; } }
 	
 	private void OnEnable()
 	{
-        PlayerSelectingCubesState.SelectingCubesStateStartedEvent += OnSelectingCubesStateStarted;
-
         PlayerCollectingCubesState.CollectingCubesStateStartedEvent += OnCollectingCubesStateStarted;
 	}
 
 	private void OnDisable()
 	{
-		PlayerSelectingCubesState.SelectingCubesStateStartedEvent -= OnSelectingCubesStateStarted;
-
         PlayerCollectingCubesState.CollectingCubesStateStartedEvent -= OnCollectingCubesStateStarted;
 	}
 	
 	// Update is called once per frame
 	private void Update()
 	{
-		if (!isEnabled)
-        {
-            return;
-        }
-
         if (Input.GetMouseButtonUp(0))
 		{
 			// Try tapping a tile
@@ -49,28 +38,9 @@ public class TileSelector : MonoBehaviour
 		}
 	}
 
-	private void OnSelectingCubesStateStarted()
-    {
-        EnableSelecting();
-    }
-
     private void OnCollectingCubesStateStarted()
     {
-        DisableSelecting();
-    }
-
-	private void EnableSelecting()
-    {
-        isEnabled = true;
-
-        swiper.SwipeEvent += OnSwipeEvent;
-    }
-
-    private void DisableSelecting()
-    {
-        isEnabled = false;
-
-        swiper.SwipeEvent -= OnSwipeEvent;
+        selectedTiles.Clear();
     }
 
 	private void OnSwipeEvent(object sender, SwipeEventArgs e)
