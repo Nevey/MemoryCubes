@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOverUI : MonoBehaviour
+public class GameOverView : MonoBehaviour
 {
 	[SerializeField] private AnimationCurve showCurve;
+
+	private RectTransform rectTransform;
+
+	private Image image;
 
 	private float currentTime;
 
@@ -15,7 +19,11 @@ public class GameOverUI : MonoBehaviour
 	private void Awake()
 	{
 		// No need to show game over image on init...
-		GetComponent<Image>().enabled = false;
+		image = GetComponent<Image>();
+
+		image.enabled = false;
+
+		rectTransform = GetComponent<RectTransform>();
 	}
 
 	private void OnEnable()
@@ -38,7 +46,14 @@ public class GameOverUI : MonoBehaviour
 
 		currentTime += Time.deltaTime;
 
-		float position = showCurve.Evaluate(currentTime);
+		float targetPosition = showCurve.Evaluate(currentTime);
+
+		Vector2 position = new Vector2(
+			rectTransform.anchoredPosition.x,
+			targetPosition
+		);
+
+		rectTransform.anchoredPosition = position;
 	}
 		
 	private void OnGameOverStateStarted()
@@ -48,7 +63,7 @@ public class GameOverUI : MonoBehaviour
 
 	private void ShowGameOver()
 	{
-		GetComponent<Image>().enabled = true;
+		image.enabled = true;
 
 		isActive = true;
 
