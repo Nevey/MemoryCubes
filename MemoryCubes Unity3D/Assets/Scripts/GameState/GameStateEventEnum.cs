@@ -4,5 +4,6 @@
     setupGameStateFinished,
     selectColorTargetFinished,
     playerInputStateFinished,
-    outOfTime
+    outOfTime,
+    restartGame
 }

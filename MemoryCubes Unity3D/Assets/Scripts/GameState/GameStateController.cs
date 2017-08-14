@@ -45,7 +45,7 @@ public class GameStateController : MonoBehaviour
     {
         // ---------- Game INIT STARTS here ---------- //
 
-        // Move from "cube building" to "setup game state values"
+        // Move from "build cube state" to "setup game state values"
         AddStateFlow(GameStateEventEnum.cubeBuildingFinished, GameStateEnum.setupGameState);
 
         // Move from "setup game state values" to "select target color"
@@ -63,10 +63,19 @@ public class GameStateController : MonoBehaviour
         // Move from "player input" to "select target color"
         AddStateFlow(GameStateEventEnum.playerInputStateFinished, GameStateEnum.selectColorTarget);
 
-        // Move from "player input" to "game over state"
-        AddStateFlow(GameStateEventEnum.outOfTime, GameStateEnum.gameOverState);
-
         // ---------- Game LOOP ENDS here ---------- //
+
+
+
+        // ---------- Game over flow STARTS here ---------- //
+
+        // Move from "player input" to "game over state"
+        AddStateFlow(GameStateEventEnum.outOfTime, GameStateEnum.gameOverState);     
+
+        // Move from "game over state" to "build cube state" 
+        AddStateFlow(GameStateEventEnum.restartGame, GameStateEnum.buildCube);
+
+        // ---------- Game over flow ENDS here ---------- //
     }
 
     private void AddStateFlow(GameStateEventEnum stateEvent, GameStateEnum state)

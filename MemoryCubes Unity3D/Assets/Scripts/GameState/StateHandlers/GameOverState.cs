@@ -16,16 +16,18 @@ public class GameOverState : GameStateHandler
 
         Debug.Log("GameOverState:GameStateStarted");
 
+        GameOverView.GameOverHideFinishedEvent += OnGameOverHideFinished;
+
         if (GameOverStateStartedEvent != null)
         {
             GameOverStateStartedEvent();
         }
     }
 
-    // private void OnDestroyFinished()
-    // {
-    //     Debug.Log("GameOverState:OnCollect");
+    private void OnGameOverHideFinished()
+    {
+        Debug.Log("GameOverState:OnGameOverHideFinished");
 
-    //     GameStateFinished(GameStateEventEnum.playerInputStateFinished);
-    // }
+        GameStateFinished(GameStateEventEnum.restartGame);
+    }
 }

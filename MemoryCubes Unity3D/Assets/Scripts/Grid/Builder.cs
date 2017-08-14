@@ -112,4 +112,20 @@ public class Builder : MonoBehaviour
             BuilderReadyEvent(this, args);
         }
     }
+
+	public void ClearGrid()
+	{
+		for (int x = 0; x < gridSize; x++)
+		{
+			for (int y = 0; y < gridSize; y++)
+			{
+				for (int z = 0; z < gridSize; z++)
+				{
+					grid[x, y, z] = null;
+				}
+			}
+		}
+
+		FlattenedGridList.Clear();
+	}
 }

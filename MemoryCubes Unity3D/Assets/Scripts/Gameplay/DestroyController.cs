@@ -84,6 +84,8 @@ public class DestroyController : MonoBehaviour
 
             destroyer.DestroyCube();
         }
+
+        builder.ClearGrid();
     }
 
     public void CollectCubes()
