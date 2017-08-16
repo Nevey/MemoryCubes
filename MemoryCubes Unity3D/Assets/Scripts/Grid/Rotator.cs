@@ -23,6 +23,7 @@ public class Rotator : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
+		// We lerp quaternion values to the desired rotation, this way we work around euler rotation issues
 		transform.rotation = Quaternion.Lerp(transform.rotation, rotationHelper.rotation, smoothStrength);
 	}
 	
@@ -31,6 +32,10 @@ public class Rotator : MonoBehaviour
 		Turn(e.direction);
 	}
 	
+	/// <summary>
+	/// Turning the rotation helper to the desired rotation
+	/// </summary>
+	/// <param name="swipeDirection"></param>
 	private void Turn(SwipeDirection swipeDirection)
 	{
 		switch (swipeDirection)
