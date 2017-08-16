@@ -84,7 +84,7 @@ public class CollectController : MonoBehaviour
         builder.ClearGrid();
     }
 
-    public void CollectCubes()
+    public void CollectSelectedTiles()
     {
         // Apply penalty if no tiles were selected
         if (tileSelector.SelectedTiles.Count == 0)
