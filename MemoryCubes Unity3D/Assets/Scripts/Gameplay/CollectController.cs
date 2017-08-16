@@ -14,24 +14,7 @@ public class CollectController : MonoBehaviour
 
     [SerializeField] private ScoreController scoreController;
 
-    [SerializeField] private GameOverView gameOverView;
-
-    public static event Action DestroyFinishedEvent;
-
-    private void OnEnable()
-    {
-        gameOverView.GameOverShowFinishedEvent += OnGameOverShowFinished;
-    }
-
-    private void OnDisable()
-    {
-        gameOverView.GameOverShowFinishedEvent -= OnGameOverShowFinished;
-    }
-
-    private void OnGameOverShowFinished()
-    {
-        DestroyAllTiles();
-    }
+    public static event Action CollectFinishedEvent;
 
     private void RemoveAllSelectedTiles()
     {
@@ -50,38 +33,16 @@ public class CollectController : MonoBehaviour
                 targetTime.ApplyTileBonus();
             }
 
-            Destroyer destroyer = selectedTile.GetComponent<Destroyer>();
-
-            destroyer.DestroyCube();
+            builder.ClearTile(selectedTile);
         }
 
         tileSelector.ClearSelectedTiles();
 
-        // TODO: When all destroy animations are done OR after a short timer, send the below event
-        if (DestroyFinishedEvent != null)
+        // We're ready, send collect finished event
+        if (CollectFinishedEvent != null)
         {
-            DestroyFinishedEvent();
+            CollectFinishedEvent();
         }
-    }
-
-    private void DestroyAllTiles()
-    {
-        for (int i = 0; i < builder.FlattenedGridList.Count; i++)
-        {
-            GameObject tile = builder.FlattenedGridList[i];
-
-            // Tile could already be destroyed
-            if (tile == null)
-            {
-                continue;
-            }
-
-            Destroyer destroyer = tile.GetComponent<Destroyer>();
-
-            destroyer.DestroyCube();
-        }
-
-        builder.ClearGrid();
     }
 
     public void CollectSelectedTiles()

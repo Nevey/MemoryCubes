@@ -16,7 +16,7 @@ public class PlayerInputState : GameStateHandler
 
         Debug.Log("PlayerInputState:GameStateStarted");
 
-        CollectController.DestroyFinishedEvent += OnDestroyFinished;
+        CollectController.CollectFinishedEvent += OnDestroyFinished;
 
         TimeController.OutOfTimeEvent += OnOutOfTime;
 
@@ -30,7 +30,7 @@ public class PlayerInputState : GameStateHandler
     {
         Debug.Log("PlayerInputState:OnCollect");
 
-        CollectController.DestroyFinishedEvent -= OnDestroyFinished;
+        CollectController.CollectFinishedEvent -= OnDestroyFinished;
 
         TimeController.OutOfTimeEvent -= OnOutOfTime;
 
@@ -41,7 +41,7 @@ public class PlayerInputState : GameStateHandler
     {
         Debug.Log("PlayerInputState:OnOutOfTime");
 
-        CollectController.DestroyFinishedEvent -= OnDestroyFinished;
+        CollectController.CollectFinishedEvent -= OnDestroyFinished;
 
         TimeController.OutOfTimeEvent -= OnOutOfTime;
 
