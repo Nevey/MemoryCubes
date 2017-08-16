@@ -14,9 +14,9 @@ public class TargetView : MonoBehaviour
 
     [SerializeField] private Direction direction;
 
-    [SerializeField] private TargetSelector targetSelector;
+    [SerializeField] private TargetController targetController;
 
-    [SerializeField] private TargetTime targetTime;
+    [SerializeField] private TimeController targetTime;
 
     private enum Direction
     {
@@ -28,45 +28,72 @@ public class TargetView : MonoBehaviour
     
     private Vector2 targetBarArraySize = Vector2.zero;
 
-    public static event Action TargetColorUpdatedEvent;
+    private bool wasVisible;
+
+    private bool isActive;
 
     private void OnEnable()
     {
-        targetBarArraySize.x = targetBarHeight;
-        targetBarArraySize.y = targetBarWidth;
-        
-        targetBarSprites = new GameObject[(int)targetBarArraySize.x, (int)targetBarArraySize.y];
+        SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
 
-        targetBarPlaceholder.SetActive(false);
-
-        targetSelector.NextTargetEvent += OnNextTargetEvent;
+        GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
     }
 
     private void OnDisable()
     {
-        DestroyTargetBar();
+        SetupGameState.SetupGameStateStartedEvent -= OnSetupGameStateStarted;
 
-        targetSelector.NextTargetEvent -= OnNextTargetEvent;
+        GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
     }
 	
 	// Update is called once per frame
 	private void Update()
     {
-        UpdateVisibility();
-	}
-    
-    private void OnNextTargetEvent(object sender, NextTargetEventArgs e)
-    {
-        if (e.isFirstTarget)
+        if (!isActive)
         {
-            CreateTargetBar();
+            return;
         }
 
-        UpdateTargetBar(e);
+        UpdateVisibility();
+	}
+
+    private void OnSetupGameStateStarted()
+    {
+        wasVisible = true;
+
+        SetupTargetView();
+    }
+
+    private void OnGameOverStateStarted()
+    {
+        isActive = false;
+
+        DestroyTargetBar();
+    }
+
+    private void SetupTargetView()
+    {
+        // Disable the placeholder (if it's not already)
+        targetBarPlaceholder.SetActive(false);        
+
+        // Create the target bar based on array size
+        CreateTargetBar();
+
+        // Toggle target bar visibilty
+        ToggleTargetBarVisibility(false);
+
+        // We're active!
+        isActive = true;
     }
 
     private void CreateTargetBar()
     {
+        // Create array
+        targetBarArraySize.x = targetBarHeight;
+        targetBarArraySize.y = targetBarWidth;
+        
+        targetBarSprites = new GameObject[(int)targetBarArraySize.x, (int)targetBarArraySize.y];
+
         for (int x = 0; x < targetBarArraySize.x; x++)
         {
             for (int y = 0; y < targetBarArraySize.y; y++)
@@ -88,26 +115,34 @@ public class TargetView : MonoBehaviour
                 targetBarSprites[x, y] = targetBarSprite;
             }
         }
+    }
 
-        Destroy(targetBarPlaceholder);
+    private void ToggleTargetBarVisibility(bool isVisible)
+    {
+        // Prevent from looping through array if nothing will change
+        if (wasVisible == isVisible)
+        {
+            return;
+        }
+
+        foreach (GameObject targetBarSprite in targetBarSprites)
+        {
+            targetBarSprite.GetComponent<Image>().enabled = isVisible;
+        }
+
+        wasVisible = isVisible;
     }
     
-    private void UpdateTargetBar(NextTargetEventArgs e)
+    private void UpdateTargetBar()
     {
         // Set correct color based on target (image swap)
         foreach (GameObject targetBarSprite in targetBarSprites)
         {
             Image image = targetBarSprite.GetComponent<Image>();
 
-            image.color = e.targetColor;
-        }
+            image.color = targetController.TargetColor;
 
-        // Based on this event the state machine knows target color selecting is done
-        // Keep it in this class in case we want to delay firing of this
-        // event due to visual effects
-        if (TargetColorUpdatedEvent != null)
-        {
-            TargetColorUpdatedEvent();
+            // TODO: see if we can do gpu-instancing here too
         }
     }
 
@@ -137,5 +172,12 @@ public class TargetView : MonoBehaviour
                 targetBarSprites[x, y] = null;
             }
         }
+    }
+
+    public void ResetTargetBar()
+    {
+        ToggleTargetBarVisibility(true);
+
+        UpdateTargetBar();
     }
 }

@@ -2,14 +2,9 @@
 using System.Collections;
 using System;
 
-public class TargetTime : MonoBehaviour
+public class TimeController : MonoBehaviour
 {
-    // TODO: create proper Target Config and/or Time Config class
-    [SerializeField] private float maxTime = 5f;
-
-    [SerializeField] private float bonusStep = 0.1f;
-
-    [SerializeField] private float penaltyStep = 0.3f;
+    [SerializeField] private TimeConfig timeConfig;
 
     private float currentTime = 0f;
     
@@ -19,7 +14,7 @@ public class TargetTime : MonoBehaviour
     {
         get
         {
-            return (100f / maxTime) * currentTime;
+            return (100f / timeConfig.MaxTime) * currentTime;
         }
     }
 
@@ -53,7 +48,7 @@ public class TargetTime : MonoBehaviour
 
     private void ResetTimer()
     {
-        currentTime = maxTime;
+        currentTime = timeConfig.MaxTime;
 
         isActive = true;
     }
@@ -78,13 +73,18 @@ public class TargetTime : MonoBehaviour
         }
     }
 
-    public void ApplyBonus()
+    public void ApplyTileBonus()
     {
-        currentTime += bonusStep;
+        currentTime += timeConfig.BonusTimePerTile;
     }
 
-    public void ApplyPenalty()
+    public void ApplyTilePenalty()
     {
-        currentTime -= penaltyStep;
+        currentTime -= timeConfig.PenaltyPerTile;
+    }
+
+    public void ApplyPenaltyNoSelectedTiles()
+    {
+        currentTime -= timeConfig.PenaltyNoSelectedTiles;
     }
 }

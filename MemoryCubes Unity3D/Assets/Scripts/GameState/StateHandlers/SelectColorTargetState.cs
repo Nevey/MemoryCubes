@@ -16,22 +16,17 @@ public class SelectColorTargetState : GameStateHandler
 
         Debug.Log("SelectColorTargetState:GameStateStarted");
 
-        TargetView.TargetColorUpdatedEvent += OnTargetColorUpdated;
+        TargetController.TargetUpdatedEvent += OnTargetUpdated;
 
         SelectColorTargetStateStartedEvent();
     }
 
-    private void OnTargetColorUpdated()
+    private void OnTargetUpdated()
     {
         Debug.Log("SelectColorTargetState:OnTargetColorUpdated");
 
-        TargetView.TargetColorUpdatedEvent -= OnTargetColorUpdated;
+        TargetController.TargetUpdatedEvent -= OnTargetUpdated;
 
-        GameStateFinished(GameStateEventEnum.selectColorTargetFinished);
-    }
-
-    private void WheneverThisShizzleIsDone()
-    {
-        Debug.Log("SelectColorTargetState:WheneverThisShizzleIsDone");
+        GameStateFinished(GameStateEventEnum.selectTargetColorFinished);
     }
 }

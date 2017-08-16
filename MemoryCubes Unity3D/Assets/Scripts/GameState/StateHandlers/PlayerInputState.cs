@@ -16,9 +16,9 @@ public class PlayerInputState : GameStateHandler
 
         Debug.Log("PlayerInputState:GameStateStarted");
 
-        DestroyController.DestroyFinishedEvent += OnDestroyFinished;
+        CollectController.DestroyFinishedEvent += OnDestroyFinished;
 
-        TargetTime.OutOfTimeEvent += OnOutOfTime;
+        TimeController.OutOfTimeEvent += OnOutOfTime;
 
         if (PlayerInputStateStartedEvent != null)
         {
@@ -30,9 +30,9 @@ public class PlayerInputState : GameStateHandler
     {
         Debug.Log("PlayerInputState:OnCollect");
 
-        DestroyController.DestroyFinishedEvent -= OnDestroyFinished;
+        CollectController.DestroyFinishedEvent -= OnDestroyFinished;
 
-        TargetTime.OutOfTimeEvent -= OnOutOfTime;
+        TimeController.OutOfTimeEvent -= OnOutOfTime;
 
         GameStateFinished(GameStateEventEnum.playerInputStateFinished);
     }
@@ -41,9 +41,9 @@ public class PlayerInputState : GameStateHandler
     {
         Debug.Log("PlayerInputState:OnOutOfTime");
 
-        DestroyController.DestroyFinishedEvent -= OnDestroyFinished;
+        CollectController.DestroyFinishedEvent -= OnDestroyFinished;
 
-        TargetTime.OutOfTimeEvent -= OnOutOfTime;
+        TimeController.OutOfTimeEvent -= OnOutOfTime;
 
         GameStateFinished(GameStateEventEnum.outOfTime);
     }

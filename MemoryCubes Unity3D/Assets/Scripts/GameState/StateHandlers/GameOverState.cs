@@ -28,6 +28,8 @@ public class GameOverState : GameStateHandler
     {
         Debug.Log("GameOverState:OnGameOverHideFinished");
 
+        GameOverView.GameOverHideFinishedEvent -= OnGameOverHideFinished;
+
         GameStateFinished(GameStateEventEnum.restartGame);
     }
 }

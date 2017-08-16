@@ -2,16 +2,15 @@
 using System;
 using System.Collections.Generic;
 
-// TODO: rename to Collect Controller
-public class DestroyController : MonoBehaviour
+public class CollectController : MonoBehaviour
 {
     [SerializeField] private Builder builder;
 
     [SerializeField] private TileSelector tileSelector;
 
-    [SerializeField] private TargetSelector targetSelector;
+    [SerializeField] private TargetController targetController;
 
-    [SerializeField] private TargetTime targetTime;
+    [SerializeField] private TimeController targetTime;
 
     [SerializeField] private ScoreController scoreController;
 
@@ -40,15 +39,15 @@ public class DestroyController : MonoBehaviour
         {
             GameObject selectedTile = tileSelector.SelectedTiles[i];
 
-            if (targetSelector.TargetColor != selectedTile.GetComponent<TileColor>().MyColor)
+            if (targetController.TargetColor != selectedTile.GetComponent<TileColor>().MyColor)
             {
-                targetTime.ApplyPenalty();
+                targetTime.ApplyTilePenalty();
                 
                 scoreController.ApplyPenalty();
             }
             else
             {
-                targetTime.ApplyBonus();
+                targetTime.ApplyTileBonus();
             }
 
             Destroyer destroyer = selectedTile.GetComponent<Destroyer>();
@@ -90,7 +89,7 @@ public class DestroyController : MonoBehaviour
         // Apply penalty if no tiles were selected
         if (tileSelector.SelectedTiles.Count == 0)
         {
-            targetTime.ApplyPenalty();
+            targetTime.ApplyPenaltyNoSelectedTiles();
         }
         else
         {

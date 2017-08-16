@@ -58,7 +58,7 @@ public class GameStateController : MonoBehaviour
         // ---------- Game LOOP STARTS here ---------- //
 
         // Move from "select target color" to "player input"
-        AddStateFlow(GameStateEventEnum.selectColorTargetFinished, GameStateEnum.playerInputState);
+        AddStateFlow(GameStateEventEnum.selectTargetColorFinished, GameStateEnum.playerInputState);
 
         // Move from "player input" to "select target color"
         AddStateFlow(GameStateEventEnum.playerInputStateFinished, GameStateEnum.selectColorTarget);

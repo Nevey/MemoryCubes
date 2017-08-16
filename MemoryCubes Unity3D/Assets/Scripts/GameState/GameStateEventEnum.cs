@@ -2,7 +2,7 @@
 {
     cubeBuildingFinished,
     setupGameStateFinished,
-    selectColorTargetFinished,
+    selectTargetColorFinished,
     playerInputStateFinished,
     outOfTime,
     restartGame
