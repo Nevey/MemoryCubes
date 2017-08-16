@@ -4,6 +4,7 @@ using System;
 
 public class TargetTime : MonoBehaviour
 {
+    // TODO: create proper Target Config and/or Time Config class
     [SerializeField] private float maxTime = 5f;
 
     [SerializeField] private float bonusStep = 0.1f;
