@@ -6,6 +6,8 @@ public class TileSelector : MonoBehaviour
 {
 	[SerializeField] private Swiper swiper;
 
+	[SerializeField] private FreeTileChecker freeTileChecker;
+
 	private List<GameObject> selectedTiles = new List<GameObject>();
 
 	private bool canSelect;
@@ -84,6 +86,11 @@ public class TileSelector : MonoBehaviour
 
 	private void TapTile()
 	{
+		if (!canSelect)
+		{
+			return;
+		}
+
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		
 		RaycastHit hit;
@@ -94,9 +101,12 @@ public class TileSelector : MonoBehaviour
 		{
 			Selector selector = hit.collider.gameObject.GetComponent<Selector>();
 
+			GridCoordinates gridCoordinates = hit.collider.gameObject.GetComponent<GridCoordinates>();
+
 			if (selector != null)
 			{
-				if (canSelect)
+				if (gridCoordinates != null 
+					&& freeTileChecker.CanTapTile(gridCoordinates.GridPosition))
 				{
 					selector.Select();
 

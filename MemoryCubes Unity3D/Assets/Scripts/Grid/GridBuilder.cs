@@ -104,6 +104,8 @@ public class GridBuilder : MonoBehaviour
 	{
 		// Instantiate tilePrefab
 		GameObject tile = Instantiate(tilePrefab);
+
+		tile.GetComponent<GridCoordinates>().SetGridPosition(x, y, z);
 					
 		// Get the tile's renderer
 		Renderer tileRenderer = tile.GetComponent<Renderer>();
