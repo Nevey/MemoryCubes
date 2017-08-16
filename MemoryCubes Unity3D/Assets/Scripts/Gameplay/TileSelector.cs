@@ -58,6 +58,8 @@ public class TileSelector : MonoBehaviour
 
 	private void OnGameOverStateStarted()
 	{
+		ClearSelectedTiles();
+		
 		DisableInput();
 	}
 
