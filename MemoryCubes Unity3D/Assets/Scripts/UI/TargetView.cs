@@ -104,10 +104,15 @@ public class TargetView : MonoBehaviour
 
                 Image image = targetBarSprite.GetComponent<Image>();
 
+                Vector2 scaledSizeDelta = new Vector2(
+                    image.rectTransform.sizeDelta.x * image.canvas.scaleFactor,
+                    image.rectTransform.sizeDelta.y * image.canvas.scaleFactor
+                );
+
                 // Horizontal position is based on y and vertical position is based on placeholder position
                 Vector2 position = new Vector2(
-                    targetBarPlaceholder.transform.position.x + (image.rectTransform.sizeDelta.x * y) * (float)direction,
-                    targetBarPlaceholder.transform.position.y - (image.rectTransform.sizeDelta.y * x)
+                    targetBarPlaceholder.transform.position.x + (scaledSizeDelta.x * y) * (float)direction,
+                    targetBarPlaceholder.transform.position.y - (scaledSizeDelta.y * x)
                 );
 
                 targetBarSprite.transform.position = position;
