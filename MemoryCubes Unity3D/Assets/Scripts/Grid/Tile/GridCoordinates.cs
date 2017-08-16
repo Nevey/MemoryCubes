@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class GridCoordinates : MonoBehaviour
 {
-	private Vector3 gridPosition;
+	private Vector3 myPosition;
 
-	public Vector3 GridPosition { get { return gridPosition; } }
+	public Vector3 MyPosition { get { return myPosition; } }
 
 	/// <summary>
 	/// Set grid coordinates
@@ -14,7 +14,7 @@ public class GridCoordinates : MonoBehaviour
 	/// <param name="value"></param>
 	public void SetGridPosition(Vector3 value)
 	{
-		gridPosition = value;
+		myPosition = value;
 	}
 
 	/// <summary>
@@ -25,6 +25,6 @@ public class GridCoordinates : MonoBehaviour
 	/// <param name="z"></param>
 	public void SetGridPosition(int x, int y, int z)
 	{
-		gridPosition = new Vector3(x, y, z);
+		myPosition = new Vector3(x, y, z);
 	}
 }

@@ -106,7 +106,7 @@ public class TileSelector : MonoBehaviour
 			if (selector != null)
 			{
 				if (gridCoordinates != null 
-					&& freeTileChecker.CanTapTile(gridCoordinates.GridPosition))
+					&& freeTileChecker.CanTapTile(gridCoordinates.MyPosition))
 				{
 					selector.Select();
 

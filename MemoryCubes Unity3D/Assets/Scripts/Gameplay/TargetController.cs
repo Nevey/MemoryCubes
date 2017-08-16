@@ -10,6 +10,8 @@ public class TargetController : MonoBehaviour
 
     [SerializeField] private TargetView[] targetViews;
 
+    [SerializeField] private FreeTileChecker freeTileChecker;
+
     private bool isFirstTarget = true;
 
     private Color targetColor;
@@ -77,7 +79,7 @@ public class TargetController : MonoBehaviour
     }
 
     /// <summary>
-    /// Filters out previous target color and colors that are not found in the grid
+    /// Filters out target colors based on a bunch of specific rules
     /// </summary>
     /// <returns>List<Color></returns>
     private List<Color> GetActiveColors()
@@ -88,9 +90,18 @@ public class TargetController : MonoBehaviour
         {
             GameObject tile = gridBuilder.FlattenedGridList[i];
 
+            // Don't add a color that's already in the list
             Color tileColor = tile.GetComponent<TileColor>().MyColor;
 
             if (activeColors.Contains(tileColor))
+            {
+                continue;
+            }
+
+            // Don't add the tile's color if it cannot be tapped by the user
+            GridCoordinates gridCoordinates = tile.GetComponent<GridCoordinates>();
+
+            if (!freeTileChecker.CanTapTile(gridCoordinates.MyPosition))
             {
                 continue;
             }
