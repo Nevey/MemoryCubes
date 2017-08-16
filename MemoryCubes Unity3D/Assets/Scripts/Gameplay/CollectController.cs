@@ -21,15 +21,19 @@ public class CollectController : MonoBehaviour
         for (int i = 0; i < tileSelector.SelectedTiles.Count; i++)
         {
             GameObject selectedTile = tileSelector.SelectedTiles[i];
-
+            
             if (targetController.TargetColor != selectedTile.GetComponent<TileColor>().MyColor)
             {
+                // Apply penalty for each incorrectly selected tile
+
                 targetTime.ApplyTilePenalty();
                 
                 scoreController.ApplyPenalty();
             }
             else
             {
+                // Apply bonus time for each correctly selected tile
+                
                 targetTime.ApplyTileBonus();
             }
 
