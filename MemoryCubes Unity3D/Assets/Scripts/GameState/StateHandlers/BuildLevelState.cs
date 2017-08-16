@@ -3,8 +3,6 @@ using System;
 
 public class BuildGridState : GameStateHandler
 {
-    private Builder builder;
-
     public static event Action BuildGridStateStartedEvent;
 
     public BuildGridState(GameStateEnum gameStateEnum) : base(gameStateEnum)
@@ -18,7 +16,7 @@ public class BuildGridState : GameStateHandler
 
         Debug.Log("BuildCubeState:GameStateStarted");
 
-        Builder.BuilderReadyEvent += OnBuilderReady;
+        GridBuilder.BuilderReadyEvent += OnBuilderReady;
 
         BuildGridStateStartedEvent();
     }
@@ -27,7 +25,7 @@ public class BuildGridState : GameStateHandler
     {
         Debug.Log("BuildCubeState:OnBuilderReady");
 
-        Builder.BuilderReadyEvent -= OnBuilderReady;
+        GridBuilder.BuilderReadyEvent -= OnBuilderReady;
 
         GameStateFinished(GameStateEventEnum.cubeBuildingFinished);
     }

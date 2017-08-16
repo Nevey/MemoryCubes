@@ -12,7 +12,7 @@ public class BuilderReadyEventArgs : EventArgs
     
 }
 
-public class Builder : MonoBehaviour 
+public class GridBuilder : MonoBehaviour 
 {
 	[SerializeField] private int gridSize = 3;
 	

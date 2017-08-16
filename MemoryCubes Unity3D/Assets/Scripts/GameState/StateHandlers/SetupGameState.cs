@@ -3,8 +3,6 @@ using System;
 
 public class SetupGameState : GameStateHandler
 {
-    private Builder builder;
-
     public static event Action SetupGameStateStartedEvent;
 
     public SetupGameState(GameStateEnum gameStateEnum) : base(gameStateEnum)

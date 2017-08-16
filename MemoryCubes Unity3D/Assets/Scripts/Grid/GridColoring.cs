@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GridColoring : MonoBehaviour
 {
-	[SerializeField] private Builder builder;
+	[SerializeField] private GridBuilder gridBuilder;
 
 	[SerializeField] private ColorConfig colorConfig;
 
@@ -15,7 +15,7 @@ public class GridColoring : MonoBehaviour
 	{
 		propertyBlock = new MaterialPropertyBlock();
 
-		builder.GridBuildFinishedEvent += OnGridBuildFinished;
+		gridBuilder.GridBuildFinishedEvent += OnGridBuildFinished;
 	}
 	
 	// Update is called once per frame
@@ -34,10 +34,10 @@ public class GridColoring : MonoBehaviour
 	/// </summary>
 	private void SetupColors()
 	{
-		for (int i = 0; i < builder.FlattenedGridList.Count; i++)
+		for (int i = 0; i < gridBuilder.FlattenedGridList.Count; i++)
 		{
 			// Get the tile
-			GameObject tile = builder.FlattenedGridList[i];
+			GameObject tile = gridBuilder.FlattenedGridList[i];
 
 			// Get a random color
 			Color randomColor = colorConfig.GetRandomColor();

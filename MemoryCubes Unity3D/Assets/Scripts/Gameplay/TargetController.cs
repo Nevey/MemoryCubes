@@ -6,7 +6,7 @@ public class TargetController : MonoBehaviour
 {
     [SerializeField] private ColorConfig colorConfig;
 
-    [SerializeField] private Builder builder;
+    [SerializeField] private GridBuilder gridBuilder;
 
     [SerializeField] private TargetView[] targetViews;
 
@@ -84,9 +84,9 @@ public class TargetController : MonoBehaviour
     {
         List<Color> activeColors = new List<Color>();
 
-        for (int i = 0; i < builder.FlattenedGridList.Count; i++)
+        for (int i = 0; i < gridBuilder.FlattenedGridList.Count; i++)
         {
-            GameObject tile = builder.FlattenedGridList[i];
+            GameObject tile = gridBuilder.FlattenedGridList[i];
 
             Color tileColor = tile.GetComponent<TileColor>().MyColor;
 

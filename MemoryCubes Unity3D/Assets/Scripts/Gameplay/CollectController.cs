@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class CollectController : MonoBehaviour
 {
-    [SerializeField] private Builder builder;
+    [SerializeField] private GridBuilder gridBuilder;
 
     [SerializeField] private TileSelector tileSelector;
 
@@ -37,7 +37,7 @@ public class CollectController : MonoBehaviour
                 targetTime.ApplyTileBonus();
             }
 
-            builder.ClearTile(selectedTile);
+            gridBuilder.ClearTile(selectedTile);
         }
 
         tileSelector.ClearSelectedTiles();
