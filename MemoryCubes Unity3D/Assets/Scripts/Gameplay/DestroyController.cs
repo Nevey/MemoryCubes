@@ -2,15 +2,18 @@
 using System;
 using System.Collections.Generic;
 
+// TODO: rename to Collect Controller
 public class DestroyController : MonoBehaviour
 {
+    [SerializeField] private Builder builder;
+
     [SerializeField] private TileSelector tileSelector;
 
     [SerializeField] private TargetSelector targetSelector;
 
     [SerializeField] private TargetTime targetTime;
 
-    [SerializeField] private Builder builder;
+    [SerializeField] private ScoreController scoreController;
 
     [SerializeField] private GameOverView gameOverView;
 
@@ -31,14 +34,8 @@ public class DestroyController : MonoBehaviour
         DestroyAllTiles();
     }
 
-    private void DestroyAllSelectedTiles()
+    private void RemoveAllSelectedTiles()
     {
-        // Apply penalty if no tiles were selected
-        if (tileSelector.SelectedTiles.Count == 0)
-        {
-            targetTime.ApplyPenalty();
-        }
-
         for (int i = 0; i < tileSelector.SelectedTiles.Count; i++)
         {
             GameObject selectedTile = tileSelector.SelectedTiles[i];
@@ -46,12 +43,12 @@ public class DestroyController : MonoBehaviour
             if (targetSelector.TargetColor != selectedTile.GetComponent<TileColor>().MyColor)
             {
                 targetTime.ApplyPenalty();
-                // TAKE POINTS!
+                
+                scoreController.ApplyPenalty();
             }
             else
             {
                 targetTime.ApplyBonus();
-                // Give points!!!
             }
 
             Destroyer destroyer = selectedTile.GetComponent<Destroyer>();
@@ -90,6 +87,16 @@ public class DestroyController : MonoBehaviour
 
     public void CollectCubes()
     {
-        DestroyAllSelectedTiles();
+        // Apply penalty if no tiles were selected
+        if (tileSelector.SelectedTiles.Count == 0)
+        {
+            targetTime.ApplyPenalty();
+        }
+        else
+        {
+            scoreController.AddScore(tileSelector.SelectedTiles.Count);
+
+            RemoveAllSelectedTiles();
+        }
     }
 }
