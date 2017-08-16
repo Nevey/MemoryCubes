@@ -7,17 +7,21 @@ public class Rotator : MonoBehaviour
 	[SerializeField] private float smoothStrength = 0.1f;
 	
 	[SerializeField] private Vector2 rotationAmount;
-	
-	// Use this for initialization
-	void Start()
+
+	[SerializeField] private Swiper swiper;
+
+	private void OnEnable()
 	{
-		Swiper swiper = this.GetComponent<Swiper>();
-		
 		swiper.SwipeEvent += OnSwipeEvent;
+	}
+
+	private void OnDisable()
+	{
+		swiper.SwipeEvent -= OnSwipeEvent;
 	}
 	
 	// Update is called once per frame
-	void Update()
+	private void Update()
 	{
 		transform.rotation = Quaternion.Lerp(transform.rotation, rotationHelper.rotation, smoothStrength);
 	}
@@ -32,19 +36,27 @@ public class Rotator : MonoBehaviour
 		switch (swipeDirection)
 		{
 			case SwipeDirection.up:
+
 				rotationHelper.Rotate(new Vector3(rotationAmount.y, 0, 0), Space.World);
+
 			break;
 			
 			case SwipeDirection.down:
+
 				rotationHelper.Rotate(new Vector3(-rotationAmount.y, 0, 0), Space.World);
+
 			break;
 			
 			case SwipeDirection.left:
+
 				rotationHelper.Rotate(new Vector3(0, rotationAmount.x, 0), Space.World);
+
 			break;
 			
 			case SwipeDirection.right:
+
 				rotationHelper.Rotate(new Vector3(0, -rotationAmount.x, 0), Space.World);
+				
 			break;
 		}
 	}
