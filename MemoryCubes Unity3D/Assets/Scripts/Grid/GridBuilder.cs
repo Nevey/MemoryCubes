@@ -16,6 +16,8 @@ public class GridBuilder : MonoBehaviour
 {
 	[SerializeField] private int gridSize = 3;
 	
+	[SerializeField] private Transform parent;
+
 	[SerializeField] private GameObject tilePrefab;
 	
 	[SerializeField] private float spaceBetweenTiles = 0.2f;
@@ -115,7 +117,7 @@ public class GridBuilder : MonoBehaviour
 		
 		tile.transform.position = position;
 		
-		tile.transform.parent = this.transform;
+		tile.transform.parent = parent;
 		
 		tile.name = "tile_" + i;
 		
