@@ -110,7 +110,7 @@ public class GridBuilder : MonoBehaviour
 		tile.GetComponent<GridCoordinates>().SetGridPosition(x, y, z);
 
 		// Scale the tile based on grid size to make the grid fit the camera
-		float tileScale = tileScaleTweak / gridSize;
+		float tileScale = tileScaleTweak / (gridSize + (spaceBetweenTiles * gridSize));
 
 		tile.transform.localScale = new Vector3(
 			tileScale,
@@ -119,14 +119,14 @@ public class GridBuilder : MonoBehaviour
 		);
 
 		// Set position based on tile scale
-		float halfGridSize = tileScale * gridSize / 2;
+		float halfGridSize = (tileScale + spaceBetweenTiles) * gridSize / 2;
 
-		float halfTileScale = tileScale / 2;
+		float halfTileScale = (tileScale + spaceBetweenTiles) / 2;
 
 		Vector3 position = new Vector3(
-			tileScale * x - halfGridSize + halfTileScale,
-			tileScale * y - halfGridSize + halfTileScale,
-			tileScale * z - halfGridSize + halfTileScale
+			(tileScale + spaceBetweenTiles) * x - halfGridSize + halfTileScale,
+			(tileScale + spaceBetweenTiles) * y - halfGridSize + halfTileScale,
+			(tileScale + spaceBetweenTiles) * z - halfGridSize + halfTileScale
 		);
 		
 		tile.transform.position = position;
