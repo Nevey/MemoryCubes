@@ -4,6 +4,9 @@
     setupGameStateFinished,
     selectTargetColorFinished,
     playerInputStateFinished,
+    cubeCleared,
+    cubeNotCleared,
     outOfTime,
-    restartGame
+    restartGame,
+    backToMenu
 }

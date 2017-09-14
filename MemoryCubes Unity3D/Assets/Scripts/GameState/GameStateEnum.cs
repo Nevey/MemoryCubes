@@ -4,5 +4,6 @@
     setupGameState,
     selectColorTarget,
     playerInputState,
+    checkForCubeClearedState,
     gameOverState
 }

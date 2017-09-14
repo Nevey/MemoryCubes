@@ -38,6 +38,8 @@ public class GameStateController : MonoBehaviour
 
         stateHandlerList.Add(new PlayerInputState(GameStateEnum.playerInputState));
 
+        stateHandlerList.Add(new CheckForCubeClearedState(GameStateEnum.checkForCubeClearedState));
+
         stateHandlerList.Add(new GameOverState(GameStateEnum.gameOverState));
     }
 
@@ -60,8 +62,14 @@ public class GameStateController : MonoBehaviour
         // Move from "select target color" to "player input"
         AddStateFlow(GameStateEventEnum.selectTargetColorFinished, GameStateEnum.playerInputState);
 
-        // Move from "player input" to "select target color"
-        AddStateFlow(GameStateEventEnum.playerInputStateFinished, GameStateEnum.selectColorTarget);
+        // Move from "player input" to "check for cube cleared"
+        AddStateFlow(GameStateEventEnum.playerInputStateFinished, GameStateEnum.checkForCubeClearedState);
+
+        // Move from "check for cube cleared" to "select target color"
+        AddStateFlow(GameStateEventEnum.cubeNotCleared, GameStateEnum.selectColorTarget);
+
+        // Move from "check for cube cleared" to "build cube state"
+        AddStateFlow(GameStateEventEnum.cubeCleared, GameStateEnum.buildCube);
 
         // ---------- Game LOOP ENDS here ---------- //
 
@@ -70,8 +78,9 @@ public class GameStateController : MonoBehaviour
         // ---------- Game over flow STARTS here ---------- //
 
         // Move from "player input" to "game over state"
-        AddStateFlow(GameStateEventEnum.outOfTime, GameStateEnum.gameOverState);     
+        AddStateFlow(GameStateEventEnum.outOfTime, GameStateEnum.gameOverState);
 
+        // TODO: go back to menu from here
         // Move from "game over state" to "build cube state" 
         AddStateFlow(GameStateEventEnum.restartGame, GameStateEnum.buildCube);
 
