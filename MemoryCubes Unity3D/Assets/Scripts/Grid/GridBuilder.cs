@@ -15,12 +15,14 @@ public class BuilderReadyEventArgs : EventArgs
 public class GridBuilder : MonoBehaviour 
 {
 	[SerializeField] private int gridSize = 3;
+
+	[SerializeField] private float spaceBetweenTiles = 0.2f;
+
+	[SerializeField] private float tileScaleTweak = 5f;
 	
 	[SerializeField] private Transform parent;
 
 	[SerializeField] private GameObject tilePrefab;
-	
-	[SerializeField] private float spaceBetweenTiles = 0.2f;
 
 	[SerializeField] private GameOverView gameOverView;
 	
@@ -78,7 +80,7 @@ public class GridBuilder : MonoBehaviour
 			{
 				for (int z = 0; z < gridSize; z++)
 				{
-					GameObject tile = CreateTile(x, y, z, i);
+					GameObject tile = CreateTile(x, y, z);
 
 					grid[x, y, z] = tile;
 
@@ -100,28 +102,38 @@ public class GridBuilder : MonoBehaviour
 		BuilderReady();
 	}
 	
-	private GameObject CreateTile(int x, int y, int z, int i)
+	private GameObject CreateTile(int x, int y, int z)
 	{
 		// Instantiate tilePrefab
 		GameObject tile = Instantiate(tilePrefab);
 
 		tile.GetComponent<GridCoordinates>().SetGridPosition(x, y, z);
-					
-		// Get the tile's renderer
-		Renderer tileRenderer = tile.GetComponent<Renderer>();
-		
-		// Setup position and make sure center of the grid is position 0, 0, 0
+
+		// Scale the tile based on grid size to make the grid fit the camera
+		float tileScale = tileScaleTweak / gridSize;
+
+		tile.transform.localScale = new Vector3(
+			tileScale,
+			tileScale,
+			tileScale
+		);
+
+		// Set position based on tile scale
+		float halfGridSize = tileScale * gridSize / 2;
+
+		float halfTileScale = tileScale / 2;
+
 		Vector3 position = new Vector3(
-			x - (tileRenderer.bounds.size.x + spaceBetweenTiles) * (gridSize / 2) + spaceBetweenTiles * x,
-			y - (tileRenderer.bounds.size.y + spaceBetweenTiles) * (gridSize / 2) + spaceBetweenTiles * y,
-			z - (tileRenderer.bounds.size.z + spaceBetweenTiles) * (gridSize / 2) + spaceBetweenTiles * z
+			tileScale * x - halfGridSize + halfTileScale,
+			tileScale * y - halfGridSize + halfTileScale,
+			tileScale * z - halfGridSize + halfTileScale
 		);
 		
 		tile.transform.position = position;
 		
 		tile.transform.parent = parent;
 		
-		tile.name = "tile_" + i;
+		tile.name = "tile [" + x + ", " + y + ", " + z + "]";
 		
 		return tile;
 	}
