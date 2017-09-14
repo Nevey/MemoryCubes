@@ -14,7 +14,9 @@ public class TimeController : MonoBehaviour
     {
         get
         {
-            return (100f / timeConfig.MaxTime) * currentTime;
+            int lastKeyIndex = timeConfig.LevelTimeCurve.keys.Length - 1;
+            
+            return (100f / timeConfig.LevelTimeCurve.keys[lastKeyIndex].value) * currentTime;
         }
     }
 
@@ -48,7 +50,7 @@ public class TimeController : MonoBehaviour
 
     private void ResetTimer()
     {
-        currentTime = timeConfig.MaxTime;
+        currentTime = timeConfig.LevelTimeCurve.Evaluate(0f);
 
         isActive = true;
     }

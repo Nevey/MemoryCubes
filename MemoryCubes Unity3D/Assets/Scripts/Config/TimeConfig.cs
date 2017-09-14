@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TimeConfig : MonoBehaviour
 {
-	[SerializeField] private float maxTime = 5f;
+	[SerializeField] private AnimationCurve levelTimeCurve;
 
     [SerializeField] private float bonusTimePerTile = 0.1f;
 
@@ -12,7 +12,7 @@ public class TimeConfig : MonoBehaviour
 
 	[SerializeField] private float penaltyNoSelectedTiles = 0.3f;
 
-	public float MaxTime { get { return maxTime; } }
+	public AnimationCurve LevelTimeCurve { get { return levelTimeCurve; } }
 
 	public float BonusTimePerTile { get { return bonusTimePerTile; } }
 
