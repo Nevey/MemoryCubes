@@ -37,6 +37,8 @@ public class TargetView : MonoBehaviour
         SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
 
         GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+
+        LevelWonState.LevelWonStateStartedEvent += OnLevelWonStateStarted;
     }
 
     private void OnDisable()
@@ -44,6 +46,8 @@ public class TargetView : MonoBehaviour
         SetupGameState.SetupGameStateStartedEvent -= OnSetupGameStateStarted;
 
         GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
+
+        LevelWonState.LevelWonStateStartedEvent -= OnLevelWonStateStarted;
     }
 	
 	// Update is called once per frame
@@ -66,9 +70,12 @@ public class TargetView : MonoBehaviour
 
     private void OnGameOverStateStarted()
     {
-        isActive = false;
+        DisableTargetView();
+    }
 
-        DestroyTargetBar();
+    private void OnLevelWonStateStarted()
+    {
+        DisableTargetView();
     }
 
     private void SetupTargetView()
@@ -84,6 +91,13 @@ public class TargetView : MonoBehaviour
 
         // We're active!
         isActive = true;
+    }
+
+    private void DisableTargetView()
+    {
+        DestroyTargetBar();
+
+        isActive = false;
     }
 
     private void CreateTargetBar()

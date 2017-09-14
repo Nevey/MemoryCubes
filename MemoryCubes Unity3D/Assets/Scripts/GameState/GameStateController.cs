@@ -40,6 +40,8 @@ public class GameStateController : MonoBehaviour
 
         stateHandlerList.Add(new CheckForCubeClearedState(GameStateEnum.checkForCubeClearedState));
 
+        stateHandlerList.Add(new LevelWonState(GameStateEnum.levelWonState));
+
         stateHandlerList.Add(new GameOverState(GameStateEnum.gameOverState));
     }
 
@@ -68,8 +70,11 @@ public class GameStateController : MonoBehaviour
         // Move from "check for cube cleared" to "select target color"
         AddStateFlow(GameStateEventEnum.cubeNotCleared, GameStateEnum.selectColorTarget);
 
-        // Move from "check for cube cleared" to "build cube state"
-        AddStateFlow(GameStateEventEnum.cubeCleared, GameStateEnum.buildCube);
+        // Move from "check for cube cleared" to "level won state"
+        AddStateFlow(GameStateEventEnum.cubeCleared, GameStateEnum.levelWonState);
+
+        // Move from "level won state" to "build cube state"
+        AddStateFlow(GameStateEventEnum.levelWonFinished, GameStateEnum.buildCube);
 
         // ---------- Game LOOP ENDS here ---------- //
 

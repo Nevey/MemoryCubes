@@ -14,8 +14,6 @@ public class BuilderReadyEventArgs : EventArgs
 
 public class GridBuilder : MonoBehaviour 
 {
-	[SerializeField] private int gridSize = 3;
-
 	[SerializeField] private float spaceBetweenTiles = 0.2f;
 
 	[SerializeField] private float tileScaleTweak = 5f;
@@ -25,12 +23,18 @@ public class GridBuilder : MonoBehaviour
 	[SerializeField] private GameObject tilePrefab;
 
 	[SerializeField] private GameOverView gameOverView;
-	
-	public int GridSize { get { return gridSize; } }
+
+	[SerializeField] private LevelController levelController;
+
+	[SerializeField] private GridConfig gridConfig;
+
+	private int gridSize;
 
 	private GameObject[,,] grid;
 
 	private List<GameObject> flattenedGridList;
+
+	public int GridSize { get { return gridSize; } }
 
 	public GameObject[,,] Grid { get { return grid; } }
 
@@ -70,9 +74,12 @@ public class GridBuilder : MonoBehaviour
 
     private void CreateGrid()
 	{
+		// Get the grid size based on current level, value is determined in
+		// an animation curve from the grid config
+		gridSize = (int)gridConfig.GridSizeCurve.Evaluate(levelController.CurrentLevel);
+
+		// Create new game object array
 		grid = new GameObject[gridSize, gridSize, gridSize];
-		
-		int i = 0;
 		
 		for (int x = 0; x < gridSize; x++)
 		{
@@ -85,8 +92,6 @@ public class GridBuilder : MonoBehaviour
 					grid[x, y, z] = tile;
 
 					flattenedGridList.Add(tile);
-					
-					i++;
 				}
 			}
 		}

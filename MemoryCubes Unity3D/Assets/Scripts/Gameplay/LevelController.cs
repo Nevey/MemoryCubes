@@ -18,21 +18,26 @@ public class LevelController : MonoBehaviour
 	private void OnEnable()
 	{
 		CheckForCubeClearedState.CheckForCubeClearedStateStartedEvent += OnCheckForCubeClearedStateStarted;
+
+		LevelWonState.LevelWonStateStartedEvent += OnLevelWonStateStarted;
+
+		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
 	}
 
 	private void OnDisable()
 	{
 		CheckForCubeClearedState.CheckForCubeClearedStateStartedEvent -= OnCheckForCubeClearedStateStarted;
+
+		LevelWonState.LevelWonStateStartedEvent -= OnLevelWonStateStarted;
+
+		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
 	}
 
 	private void OnCheckForCubeClearedStateStarted()
 	{
+		// TODO: move check for grid cleared to own class "GridClearedChecker"
 		if (gridBuilder.FlattenedGridList.Count == 0)
 		{
-			currentLevel++;
-
-			Debug.Log("Level cleared, new level number: " + currentLevel);
-
 			if (GridClearedEvent != null)
 			{
 				GridClearedEvent();
@@ -47,5 +52,27 @@ public class LevelController : MonoBehaviour
 				GridNotClearedEvent();
 			}
 		}
+	}
+
+	private void OnLevelWonStateStarted()
+	{
+		IncrementLevel();
+	}
+
+	private void OnGameOverStateStarted()
+	{
+		ResetLevel();
+	}
+
+	private void IncrementLevel()
+	{
+		currentLevel++;
+
+		Debug.Log("Level cleared, new level value: " + currentLevel);
+	}
+
+	private void ResetLevel()
+	{
+		currentLevel = 0;
 	}
 }
