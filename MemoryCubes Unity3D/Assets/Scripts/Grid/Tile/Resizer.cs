@@ -12,11 +12,11 @@ public class Resizer : MonoBehaviour
 	
 	private Deadzone deadzone = new Deadzone();
 	
-	public float selectedScale = 0.5f;
+	[SerializeField] private float selectedScale = 0.5f;
 	
-	public float scalingSmoothTime = 1f;
+	[SerializeField] private float scalingSmoothTime = 1f;
 	
-	public float maxScalingSpeed = 1f;
+	[SerializeField] private float maxScalingSpeed = 1f;
 	
 	// Use this for initialization
 	void Start() 
@@ -53,7 +53,7 @@ public class Resizer : MonoBehaviour
 	{
 		if (selectionState == SelectionState.selected)
 		{
-			targetScale = selectedScale;
+			targetScale = originScale * selectedScale;
 		}
 		else
 		{
