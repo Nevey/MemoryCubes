@@ -13,7 +13,7 @@ public class GameStateController : MonoBehaviour
 	// Use this for early initialization
 	private void Awake()
     {
-        currentGameState = GameStateEnum.buildCube;
+        currentGameState = GameStateEnum.mainMenu;
 
         CreateGameStateHandlers();
 
@@ -30,6 +30,8 @@ public class GameStateController : MonoBehaviour
 
     private void CreateGameStateHandlers()
     {
+        stateHandlerList.Add(new MainMenuState(GameStateEnum.mainMenu));
+
         stateHandlerList.Add(new BuildGridState(GameStateEnum.buildCube));
 
         stateHandlerList.Add(new SetupGameState(GameStateEnum.setupGameState));
@@ -47,7 +49,16 @@ public class GameStateController : MonoBehaviour
 
     private void CreateStateFlow()
     {
-        // ---------- Game INIT STARTS here ---------- //
+        // ---------- Menu flow STARTS here ---------- //
+
+        // Move to "build cube" state
+        AddStateFlow(GameStateEventEnum.startGame, GameStateEnum.buildCube);
+
+        // ---------- Menu flow ENDS here ---------- //
+
+
+
+        // ---------- Grid INIT STARTS here ---------- //
 
         // Move from "build cube state" to "setup game state values"
         AddStateFlow(GameStateEventEnum.cubeBuildingFinished, GameStateEnum.setupGameState);
@@ -55,11 +66,11 @@ public class GameStateController : MonoBehaviour
         // Move from "setup game state values" to "select target color"
         AddStateFlow(GameStateEventEnum.setupGameStateFinished, GameStateEnum.selectColorTarget);
 
-        // ---------- Game INIT ENDS here ---------- //
+        // ---------- Grid INIT ENDS here ---------- //
 
 
 
-        // ---------- Game LOOP STARTS here ---------- //
+        // ---------- Gameplay LOOP STARTS here ---------- //
 
         // Move from "select target color" to "player input"
         AddStateFlow(GameStateEventEnum.selectTargetColorFinished, GameStateEnum.playerInputState);
@@ -76,7 +87,7 @@ public class GameStateController : MonoBehaviour
         // Move from "level won state" to "build cube state"
         AddStateFlow(GameStateEventEnum.levelWonFinished, GameStateEnum.buildCube);
 
-        // ---------- Game LOOP ENDS here ---------- //
+        // ---------- Gameplay LOOP ENDS here ---------- //
 
 
 
@@ -85,9 +96,11 @@ public class GameStateController : MonoBehaviour
         // Move from "player input" to "game over state"
         AddStateFlow(GameStateEventEnum.outOfTime, GameStateEnum.gameOverState);
 
-        // TODO: go back to menu from here
-        // Move from "game over state" to "build cube state" 
+        // Move from "game over state" to "build cube state"
         AddStateFlow(GameStateEventEnum.restartGame, GameStateEnum.buildCube);
+
+        // Move from "game over state" to "main menu state"
+        AddStateFlow(GameStateEventEnum.backToMenu, GameStateEnum.mainMenu);
 
         // ---------- Game over flow ENDS here ---------- //
     }

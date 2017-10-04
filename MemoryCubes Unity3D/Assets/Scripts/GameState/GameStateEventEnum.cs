@@ -1,5 +1,6 @@
 ﻿public enum GameStateEventEnum
 {
+    startGame,
     cubeBuildingFinished,
     setupGameStateFinished,
     selectTargetColorFinished,

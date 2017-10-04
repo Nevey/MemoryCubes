@@ -30,6 +30,6 @@ public class GameOverState : GameStateHandler
 
         GameOverView.GameOverHideFinishedEvent -= OnGameOverHideFinished;
 
-        GameStateFinished(GameStateEventEnum.restartGame);
+        GameStateFinished(GameStateEventEnum.backToMenu);
     }
 }
