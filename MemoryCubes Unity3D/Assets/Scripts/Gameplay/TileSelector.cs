@@ -32,8 +32,8 @@ public class TileSelector : MonoBehaviour
 		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
 	}
 	
-	// Update is called once per frame
-	private void Update()
+	// LateUpdate is called once per frame, after Update
+	private void LateUpdate()
 	{
 		if (!isActive)
 		{
@@ -48,7 +48,6 @@ public class TileSelector : MonoBehaviour
 			// Always set can select back to true after input up
 			// This is needed because we don't want a tile to be selected while swiping
 			// but we do want the next input up to be selecting a tile when not swiping
-			// TODO: Only works when not releasing input before swiping was done
 			canSelect = true;
 		}
 	}

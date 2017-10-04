@@ -67,12 +67,12 @@ public class Swiper : MonoBehaviour
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			StartSwipe();
+			StartInput();
 		}
 		
 		if (Input.GetMouseButtonUp(0))
 		{
-			EndSwipe();
+			EndInput();
 		}
 		
 		UpdateSwipe();
@@ -98,14 +98,14 @@ public class Swiper : MonoBehaviour
 		isActive = false;
 	}
 
-    private void StartSwipe()
+    private void StartInput()
 	{
 		inputOrigin = Input.mousePosition;
 		
 		checkForSwipe = true;
 	}
 	
-	private void EndSwipe()
+	private void EndInput()
 	{
 		if (swipeDistance >= minSwipeDistance)
 		{
