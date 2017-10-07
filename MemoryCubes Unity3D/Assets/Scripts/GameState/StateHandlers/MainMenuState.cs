@@ -16,13 +16,17 @@ public class MainMenuState : GameStateHandler
 
         Debug.Log("MainMenuState:GameStateStarted");
 
+        MainMenuView.StartPressedEvent += OnStartPressed;
+
         MainMenuStateStartedEvent();
     }
 
-    private void GameStateFinished()
+    private void OnStartPressed()
     {
-        Debug.Log("MainMenuState:GameStateFinished");
+        Debug.Log("MainMenuState:OnStartPressed");
 
-        // GameStateFinished(GameStateEventEnum.setupGameStateFinished);
+        MainMenuView.StartPressedEvent -= OnStartPressed;
+
+        GameStateFinished(GameStateEventEnum.startGame);
     }
 }

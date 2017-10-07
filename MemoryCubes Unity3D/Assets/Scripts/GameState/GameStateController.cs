@@ -36,6 +36,8 @@ public class GameStateController : MonoBehaviour
 
         stateHandlerList.Add(new SetupGameState(GameStateEnum.setupGameState));
 
+        stateHandlerList.Add(new StartGameState(GameStateEnum.startGameState));
+
         stateHandlerList.Add(new SelectColorTargetState(GameStateEnum.selectColorTarget));
 
         stateHandlerList.Add(new PlayerInputState(GameStateEnum.playerInputState));
@@ -63,8 +65,11 @@ public class GameStateController : MonoBehaviour
         // Move from "build cube state" to "setup game state values"
         AddStateFlow(GameStateEventEnum.cubeBuildingFinished, GameStateEnum.setupGameState);
 
-        // Move from "setup game state values" to "select target color"
-        AddStateFlow(GameStateEventEnum.setupGameStateFinished, GameStateEnum.selectColorTarget);
+        // Move from "setup game state" to "start game state"
+        AddStateFlow(GameStateEventEnum.setupGameStateFinished, GameStateEnum.startGameState);
+
+        // Move from "start game state" to "select target color"
+        AddStateFlow(GameStateEventEnum.startGameStateFinished, GameStateEnum.selectColorTarget);
 
         // ---------- Grid INIT ENDS here ---------- //
 

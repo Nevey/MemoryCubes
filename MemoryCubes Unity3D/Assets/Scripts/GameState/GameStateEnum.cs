@@ -3,6 +3,7 @@
     mainMenu,
     buildCube,
     setupGameState,
+    startGameState,
     selectColorTarget,
     playerInputState,
     checkForCubeClearedState,

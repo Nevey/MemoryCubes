@@ -3,6 +3,7 @@
     startGame,
     cubeBuildingFinished,
     setupGameStateFinished,
+    startGameStateFinished,
     selectTargetColorFinished,
     playerInputStateFinished,
     cubeNotCleared,

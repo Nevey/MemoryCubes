@@ -34,7 +34,7 @@ public class TargetView : MonoBehaviour
 
     private void OnEnable()
     {
-        SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
+        StartGameState.StartGameStateStartedEvent += OnStartGameStateStarted;
 
         GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
 
@@ -43,7 +43,7 @@ public class TargetView : MonoBehaviour
 
     private void OnDisable()
     {
-        SetupGameState.SetupGameStateStartedEvent -= OnSetupGameStateStarted;
+        StartGameState.StartGameStateStartedEvent -= OnStartGameStateStarted;
 
         GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
 
@@ -61,7 +61,7 @@ public class TargetView : MonoBehaviour
         UpdateVisibility();
 	}
 
-    private void OnSetupGameStateStarted()
+    private void OnStartGameStateStarted()
     {
         wasVisible = true;
 
