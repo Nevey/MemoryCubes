@@ -11,29 +11,15 @@ public class CollectView : MonoBehaviour
 
 	private void OnEnable()
 	{
-		StartGameState.StartGameStateStartedEvent += OnStartGameStateStarted;
+		collectButton.onClick.AddListener(collectController.CollectSelectedTiles);
 
-		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+		collectButton.enabled = true;
 	}
 
 	private void OnDisable()
 	{
-		StartGameState.StartGameStateStartedEvent -= OnStartGameStateStarted;
-
-		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
-	}
-
-	private void OnStartGameStateStarted()
-	{
-		collectButton.enabled = true;
-
-		collectButton.onClick.AddListener(collectController.CollectSelectedTiles);
-	}
-
-	private void OnGameOverStateStarted()
-	{
-		collectButton.enabled = false;
-
 		collectButton.onClick.RemoveListener(collectController.CollectSelectedTiles);
+
+		collectButton.enabled = false;
 	}
 }

@@ -6,6 +6,8 @@ public class TimeController : MonoBehaviour
 {
     [SerializeField] private TimeConfig timeConfig;
 
+    [SerializeField] private LevelController levelController;
+
     private float currentTime = 0f;
     
     private bool isActive = false;
@@ -14,9 +16,7 @@ public class TimeController : MonoBehaviour
     {
         get
         {
-            int lastKeyIndex = timeConfig.LevelTimeCurve.keys.Length - 1;
-            
-            return (100f / timeConfig.LevelTimeCurve.keys[lastKeyIndex].value) * currentTime;
+            return (100f / GetMaxTimeForCurrentLevel()) * currentTime;
         }
     }
 
@@ -50,7 +50,7 @@ public class TimeController : MonoBehaviour
 
     private void ResetTimer()
     {
-        currentTime = timeConfig.LevelTimeCurve.Evaluate(0f);
+        currentTime = GetMaxTimeForCurrentLevel();
 
         isActive = true;
     }
@@ -75,9 +75,26 @@ public class TimeController : MonoBehaviour
         }
     }
 
+    private float GetMaxTimeForCurrentLevel()
+    {
+        int index = levelController.CurrentLevel + 1;
+
+        // float maxTime = timeConfig.LevelTimeCurve.keys[index].value;
+        float maxTime = timeConfig.LevelTimeCurve.Evaluate(index);
+
+        return maxTime;
+    }
+
     public void ApplyTileBonus()
     {
         currentTime += timeConfig.BonusTimePerTile;
+
+        float maxTime = GetMaxTimeForCurrentLevel();
+
+        if (currentTime > maxTime)
+        {
+            currentTime = maxTime;
+        }
     }
 
     public void ApplyTilePenalty()
