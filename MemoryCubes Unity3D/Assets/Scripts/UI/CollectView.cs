@@ -11,19 +11,19 @@ public class CollectView : MonoBehaviour
 
 	private void OnEnable()
 	{
-		SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
+		StartGameState.StartGameStateStartedEvent += OnStartGameStateStarted;
 
 		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
 	}
 
 	private void OnDisable()
 	{
-		SetupGameState.SetupGameStateStartedEvent -= OnSetupGameStateStarted;
+		StartGameState.StartGameStateStartedEvent -= OnStartGameStateStarted;
 
 		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
 	}
 
-	private void OnSetupGameStateStarted()
+	private void OnStartGameStateStarted()
 	{
 		collectButton.enabled = true;
 

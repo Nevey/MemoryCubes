@@ -11,15 +11,13 @@ public class UIController : MonoBehaviour
 
 	private void Awake()
 	{
-		HideAllViews();
-	}
-	
-	// Use this for initialization
-	private void Start()
-	{
 		MainMenuState.MainMenuStateStartedEvent += OnMainMenuStateStarted;
 
 		SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
+
+		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+
+		HideAllViews();
 	}
 
 	private void OnMainMenuStateStarted()
@@ -30,6 +28,11 @@ public class UIController : MonoBehaviour
 	private void OnSetupGameStateStarted()
 	{
 		SwitchView(UIViewType.InGame);
+	}
+
+	private void OnGameOverStateStarted()
+	{
+		SwitchView(UIViewType.GameOver);
 	}
 
 	private void ShowView(UIViewType uiViewType)

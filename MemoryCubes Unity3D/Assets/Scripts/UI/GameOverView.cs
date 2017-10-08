@@ -45,12 +45,7 @@ public class GameOverView : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
-	}
-
-	private void OnDisable()
-	{
-		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
+		ShowGameOver();
 	}
 	
 	// Update is called once per frame
@@ -80,11 +75,6 @@ public class GameOverView : MonoBehaviour
 			currentTime += Time.deltaTime;
 		}
 	}
-		
-	private void OnGameOverStateStarted()
-	{
-		ShowGameOver();
-	}
 
 	private void ShowGameOver()
 	{
@@ -104,6 +94,7 @@ public class GameOverView : MonoBehaviour
 
 	private void UpdateShowGameOver()
 	{
+		// Set position based on curve
 		rectTransform.anchoredPosition = GetValueFromAnimationCurve(showCurve);
 
 		// Check if we passed the max given time in the curve
@@ -128,8 +119,10 @@ public class GameOverView : MonoBehaviour
 	
 	private void UpdateHideGameOver()
 	{
+		// Set position based on curve
 		rectTransform.anchoredPosition = GetValueFromAnimationCurve(hideCurve);
 
+		// Check if we passed the max given time in the curve
 		if (IsCurveFinished(hideCurve))
 		{
 			currentAnimation = CurrentAnimation.None;
