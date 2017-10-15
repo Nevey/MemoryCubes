@@ -10,21 +10,40 @@ public class ScoreController : MonoBehaviour
 
 	private int currentScore;
 
+	private int lastScore;
+
+	/// <summary>
+	/// Get the user's current score in the current session
+	/// </summary>
+	/// <returns></returns>
 	public int CurrentScore { get { return currentScore; } }
+
+	/// <summary>
+	/// Get the user's score from the last game
+	/// </summary>
+	/// <returns></returns>
+	public int LastScore { get { return lastScore; } }
 
 	private void OnEnable()
 	{
-		SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
+		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
 	}
 
 	private void OnDisable()
 	{
-		SetupGameState.SetupGameStateStartedEvent -= OnSetupGameStateStarted;
+		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
 	}
 
-	private void OnSetupGameStateStarted()
+	private void OnGameOverStateStarted()
 	{
+		StoreCurrentScore();
+
 		ResetScore();
+	}
+
+	private void StoreCurrentScore()
+	{
+		lastScore = currentScore;
 	}
 
 	private void ResetScore()
