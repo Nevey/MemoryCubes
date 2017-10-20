@@ -98,18 +98,27 @@ public class TileSelector : MonoBehaviour
 		
 		if (Physics.Raycast(ray, out hit, raycastDistance)) 
 		{
-			Selector selector = hit.collider.gameObject.GetComponent<Selector>();
+			GameObject collidedGO = hit.collider.gameObject;
 
-			GridCoordinates gridCoordinates = hit.collider.gameObject.GetComponent<GridCoordinates>();
+			Selector selector = collidedGO.GetComponent<Selector>();
 
 			if (selector != null)
 			{
+				GridCoordinates gridCoordinates = collidedGO.GetComponent<GridCoordinates>();
+
 				if (gridCoordinates != null 
 					&& freeTileChecker.CanTapTile(gridCoordinates.MyPosition))
 				{
 					selector.Select();
 
-					selectedTiles.Add(hit.collider.gameObject);
+					if (selectedTiles.Contains(collidedGO))
+					{
+						selectedTiles.Remove(collidedGO);
+					}
+					else
+					{
+						selectedTiles.Add(collidedGO);
+					}
 				}
 			}
 		}        
