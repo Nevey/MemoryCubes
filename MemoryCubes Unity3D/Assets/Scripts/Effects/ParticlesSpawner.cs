@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: Rename to ParticlesController
 public class ParticlesSpawner : MonoBehaviour
 {
 	[SerializeField] private ParticleSystem particlesPrefab;
