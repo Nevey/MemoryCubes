@@ -14,6 +14,8 @@ public class CollectController : MonoBehaviour
 
     [SerializeField] private ScoreController scoreController;
 
+    [SerializeField] private ParticlesSpawner particlesSpawner;
+
     public static event Action CollectFinishedEvent;
 
     private void RemoveAllSelectedTiles()
@@ -36,6 +38,11 @@ public class CollectController : MonoBehaviour
                 
                 targetTime.ApplyTileBonus();
             }
+
+            particlesSpawner.Spawn(
+                selectedTile.transform,
+                selectedTile.GetComponent<TileColor>().MyColor
+            );
 
             gridBuilder.ClearTile(selectedTile);
         }
