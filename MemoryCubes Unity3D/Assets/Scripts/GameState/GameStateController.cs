@@ -4,16 +4,16 @@ using System.Collections;
 
 public class GameStateController : MonoBehaviour
 {
-    private GameStateEnum currentGameState = new GameStateEnum();
+    private GameStateType currentGameState = new GameStateType();
 
-    private List<GameStateHandler> stateHandlerList = new List<GameStateHandler>();
+    private List<GameState> gameStateList = new List<GameState>();
 
     private List<StateFlow> stateFlowList = new List<StateFlow>();
 
 	// Use this for early initialization
 	private void Awake()
     {
-        currentGameState = GameStateEnum.mainMenu;
+        currentGameState = GameStateType.mainMenu;
 
         CreateGameStateHandlers();
 
@@ -25,28 +25,28 @@ public class GameStateController : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        UpdateStateHandler();
+        TransitionToNextState();
     }
 
     private void CreateGameStateHandlers()
     {
-        stateHandlerList.Add(new MainMenuState(GameStateEnum.mainMenu));
+        gameStateList.Add(new MainMenuState(GameStateType.mainMenu));
 
-        stateHandlerList.Add(new BuildGridState(GameStateEnum.buildCube));
+        gameStateList.Add(new BuildGridState(GameStateType.buildCube));
 
-        stateHandlerList.Add(new SetupGameState(GameStateEnum.setupGameState));
+        gameStateList.Add(new SetupGameState(GameStateType.setupGameState));
 
-        stateHandlerList.Add(new StartGameState(GameStateEnum.startGameState));
+        gameStateList.Add(new StartGameState(GameStateType.startGameState));
 
-        stateHandlerList.Add(new SelectColorTargetState(GameStateEnum.selectColorTarget));
+        gameStateList.Add(new SelectColorTargetState(GameStateType.selectColorTarget));
 
-        stateHandlerList.Add(new PlayerInputState(GameStateEnum.playerInputState));
+        gameStateList.Add(new PlayerInputState(GameStateType.playerInputState));
 
-        stateHandlerList.Add(new CheckForCubeClearedState(GameStateEnum.checkForCubeClearedState));
+        gameStateList.Add(new CheckForCubeClearedState(GameStateType.checkForCubeClearedState));
 
-        stateHandlerList.Add(new LevelWonState(GameStateEnum.levelWonState));
+        gameStateList.Add(new LevelWonState(GameStateType.levelWonState));
 
-        stateHandlerList.Add(new GameOverState(GameStateEnum.gameOverState));
+        gameStateList.Add(new GameOverState(GameStateType.gameOverState));
     }
 
     private void CreateStateFlow()
@@ -54,7 +54,7 @@ public class GameStateController : MonoBehaviour
         // ---------- Menu flow STARTS here ---------- //
 
         // Move to "build cube" state
-        AddStateFlow(GameStateEventEnum.startGame, GameStateEnum.buildCube);
+        AddStateFlow(GameStateEvent.startGame, GameStateType.buildCube);
 
         // ---------- Menu flow ENDS here ---------- //
 
@@ -63,13 +63,13 @@ public class GameStateController : MonoBehaviour
         // ---------- Grid INIT STARTS here ---------- //
 
         // Move from "build cube state" to "setup game state values"
-        AddStateFlow(GameStateEventEnum.cubeBuildingFinished, GameStateEnum.setupGameState);
+        AddStateFlow(GameStateEvent.cubeBuildingFinished, GameStateType.setupGameState);
 
         // Move from "setup game state" to "start game state"
-        AddStateFlow(GameStateEventEnum.setupGameStateFinished, GameStateEnum.startGameState);
+        AddStateFlow(GameStateEvent.setupGameStateFinished, GameStateType.startGameState);
 
         // Move from "start game state" to "select target color"
-        AddStateFlow(GameStateEventEnum.startGameStateFinished, GameStateEnum.selectColorTarget);
+        AddStateFlow(GameStateEvent.startGameStateFinished, GameStateType.selectColorTarget);
 
         // ---------- Grid INIT ENDS here ---------- //
 
@@ -78,19 +78,19 @@ public class GameStateController : MonoBehaviour
         // ---------- Gameplay LOOP STARTS here ---------- //
 
         // Move from "select target color" to "player input"
-        AddStateFlow(GameStateEventEnum.selectTargetColorFinished, GameStateEnum.playerInputState);
+        AddStateFlow(GameStateEvent.selectTargetColorFinished, GameStateType.playerInputState);
 
         // Move from "player input" to "check for cube cleared"
-        AddStateFlow(GameStateEventEnum.playerInputStateFinished, GameStateEnum.checkForCubeClearedState);
+        AddStateFlow(GameStateEvent.playerInputStateFinished, GameStateType.checkForCubeClearedState);
 
         // Move from "check for cube cleared" to "select target color"
-        AddStateFlow(GameStateEventEnum.cubeNotCleared, GameStateEnum.selectColorTarget);
+        AddStateFlow(GameStateEvent.cubeNotCleared, GameStateType.selectColorTarget);
 
         // Move from "check for cube cleared" to "level won state"
-        AddStateFlow(GameStateEventEnum.cubeCleared, GameStateEnum.levelWonState);
+        AddStateFlow(GameStateEvent.cubeCleared, GameStateType.levelWonState);
 
         // Move from "level won state" to "build cube state"
-        AddStateFlow(GameStateEventEnum.levelWonFinished, GameStateEnum.buildCube);
+        AddStateFlow(GameStateEvent.levelWonFinished, GameStateType.buildCube);
 
         // ---------- Gameplay LOOP ENDS here ---------- //
 
@@ -99,46 +99,46 @@ public class GameStateController : MonoBehaviour
         // ---------- Game over flow STARTS here ---------- //
 
         // Move from "player input" to "game over state"
-        AddStateFlow(GameStateEventEnum.outOfTime, GameStateEnum.gameOverState);
+        AddStateFlow(GameStateEvent.outOfTime, GameStateType.gameOverState);
 
         // Move from "game over state" to "build cube state"
-        AddStateFlow(GameStateEventEnum.restartGame, GameStateEnum.buildCube);
+        AddStateFlow(GameStateEvent.restartGame, GameStateType.buildCube);
 
         // Move from "game over state" to "main menu state"
-        AddStateFlow(GameStateEventEnum.backToMenu, GameStateEnum.mainMenu);
+        AddStateFlow(GameStateEvent.backToMenu, GameStateType.mainMenu);
 
         // ---------- Game over flow ENDS here ---------- //
     }
 
-    private void AddStateFlow(GameStateEventEnum stateEvent, GameStateEnum state)
+    private void AddStateFlow(GameStateEvent stateEvent, GameStateType state)
     {
         stateFlowList.Add(new StateFlow(stateEvent, state));
     }
 
     private void StartListeningToEvents()
     {
-        foreach (GameStateHandler stateHandler in stateHandlerList)
+        foreach (GameState stateHandler in gameStateList)
         {
-            stateHandler.StateFinishedEvent += OnGameEvent;
+            stateHandler.StateFinishedEvent += OnStateFinished;
         }
     }
 
     private void StopListeningToEvents()
     {
-        foreach (GameStateHandler stateHandler in stateHandlerList)
+        foreach (GameState stateHandler in gameStateList)
         {
-            stateHandler.StateFinishedEvent -= OnGameEvent;
+            stateHandler.StateFinishedEvent -= OnStateFinished;
         }
     }
 
-    private void OnGameEvent(object sender, StateFinishedArgs e)
+    private void OnStateFinished(object sender, StateFinishedArgs e)
     {
         UpdateGameEvent(e.gameStateEventEnum);
 
-        UpdateStateHandler();
+        TransitionToNextState();
     }
 
-    private void UpdateGameEvent(GameStateEventEnum gameEventEnum)
+    private void UpdateGameEvent(GameStateEvent gameEventEnum)
     {
         foreach (StateFlow stateFlow in stateFlowList)
         {
@@ -149,30 +149,34 @@ public class GameStateController : MonoBehaviour
         }
     }
 
-    private void UpdateStateHandler()
+    private void TransitionToNextState()
     {
-        GameStateHandler gameStateHandler = GetGameStateHandlerByState(currentGameState);
+        GameState gameState = GetGameStateByEnum(currentGameState);
 
-        gameStateHandler.GameStateStarted();
+        gameState.GameStateStarted();
     }
 
-    private GameStateHandler GetGameStateHandlerByState(GameStateEnum gameStateEnum)
+    private GameState GetGameStateByEnum(GameStateType gameStateEnum)
     {
-        GameStateHandler gameStateHandler = null;
+        GameState gameState = null;
 
-        foreach (GameStateHandler stateHandler in stateHandlerList)
+        foreach (GameState gs in gameStateList)
         {
-            if (gameStateEnum == stateHandler.gameStateEnum)
+            if (gameStateEnum == gs.gameStateType)
             {
-                gameStateHandler = stateHandler;
+                if (gameState != null)
+                {
+                    Debug.LogError("Multiple GameStates present of type: " + gs.gameStateType);
+                }
+                gameState = gs;
             }
         }
 
-        if (gameStateHandler == null)
+        if (gameState == null)
         {
-            Debug.LogError("Trying to handle state: GameState." + gameStateEnum.ToString() + ", but there's no GameStateHandler handling this state!");
+            Debug.LogError("No GameState present with type: " + gameStateEnum.ToString());
         }
 
-        return gameStateHandler;
+        return gameState;
     }
 }

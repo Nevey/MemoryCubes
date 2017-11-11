@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class SelectColorTargetState : GameStateHandler
+public class SelectColorTargetState : GameState
 {
     public static event Action SelectColorTargetStateStartedEvent;
 
-    public SelectColorTargetState(GameStateEnum gameStateEnum) : base(gameStateEnum)
+    public SelectColorTargetState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
         
     }
@@ -27,6 +27,6 @@ public class SelectColorTargetState : GameStateHandler
 
         TargetController.TargetUpdatedEvent -= OnTargetUpdated;
 
-        GameStateFinished(GameStateEventEnum.selectTargetColorFinished);
+        GameStateFinished(GameStateEvent.selectTargetColorFinished);
     }
 }

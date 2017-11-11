@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-public class LevelWonState : GameStateHandler
+public class LevelWonState : GameState
 {
 	public static event Action LevelWonStateStartedEvent;
 
-	public LevelWonState(GameStateEnum gameStateEnum) : base(gameStateEnum)
+	public LevelWonState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
         
     }
@@ -21,6 +21,6 @@ public class LevelWonState : GameStateHandler
 			LevelWonStateStartedEvent();
 		}
 
-		GameStateFinished(GameStateEventEnum.levelWonFinished);
+		GameStateFinished(GameStateEvent.levelWonFinished);
 	}
 }

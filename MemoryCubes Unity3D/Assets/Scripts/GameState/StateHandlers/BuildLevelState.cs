@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class BuildGridState : GameStateHandler
+public class BuildGridState : GameState
 {
     public static event Action BuildGridStateStartedEvent;
 
-    public BuildGridState(GameStateEnum gameStateEnum) : base(gameStateEnum)
+    public BuildGridState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
         
     }
@@ -27,6 +27,6 @@ public class BuildGridState : GameStateHandler
 
         GridBuilder.BuilderReadyEvent -= OnBuilderReady;
 
-        GameStateFinished(GameStateEventEnum.cubeBuildingFinished);
+        GameStateFinished(GameStateEvent.cubeBuildingFinished);
     }
 }

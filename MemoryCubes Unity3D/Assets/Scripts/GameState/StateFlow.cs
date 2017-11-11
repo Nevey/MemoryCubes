@@ -1,10 +1,10 @@
 ﻿public class StateFlow
 {
-    public GameStateEnum gameStateEnum { get; set; }
+    public GameStateType gameStateEnum { get; set; }
 
-    public GameStateEventEnum gameStateEventEnum { get; set; }
+    public GameStateEvent gameStateEventEnum { get; set; }
 
-    public StateFlow(GameStateEventEnum gameStateEventEnum, GameStateEnum gameStateEnum)
+    public StateFlow(GameStateEvent gameStateEventEnum, GameStateType gameStateEnum)
     {
         this.gameStateEnum = gameStateEnum;
 

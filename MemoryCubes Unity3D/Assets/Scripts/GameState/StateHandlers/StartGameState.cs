@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class StartGameState : GameStateHandler
+public class StartGameState : GameState
 {
     public static event Action StartGameStateStartedEvent;
 
-    public StartGameState(GameStateEnum gameStateEnum) : base(gameStateEnum)
+    public StartGameState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
         
     }
@@ -25,6 +25,6 @@ public class StartGameState : GameStateHandler
     {
         Debug.Log("StartGameState:GameStateFinished");
 
-        GameStateFinished(GameStateEventEnum.startGameStateFinished);
+        GameStateFinished(GameStateEvent.startGameStateFinished);
     }
 }

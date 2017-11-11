@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-public class CheckForCubeClearedState : GameStateHandler
+public class CheckForCubeClearedState : GameState
 {
 	public static event Action CheckForCubeClearedStateStartedEvent;
 
-	public CheckForCubeClearedState(GameStateEnum gameStateEnum) : base(gameStateEnum)
+	public CheckForCubeClearedState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
         
     }
@@ -34,7 +34,7 @@ public class CheckForCubeClearedState : GameStateHandler
 
 		LevelController.GridNotClearedEvent -= OnGridNotCleared;
 
-		GameStateFinished(GameStateEventEnum.cubeCleared);
+		GameStateFinished(GameStateEvent.cubeCleared);
 	}
 
 	private void OnGridNotCleared()
@@ -45,6 +45,6 @@ public class CheckForCubeClearedState : GameStateHandler
 
 		LevelController.GridNotClearedEvent -= OnGridNotCleared;
 
-		GameStateFinished(GameStateEventEnum.cubeNotCleared);
+		GameStateFinished(GameStateEvent.cubeNotCleared);
 	}
 }

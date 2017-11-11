@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class PlayerInputState : GameStateHandler
+public class PlayerInputState : GameState
 {
     public static event Action PlayerInputStateStartedEvent;
 
-    public PlayerInputState(GameStateEnum gameStateEnum) : base(gameStateEnum)
+    public PlayerInputState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
         
     }
@@ -34,7 +34,7 @@ public class PlayerInputState : GameStateHandler
 
         TimeController.OutOfTimeEvent -= OnOutOfTime;
 
-        GameStateFinished(GameStateEventEnum.playerInputStateFinished);
+        GameStateFinished(GameStateEvent.playerInputStateFinished);
     }
 
     private void OnOutOfTime()
@@ -45,6 +45,6 @@ public class PlayerInputState : GameStateHandler
 
         TimeController.OutOfTimeEvent -= OnOutOfTime;
 
-        GameStateFinished(GameStateEventEnum.outOfTime);
+        GameStateFinished(GameStateEvent.outOfTime);
     }
 }

@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class GameOverState : GameStateHandler
+public class GameOverState : GameState
 {
     public static event Action GameOverStateStartedEvent;
 
-    public GameOverState(GameStateEnum gameStateEnum) : base(gameStateEnum)
+    public GameOverState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
         
     }
@@ -30,6 +30,6 @@ public class GameOverState : GameStateHandler
 
         GameOverView.GameOverHideFinishedEvent -= OnGameOverHideFinished;
 
-        GameStateFinished(GameStateEventEnum.backToMenu);
+        GameStateFinished(GameStateEvent.backToMenu);
     }
 }

@@ -22,8 +22,6 @@ public class GameOverView : MonoBehaviour
 
 	private RectTransform rectTransform;
 
-	private Image image;
-
 	private float currentTime;
 
 	public event Action GameOverShowFinishedEvent;
@@ -34,11 +32,6 @@ public class GameOverView : MonoBehaviour
 	private void Awake()
 	{
 		currentAnimation = CurrentAnimation.None;
-
-		// No need to show game over image on init...
-		image = GetComponent<Image>();
-
-		image.enabled = false;
 
 		rectTransform = GetComponent<RectTransform>();
 	}
@@ -81,8 +74,6 @@ public class GameOverView : MonoBehaviour
 		currentAnimation = CurrentAnimation.ShowGameOver;
 
 		currentTime = 0f;
-
-		image.enabled = true;
 	}
 
 	private void HideGameOver()

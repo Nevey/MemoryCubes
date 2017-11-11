@@ -2,5 +2,5 @@
 
 public class StateFinishedArgs : EventArgs
 {
-    public GameStateEventEnum gameStateEventEnum { get; set; }
+    public GameStateEvent gameStateEventEnum { get; set; }
 }

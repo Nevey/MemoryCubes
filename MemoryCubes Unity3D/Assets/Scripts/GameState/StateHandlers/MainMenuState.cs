@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class MainMenuState : GameStateHandler
+public class MainMenuState : GameState
 {
     public static event Action MainMenuStateStartedEvent;
 
-    public MainMenuState(GameStateEnum gameStateEnum) : base(gameStateEnum)
+    public MainMenuState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
         
     }
@@ -16,17 +16,15 @@ public class MainMenuState : GameStateHandler
 
         Debug.Log("MainMenuState:GameStateStarted");
 
-        MainMenuView.StartPressedEvent += OnStartPressed;
+        MainMenuView.GameModePressedEvent += OnGameModePressed;
 
         MainMenuStateStartedEvent();
     }
 
-    private void OnStartPressed()
+    private void OnGameModePressed()
     {
-        Debug.Log("MainMenuState:OnStartPressed");
+        Debug.Log("MainMenuState:OnGameModePressed");
 
-        MainMenuView.StartPressedEvent -= OnStartPressed;
-
-        GameStateFinished(GameStateEventEnum.startGame);
+        GameStateFinished(GameStateEvent.startGame);
     }
 }
