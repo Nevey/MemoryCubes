@@ -16,44 +16,63 @@ public class MainMenuView : MonoBehaviour
 
     private void OnEnable()
     {
-        for (int i = 0; i < buttonGameModeCorresponders.Length; i++)
-        {
-            // Add click event for button
-            ButtonGameModeCorresponder buttonGameModeCorresponder = buttonGameModeCorresponders[i];
-
-            buttonGameModeCorresponder.Button.onClick.AddListener(() => 
-            {
-                gameModeController.SetGameMode(buttonGameModeCorresponder.CorrespindingGameMode);
-
-                DispatchGameModePressed();
-            });
-
-            // Find a corresponding game mode for the button
-            bool correspondingGameModeFound = false;
-
-            for (int k = 0; k < gameModeConfig.GameModes.Length; k++)
-            {
-                GameMode gameMode = gameModeConfig.GameModes[k];
-
-                correspondingGameModeFound = buttonGameModeCorresponder.IsGameMode(gameMode);
-
-                if (correspondingGameModeFound)
-                {
-                    break;
-                }
-            }
-
-            // Enable/Disable button
-            buttonGameModeCorresponder.gameObject.SetActive(correspondingGameModeFound);
-        }
+        EnableButtons();
     }
 
     private void OnDisable()
     {
+        DisableButtons();
+    }
+
+    private void EnableButtons()
+    {
         for (int i = 0; i < buttonGameModeCorresponders.Length; i++)
         {
-            buttonGameModeCorresponders[i].Button.onClick.RemoveListener(DispatchGameModePressed);
+            ButtonGameModeCorresponder buttonGameModeCorresponder = buttonGameModeCorresponders[i];
+
+            SetButtonListener(buttonGameModeCorresponder);
+
+            SetButtonActive(buttonGameModeCorresponder);
         }
+    }
+
+    private void DisableButtons()
+    {
+        for (int i = 0; i < buttonGameModeCorresponders.Length; i++)
+        {
+            buttonGameModeCorresponders[i].Button.onClick.RemoveAllListeners();
+        }
+    }
+
+    private void SetButtonListener(ButtonGameModeCorresponder buttonGameModeCorresponder)
+    {
+        buttonGameModeCorresponder.Button.onClick.AddListener(() => 
+        {
+            OnGameModeButtonPressed(buttonGameModeCorresponder.CorrespindingGameMode);
+        });
+    }
+
+    private void SetButtonActive(ButtonGameModeCorresponder buttonGameModeCorresponder)
+    {
+        for (int i = 0; i < gameModeConfig.GameModes.Length; i++)
+        {
+            GameMode gameMode = gameModeConfig.GameModes[i];
+
+            // Corresponding game mode for this button found! Enable game button!
+            if (buttonGameModeCorresponder.IsGameMode(gameMode))
+            {
+                buttonGameModeCorresponder.gameObject.SetActive(true);
+
+                break;
+            }
+        }
+    }
+
+    private void OnGameModeButtonPressed(GameMode gameMode)
+    {
+        gameModeController.SetGameMode(gameMode);
+
+        DispatchGameModePressed();
     }
 
     private void DispatchGameModePressed()

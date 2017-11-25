@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Rename...
 public class GameModeCorresponder : MonoBehaviour
 {
 	[SerializeField] private GameMode gameMode;
