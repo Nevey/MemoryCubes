@@ -14,8 +14,6 @@ public class TargetView : MonoBehaviour
 
     [SerializeField] private Direction direction;
 
-    [SerializeField] private TargetController targetController;
-
     [SerializeField] private TimeController targetTime;
 
     private enum Direction
@@ -32,8 +30,11 @@ public class TargetView : MonoBehaviour
 
     private bool isActive;
 
+    private Color targetColor;
+
     private void OnEnable()
     {
+        // TODO: Get rid of these listeners and let target controller manage all this...
         StartGameState.StartGameStateStartedEvent += OnStartGameStateStarted;
 
         GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
@@ -159,7 +160,7 @@ public class TargetView : MonoBehaviour
         {
             Image image = targetBarSprite.GetComponent<Image>();
 
-            image.color = targetController.TargetColor;
+            image.color = targetColor;
 
             // TODO: see if we can do gpu-instancing here too
         }
@@ -193,8 +194,10 @@ public class TargetView : MonoBehaviour
         }
     }
 
-    public void ResetTargetBar()
+    public void SetNewTargetBar(Color targetColor)
     {
+        this.targetColor = targetColor;
+
         ToggleTargetBarVisibility(true);
 
         UpdateTargetBar();

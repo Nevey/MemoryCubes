@@ -25,6 +25,8 @@ public class MainMenuState : GameState
     {
         Debug.Log("MainMenuState:OnGameModePressed");
 
+        MainMenuView.GameModePressedEvent -= OnGameModePressed;
+
         GameStateFinished(GameStateEvent.startGame);
     }
 }

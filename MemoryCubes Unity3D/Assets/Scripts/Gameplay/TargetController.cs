@@ -20,7 +20,7 @@ public class TargetController : MonoBehaviour
 
     public Color TargetColor { get { return targetColor; } }
 
-    public static event Action TargetUpdatedEvent;   
+    public static event Action TargetUpdatedEvent;
 
 	// Use this for pre-initialization
 	private void OnEnable()
@@ -49,8 +49,8 @@ public class TargetController : MonoBehaviour
         // Reset the target bars
         for (int i = 0; i < targetViews.Length; i++)
         {
-            targetViews[i].ResetTargetBar();
-        }        
+            targetViews[i].SetNewTargetBar(targetColor);
+        }
 
         // We're ready, send target updated event
         if (TargetUpdatedEvent != null)
