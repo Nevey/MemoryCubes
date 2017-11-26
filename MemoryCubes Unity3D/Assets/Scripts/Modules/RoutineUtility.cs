@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class RoutineUtility : MonoBehaviour
 {
-    private IEnumerator WaitRoutine(float time, Action callback)
+    private IEnumerator WaitTimeRoutine(float time, Action callback)
     {
         yield return new WaitForSeconds(time);
 
         callback();
     }
-    
-    public void StartWaitRoutine(float time, Action callback)
+
+    private IEnumerator WaitOneFrameRoutine(Action callback)
     {
-        StartCoroutine(WaitRoutine(time, callback));
+        yield return new WaitForEndOfFrame();
+
+        callback();
+    }
+    
+    public void StartWaitTimeRoutine(float time, Action callback)
+    {
+        StartCoroutine(WaitTimeRoutine(time, callback));
+    }
+
+    public void StartWaitOneFrameRoutine(Action callback)
+    {
+        StartCoroutine(WaitOneFrameRoutine(callback));
     }
 }

@@ -102,7 +102,7 @@ public class CollectController : MonoBehaviour
     {
         gridBuilder.ClearGrid();
 
-        routineUtility.StartWaitRoutine(2f, () =>
+        routineUtility.StartWaitTimeRoutine(2f, () =>
         {
             if (ClearAllTilesFinishedEvent != null)
             {

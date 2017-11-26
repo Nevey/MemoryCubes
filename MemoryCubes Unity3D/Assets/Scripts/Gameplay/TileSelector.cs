@@ -11,7 +11,8 @@ public class TileSelector : MonoBehaviour
 
 	[SerializeField] private GameModeController gameModeController;
 
-	// TODO: Change to List<Selector>
+	[SerializeField] private RoutineUtility routineUtility;
+
 	private List<GameObject> selectedTiles = new List<GameObject>();
 
 	private bool canSelect;
@@ -72,9 +73,12 @@ public class TileSelector : MonoBehaviour
 
 	private void EnableInput()
 	{
-		isActive = true;
+		routineUtility.StartWaitOneFrameRoutine(() =>
+		{
+			isActive = true;
 
-		swiper.SwipeEvent += OnSwipeEvent;
+			swiper.SwipeEvent += OnSwipeEvent;
+		});
 	}
 
 	private void DisableInput()
