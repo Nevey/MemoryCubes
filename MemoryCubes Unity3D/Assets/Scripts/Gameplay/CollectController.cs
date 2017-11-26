@@ -49,10 +49,7 @@ public class CollectController : MonoBehaviour
     private void CheckForCustomActions(List<GameObject> selectedTiles)
     {
         switch (gameModeController.CurrentGameMode)
-        {
-            case GameMode.Collect:
-                break;
-            
+        {            
             case GameMode.Combine:
 
                 CheckForCombineCollect(selectedTiles.Count);

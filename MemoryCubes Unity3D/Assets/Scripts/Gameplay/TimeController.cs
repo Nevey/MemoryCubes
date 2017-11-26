@@ -25,11 +25,15 @@ public class TimeController : MonoBehaviour
     private void OnEnable()
     {
         SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
+
+        DestroyRemainingCubesState.DestroyRemainingCubesStateStartedEvent += OnDestroyRemainingCubesStateStarted;
     }
 
     private void OnDisable()
     {
         SetupGameState.SetupGameStateStartedEvent -= OnSetupGameStateStarted;
+
+        DestroyRemainingCubesState.DestroyRemainingCubesStateStartedEvent -= OnDestroyRemainingCubesStateStarted;
     }
 
     // Update is called once per frame
@@ -46,6 +50,11 @@ public class TimeController : MonoBehaviour
     private void OnSetupGameStateStarted()
     {
         ResetTimer();
+    }
+
+    private void OnDestroyRemainingCubesStateStarted()
+    {
+        StopTimer();
     }
 
     private void ResetTimer()
