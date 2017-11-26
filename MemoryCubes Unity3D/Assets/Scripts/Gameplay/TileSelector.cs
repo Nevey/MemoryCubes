@@ -28,14 +28,14 @@ public class TileSelector : MonoBehaviour
 
 		PlayerInputState.PlayerInputStateStartedEvent += OnPlayerInputStateStarted;
 
-		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+		PlayerInputState.PlayerInputStateFinishedEvent += OnPlayerInputStateFinished;
 	}
 
-	private void OnDisable()
+    private void OnDisable()
 	{
 		PlayerInputState.PlayerInputStateStartedEvent -= OnPlayerInputStateStarted;
 
-		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
+		PlayerInputState.PlayerInputStateFinishedEvent -= OnPlayerInputStateFinished;
 	}
 	
 	// LateUpdate is called once per frame, after Update
@@ -63,12 +63,12 @@ public class TileSelector : MonoBehaviour
 		EnableInput();
 	}
 
-	private void OnGameOverStateStarted()
-	{
+    private void OnPlayerInputStateFinished()
+    {
+        DisableInput();
+
 		ClearSelectedTiles();
-		
-		DisableInput();
-	}
+    }
 
 	private void EnableInput()
 	{
