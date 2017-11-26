@@ -12,8 +12,6 @@ public class PlayerInputState : GameState
 
     public override void GameStateStarted()
     {
-        base.GameStateStarted();
-
         Debug.Log("PlayerInputState:GameStateStarted");
 
         CollectController.CollectFinishedEvent += OnDestroyFinished;

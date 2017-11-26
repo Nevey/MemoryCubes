@@ -10,13 +10,65 @@ public class CollectController : MonoBehaviour
 
     [SerializeField] private TargetController targetController;
 
-    [SerializeField] private TimeController targetTime;
+    [SerializeField] private TimeController timeController;
 
     [SerializeField] private ScoreController scoreController;
 
-    [SerializeField] private ParticlesSpawner particlesSpawner;
+    [SerializeField] private GameModeController gameModeController;
+
+    [SerializeField] private RoutineUtility routineUtility;
 
     public static event Action CollectFinishedEvent;
+
+    public static event Action ClearAllTilesFinishedEvent;
+
+    private void Start()
+    {
+        DestroyRemainingCubesState.DestroyRemainingCubesStateStartedEvent += OnDestroyRemainingCubesStateStarted;
+        
+        tileSelector.SelectedTilesUpdatedEvent += OnSelectedTilesUpdatedEvent;
+    }
+
+    private void OnDestroy()
+    {
+        DestroyRemainingCubesState.DestroyRemainingCubesStateStartedEvent -= OnDestroyRemainingCubesStateStarted;
+
+        tileSelector.SelectedTilesUpdatedEvent -= OnSelectedTilesUpdatedEvent;
+    }
+
+    private void OnDestroyRemainingCubesStateStarted()
+    {
+        ClearAllTilesWithoutScore();
+    }
+
+    private void OnSelectedTilesUpdatedEvent(List<GameObject> selectedTiles)
+    {
+        CheckForCustomActions(selectedTiles);
+    }
+
+    private void CheckForCustomActions(List<GameObject> selectedTiles)
+    {
+        switch (gameModeController.CurrentGameMode)
+        {
+            case GameMode.Collect:
+                break;
+            
+            case GameMode.Combine:
+
+                CheckForCombineCollect(selectedTiles.Count);
+
+                break;
+        }
+    }
+
+    private void CheckForCombineCollect(int selectedTilesCount)
+    {
+        // TODO: Add magic number to config file
+        if (selectedTilesCount == 2)
+        {
+            CollectSelectedTiles();
+        }
+    }
 
     private void RemoveAllSelectedTiles()
     {
@@ -27,22 +79,15 @@ public class CollectController : MonoBehaviour
             if (targetController.TargetColor != selectedTile.GetComponent<TileColor>().MyColor)
             {
                 // Apply penalty for each incorrectly selected tile
-
-                targetTime.ApplyTilePenalty();
+                timeController.ApplyTilePenalty();
                 
                 scoreController.ApplyPenalty();
             }
             else
             {
                 // Apply bonus time for each correctly selected tile
-                
-                targetTime.ApplyTileBonus();
+                timeController.ApplyTileBonus();
             }
-
-            particlesSpawner.Spawn(
-                selectedTile.transform,
-                selectedTile.GetComponent<TileColor>().MyColor
-            );
 
             gridBuilder.ClearTile(selectedTile);
         }
@@ -56,12 +101,25 @@ public class CollectController : MonoBehaviour
         }
     }
 
+    private void ClearAllTilesWithoutScore()
+    {
+        gridBuilder.ClearGrid();
+
+        routineUtility.StartWaitRoutine(2f, () =>
+        {
+            if (ClearAllTilesFinishedEvent != null)
+            {
+                ClearAllTilesFinishedEvent();
+            }
+        });
+    }
+
     public void CollectSelectedTiles()
     {
         // Apply penalty if no tiles were selected
         if (tileSelector.SelectedTiles.Count == 0)
         {
-            targetTime.ApplyPenaltyNoSelectedTiles();
+            timeController.ApplyPenaltyNoSelectedTiles();
         }
         else
         {

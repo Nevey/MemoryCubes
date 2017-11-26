@@ -5,6 +5,8 @@
     setupGameStateFinished,
     startGameStateFinished,
     selectTargetColorFinished,
+    noTargetColorFound,
+    cubeDestroyed,
     playerInputStateFinished,
     cubeNotCleared,
     cubeCleared,

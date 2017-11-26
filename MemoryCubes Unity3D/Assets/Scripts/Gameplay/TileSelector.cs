@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class TileSelector : MonoBehaviour
 
 	[SerializeField] private FreeTileChecker freeTileChecker;
 
+	// TODO: Change to List<Selector>
 	private List<GameObject> selectedTiles = new List<GameObject>();
 
 	private bool canSelect;
@@ -15,6 +17,8 @@ public class TileSelector : MonoBehaviour
 	private bool isActive;
 
 	public List<GameObject> SelectedTiles { get { return selectedTiles; } }
+
+	public event Action<List<GameObject>> SelectedTilesUpdatedEvent;
 
 	private void OnEnable()
 	{
@@ -104,27 +108,64 @@ public class TileSelector : MonoBehaviour
 
 			if (selector != null)
 			{
-				GridCoordinates gridCoordinates = collidedGO.GetComponent<GridCoordinates>();
+				GridCoordinates gridCoordinates = selector.gameObject.GetComponent<GridCoordinates>();
 
 				if (gridCoordinates != null 
 					&& freeTileChecker.CanTapTile(gridCoordinates.MyPosition))
 				{
-					selector.Select();
-
-					if (selectedTiles.Contains(collidedGO))
-					{
-						selectedTiles.Remove(collidedGO);
-					}
-					else
-					{
-						selectedTiles.Add(collidedGO);
-					}
+					SelectTile(selector);
 				}
 			}
-		}        
+		}
     }
 
-	public void ClearSelectedTiles()
+	private void SelectTile(Selector selector)
+	{
+		selector.SelectToggledEvent += OnSelectToggled;
+
+		selector.Toggle();
+	}
+
+    private void OnSelectToggled(object sender, SelectorArgs e)
+    {
+		e.selector.SelectToggledEvent -= OnSelectToggled;
+
+		if (e.selectionState == SelectionState.selected)
+		{
+			if (selectedTiles.Contains(e.selectedObject))
+			{
+				Debug.LogWarning("Trying to add selected tile to selected tiles list, but the list already contains this tile!");
+
+				return;
+			}
+
+			selectedTiles.Add(e.selectedObject);
+		}
+
+		if (e.selectionState == SelectionState.notSelected)
+		{
+			if (!selectedTiles.Contains(e.selectedObject))
+			{
+				Debug.LogWarning("Trying to remove tile from selected tiles list, but the list does not contain this tile!");
+
+				return;
+			}
+
+			selectedTiles.Remove(e.selectedObject);
+		}
+
+		DispatchSelectedTilesUpdate();
+    }
+
+	private void DispatchSelectedTilesUpdate()
+	{
+		if (SelectedTilesUpdatedEvent != null)
+		{
+			SelectedTilesUpdatedEvent(selectedTiles);
+		}
+	}
+
+    public void ClearSelectedTiles()
 	{
 		selectedTiles.Clear();
 	}

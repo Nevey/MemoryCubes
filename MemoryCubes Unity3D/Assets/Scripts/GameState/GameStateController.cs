@@ -13,6 +13,7 @@ public class GameStateController : MonoBehaviour
 	// Use this for early initialization
 	private void Awake()
     {
+        // Set initial state
         currentGameState = GameStateType.mainMenu;
 
         CreateGameStateHandlers();
@@ -39,6 +40,8 @@ public class GameStateController : MonoBehaviour
         gameStateList.Add(new StartGameState(GameStateType.startGameState));
 
         gameStateList.Add(new SelectColorTargetState(GameStateType.selectColorTarget));
+
+        gameStateList.Add(new DestroyRemainingCubesState(GameStateType.destroyRemainingCubesState));
 
         gameStateList.Add(new PlayerInputState(GameStateType.playerInputState));
 
@@ -79,6 +82,12 @@ public class GameStateController : MonoBehaviour
 
         // Move from "select target color" to "player input"
         AddTransition(GameStateEvent.selectTargetColorFinished, GameStateType.playerInputState);
+
+        // Move from "select target color" to "destroy cube"
+        AddTransition(GameStateEvent.noTargetColorFound, GameStateType.destroyRemainingCubesState);
+
+        // Move from "destroy cube" to "level won"
+        AddTransition(GameStateEvent.cubeDestroyed, GameStateType.levelWonState);
 
         // Move from "player input" to "check for cube cleared"
         AddTransition(GameStateEvent.playerInputStateFinished, GameStateType.checkForCubeClearedState);
@@ -168,7 +177,7 @@ public class GameStateController : MonoBehaviour
                 {
                     Debug.LogError("Multiple GameStates present of type: " + gs.gameStateType);
                 }
-                
+
                 gameState = gs;
             }
         }

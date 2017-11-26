@@ -12,8 +12,6 @@ public class MainMenuState : GameState
 
     public override void GameStateStarted()
     {
-        base.GameStateStarted();
-
         Debug.Log("MainMenuState:GameStateStarted");
 
         MainMenuView.GameModePressedEvent += OnGameModePressed;

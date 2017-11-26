@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class GameState
+public abstract class GameState
 {
     public GameStateType gameStateType { get; set; }
 
@@ -14,10 +14,7 @@ public class GameState
     /// <summary>
     /// Will be called whenever the state handler is started
     /// </summary>
-    public virtual void GameStateStarted()
-    {
-        // Do stuff...
-    }
+    public abstract void GameStateStarted();
 
     /// <summary>
     /// Use to end state and send an event

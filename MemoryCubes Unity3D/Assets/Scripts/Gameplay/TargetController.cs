@@ -12,6 +12,8 @@ public class TargetController : MonoBehaviour
 
     [SerializeField] private FreeTileChecker freeTileChecker;
 
+    [SerializeField] private GameModeController gameModeController;
+
     private bool isFirstTarget = true;
 
     private Color targetColor;
@@ -21,6 +23,8 @@ public class TargetController : MonoBehaviour
     public Color TargetColor { get { return targetColor; } }
 
     public static event Action TargetUpdatedEvent;
+
+    public static event Action NoTargetFoundEvent;
 
 	// Use this for pre-initialization
 	private void OnEnable()
@@ -65,12 +69,25 @@ public class TargetController : MonoBehaviour
     /// <returns></returns>
     private Color GetRandomColor()
     {
-        List<Color> activeColors = GetActiveColors();
+        List<Color> activeColors = GetFilteredListByGameMode(GetActiveColors());
 
-        // If no color was found in the list, use previously used color
         if (activeColors.Count == 0)
         {
-            return previousTargetColor;
+            switch (gameModeController.CurrentGameMode)
+            {
+                case GameMode.Combine:
+
+                    // Unable to find a new target
+                    if (NoTargetFoundEvent != null)
+                    {
+                        NoTargetFoundEvent();
+                    }
+                    
+                    return previousTargetColor;
+                
+                default:
+                    return previousTargetColor;
+            }
         }
 
         int randomIndex = UnityEngine.Random.Range(0, activeColors.Count);
@@ -115,5 +132,55 @@ public class TargetController : MonoBehaviour
         }
 
         return activeColors;
+    }
+
+    private List<Color> GetFilteredListByGameMode(List<Color> colorList)
+    {
+        switch (gameModeController.CurrentGameMode)
+        {            
+            case GameMode.Combine:
+                return GetCombineGameModeColorList(colorList);
+            
+            default:
+                return colorList;
+        }
+    }
+
+    private List<Color> GetCombineGameModeColorList(List<Color> colorList)
+    {
+        List<Color> combineColorList = new List<Color>();
+
+        for (int i = 0; i < colorList.Count; i++)
+        {
+            Color color = colorList[i];
+
+            int colorCount = GetColorCount(color);
+
+            if (colorCount < 2)
+            {
+                continue;
+            }
+
+            combineColorList.Add(color);
+        }
+
+        return combineColorList;
+    }
+
+    private int GetColorCount(Color targetColor)
+    {
+        int colorCount = 0;
+
+        for (int i = 0; i < gridBuilder.FlattenedGridList.Count; i++)
+        {
+            TileColor tileColor = gridBuilder.FlattenedGridList[i].GetComponent<TileColor>();
+
+            if (tileColor.MyColor == targetColor)
+            {
+                colorCount++;
+            }
+        }
+
+        return colorCount;
     }
 }

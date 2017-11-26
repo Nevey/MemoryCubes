@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOverView : MonoBehaviour
+public class GameOverView : MonoBehaviour, IOnUIViewInitialize, IOnUIViewShow
 {
 	[SerializeField] private AnimationCurve showCurve;
 
@@ -27,26 +27,14 @@ public class GameOverView : MonoBehaviour
 	public event Action GameOverShowFinishedEvent;
 
 	public static event Action GameOverHideFinishedEvent;
-
-	// Use this for initialization
-	private void Awake()
-	{
-		currentAnimation = CurrentAnimation.None;
-
-		rectTransform = GetComponent<RectTransform>();
-	}
-
-	private void OnEnable()
-	{
-		ShowGameOver();
-	}
 	
-	// Update is called once per frame
 	private void Update()
 	{
+		// TODO: Use tweens instead!
 		switch (currentAnimation)
 		{
 			case CurrentAnimation.None:
+				// Return if no animation is active
 				return;
 
 			case CurrentAnimation.ShowGameOver:
@@ -141,4 +129,16 @@ public class GameOverView : MonoBehaviour
 	{
 		return currentTime > animationCurve.keys[animationCurve.keys.Length - 1].time;
 	}
+
+    public void OnUIViewInitialize()
+    {
+        currentAnimation = CurrentAnimation.None;
+
+		rectTransform = GetComponent<RectTransform>();
+    }
+
+    public void OnUIViewShow()
+    {
+        ShowGameOver();
+    }
 }

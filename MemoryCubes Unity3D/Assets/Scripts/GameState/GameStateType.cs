@@ -5,6 +5,7 @@
     setupGameState,
     startGameState,
     selectColorTarget,
+    destroyRemainingCubesState,
     playerInputState,
     checkForCubeClearedState,
     levelWonState,

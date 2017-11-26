@@ -17,7 +17,7 @@ public class UIController : MonoBehaviour
 
 		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
 
-		HideAllViews();
+		InitializeAllViews();
 	}
 
 	private void OnMainMenuStateStarted()
@@ -33,6 +33,27 @@ public class UIController : MonoBehaviour
 	private void OnGameOverStateStarted()
 	{
 		SwitchView(UIViewType.GameOver);
+	}
+
+	private void InitializeAllViews()
+	{
+		foreach (UIViewType uiViewType in Enum.GetValues(typeof(UIViewType)))
+		{
+			InitializeView(uiViewType);
+		}
+	}
+
+	private void InitializeView(UIViewType uiViewType)
+	{
+		for (int i = 0; i < uiViews.Length; i++)
+		{
+			UIView uiView = uiViews[i];
+
+			if (uiView.UIViewType == uiViewType)
+			{
+				uiView.Initialize();
+			}
+		}
 	}
 
 	private void ShowView(UIViewType uiViewType)
@@ -66,14 +87,6 @@ public class UIController : MonoBehaviour
 	private void HideCurrentView()
 	{
 		HideView(currentViewType);
-	}
-
-	private void HideAllViews()
-	{
-		foreach (UIViewType uiViewType in Enum.GetValues(typeof(UIViewType)))
-		{
-			HideView(uiViewType);
-		}
 	}
 
 	private void SwitchView(UIViewType uiViewType)

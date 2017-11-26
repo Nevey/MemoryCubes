@@ -12,11 +12,11 @@ public class SelectColorTargetState : GameState
 
     public override void GameStateStarted()
     {
-        base.GameStateStarted();
-
         Debug.Log("SelectColorTargetState:GameStateStarted");
 
         TargetController.TargetUpdatedEvent += OnTargetUpdated;
+
+        TargetController.NoTargetFoundEvent += OnNoTargetFound;
 
         SelectColorTargetStateStartedEvent();
     }
@@ -27,6 +27,19 @@ public class SelectColorTargetState : GameState
 
         TargetController.TargetUpdatedEvent -= OnTargetUpdated;
 
+        TargetController.NoTargetFoundEvent -= OnNoTargetFound;
+
         GameStateFinished(GameStateEvent.selectTargetColorFinished);
+    }
+
+    private void OnNoTargetFound()
+    {
+        Debug.Log("SelectColorTargetState:OnNoTargetFound");
+
+        TargetController.TargetUpdatedEvent -= OnTargetUpdated;
+
+        TargetController.NoTargetFoundEvent -= OnNoTargetFound;
+
+        GameStateFinished(GameStateEvent.noTargetColorFound);
     }
 }

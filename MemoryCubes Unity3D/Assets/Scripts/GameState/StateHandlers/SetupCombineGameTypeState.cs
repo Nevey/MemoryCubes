@@ -11,8 +11,6 @@ public class SetupCombineGameModeState : GameState
 
     public override void GameStateStarted()
     {
-        base.GameStateStarted();
-
         Debug.Log("SetupCombineGameModeState:GameStateStarted");
 
         // MainMenuView.CollectModePressedEvent += OnCollectModePressed;

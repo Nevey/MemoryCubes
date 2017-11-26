@@ -12,8 +12,6 @@ public class GameOverState : GameState
 
     public override void GameStateStarted()
     {
-        base.GameStateStarted();
-
         Debug.Log("GameOverState:GameStateStarted");
 
         GameOverView.GameOverHideFinishedEvent += OnGameOverHideFinished;

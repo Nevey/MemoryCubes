@@ -12,8 +12,6 @@ public class CheckForCubeClearedState : GameState
 
 	public override void GameStateStarted()
 	{
-		base.GameStateStarted();
-
 		Debug.Log("CheckForCubeClearedState:GameStateStarted");
 
 		LevelController.GridClearedEvent += OnGridCleared;

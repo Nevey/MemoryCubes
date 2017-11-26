@@ -12,8 +12,6 @@ public class LevelWonState : GameState
 
 	public override void GameStateStarted()
 	{
-		base.GameStateStarted();
-
 		Debug.Log("LevelWonStateStartedEvent:GameStateStarted");
 
 		if (LevelWonStateStartedEvent != null)

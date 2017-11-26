@@ -1,21 +1,26 @@
 ﻿using UnityEngine;
 using System;
 
-public class SelectorArgs : EventArgs
-{
-	public GameObject selectedObject { get; set; }
-	
-	public SelectionState selectionState { get; set; }
-}
-
 public enum SelectionState
 {
 	notSelected,
 	selected
 }
 
+public class SelectorArgs : EventArgs
+{
+	public Selector selector { get; set; }
+	
+	public GameObject selectedObject { get; set; }
+	
+	public SelectionState selectionState { get; set; }
+}
+
+[RequireComponent(typeof(Resizer))]
 public class Selector : MonoBehaviour 
 {
+	private Resizer resizer;
+
 	private SelectionState selectionState = new SelectionState();
 
     public SelectionState CurrentSelection
@@ -23,30 +28,42 @@ public class Selector : MonoBehaviour
         get { return selectionState; }
     }
     
-	public event EventHandler<SelectorArgs> SelectEvent;
-	
-	public void Select()
+	public event EventHandler<SelectorArgs> SelectToggledEvent;
+
+	private void Start()
 	{
-        // Set selection state
-        ToggleSelect();
-		
+		resizer = GetComponent<Resizer>();
+
+		resizer.ResizeAnimationFinishedEvent += OnResizeAnimationFinished;
+	}
+
+	private void OnDestroy()
+	{
+		resizer.ResizeAnimationFinishedEvent -= OnResizeAnimationFinished;
+	}
+
+    private void OnResizeAnimationFinished()
+    {
 		// Create selector event args
 		SelectorArgs selectorArgs = new SelectorArgs();
+
+		selectorArgs.selector = this;
 		
 		selectorArgs.selectedObject = gameObject;
 		
 		selectorArgs.selectionState = selectionState;
-		
-		// Send select event
-		if (SelectEvent != null)
+
+        // Send select event
+		if (SelectToggledEvent != null)
 		{
-			SelectEvent(this, selectorArgs);
+			SelectToggledEvent(this, selectorArgs);
 		}
-	}
-    
-    private void ToggleSelect()
-    {
-		if (selectionState == SelectionState.notSelected)
+    }
+
+    public void Toggle()
+	{
+        // Set selection state
+        if (selectionState == SelectionState.notSelected)
 		{
 			selectionState = SelectionState.selected;
 		}
@@ -54,5 +71,7 @@ public class Selector : MonoBehaviour
 		{
 			selectionState = SelectionState.notSelected;
 		}
-    }
+
+		resizer.DoResize(selectionState);
+	}
 }

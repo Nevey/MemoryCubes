@@ -57,8 +57,7 @@ public class ParticlesSpawner : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Spawn particles on parent and position of target.
-	/// Spawn particles with custom color (WIP!).
+	/// Spawn particles on parent and position of target with custom color.
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="color"></param>

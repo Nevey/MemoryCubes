@@ -26,6 +26,8 @@ public class GridBuilder : MonoBehaviour
 
 	[SerializeField] private LevelController levelController;
 
+	[SerializeField] private ParticlesSpawner particlesSpawner;
+
 	[SerializeField] private GridConfig gridConfig;
 
 	private int gridSize;
@@ -165,6 +167,11 @@ public class GridBuilder : MonoBehaviour
 		{
 			return;
 		}
+
+		particlesSpawner.Spawn(
+            tile.transform,
+            tile.GetComponent<TileColor>().MyColor
+        );
 
 		Destroyer destroyer = tile.GetComponent<Destroyer>();
 

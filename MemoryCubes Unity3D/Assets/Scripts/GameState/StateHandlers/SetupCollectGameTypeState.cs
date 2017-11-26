@@ -10,8 +10,6 @@ public class SetupCollectGameModeState : GameState
 
     public override void GameStateStarted()
     {
-        base.GameStateStarted();
-
         Debug.Log("SetupCollectGameModeState:GameStateStarted");
 
         // MainMenuView.CollectModePressedEvent += OnCollectModePressed;
