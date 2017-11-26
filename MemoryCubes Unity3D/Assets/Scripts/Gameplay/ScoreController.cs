@@ -73,7 +73,7 @@ public class ScoreController : MonoBehaviour
 
 	/// <summary>
 	/// Apply a penalty, when collecting a cube that's not the same color
-	/// as the target color for example...
+	/// as the target color
 	/// </summary>
 	public void ApplyPenalty()
 	{
