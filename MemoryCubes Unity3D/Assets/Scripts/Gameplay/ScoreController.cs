@@ -50,11 +50,6 @@ public class ScoreController : MonoBehaviour
 	{
 		currentScore = 0;
 
-		UpdateScoreView();
-	}
-
-	private void UpdateScoreView()
-	{
 		scoreView.UpdateScoreText();
 	}
 
@@ -70,7 +65,10 @@ public class ScoreController : MonoBehaviour
 
 		currentScore += addedScore;
 
-		UpdateScoreView();
+		scoreView.UpdateScoreText();
+
+		// TODO: Show separate score floaters for tile score and bonus score
+		scoreView.ShowScoreFloater(addedScore);
 	}
 
 	/// <summary>
@@ -79,8 +77,12 @@ public class ScoreController : MonoBehaviour
 	/// </summary>
 	public void ApplyPenalty()
 	{
-		currentScore -= scoreConfig.PenaltyPerTile;
+		int penaltyValue = scoreConfig.PenaltyPerTile;
 
-		UpdateScoreView();
+		currentScore -= penaltyValue;
+
+		scoreView.UpdateScoreText();
+
+		scoreView.ShowScoreFloater(penaltyValue);
 	}
 }
