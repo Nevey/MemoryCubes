@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 public class Rotator : MonoBehaviour 
 {
+	[SerializeField] private Swiper swiper;
+
 	[SerializeField] private Transform rotationHelper;
-	
-	[SerializeField] private float smoothStrength = 0.1f;
+
+	[SerializeField] private float rotationTime = 0.5f;
 	
 	[SerializeField] private Vector2 rotationAmount;
-
-	[SerializeField] private Swiper swiper;
 
 	private void OnEnable()
 	{
@@ -20,16 +21,11 @@ public class Rotator : MonoBehaviour
 		swiper.SwipeEvent -= OnSwipeEvent;
 	}
 	
-	// Update is called once per frame
-	private void Update()
-	{
-		// We lerp quaternion values to the desired rotation, this way we work around euler rotation issues
-		transform.rotation = Quaternion.Lerp(transform.rotation, rotationHelper.rotation, smoothStrength);
-	}
-	
 	private void OnSwipeEvent(object sender, SwipeEventArgs e)
 	{
 		Turn(e.direction);
+
+		DoTurnTween();
 	}
 	
 	/// <summary>
@@ -64,5 +60,13 @@ public class Rotator : MonoBehaviour
 				
 			break;
 		}
+	}
+
+	/// <summary>
+	/// Apply rotation tween to transform
+	/// </summary>
+	private void DoTurnTween()
+	{
+		transform.DORotateQuaternion(rotationHelper.transform.rotation, rotationTime).SetEase(Ease.OutBack);
 	}
 }
