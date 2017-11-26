@@ -60,7 +60,7 @@ public class Selector : MonoBehaviour
 		}
     }
 
-    public void Toggle()
+    public void Toggle(GameMode currentGameMode)
 	{
         // Set selection state
         if (selectionState == SelectionState.notSelected)
@@ -72,6 +72,6 @@ public class Selector : MonoBehaviour
 			selectionState = SelectionState.notSelected;
 		}
 
-		resizer.DoResize(selectionState);
+		resizer.DoResize(selectionState, currentGameMode);
 	}
 }

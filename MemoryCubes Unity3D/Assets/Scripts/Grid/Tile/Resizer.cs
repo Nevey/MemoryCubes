@@ -1,23 +1,18 @@
 ﻿using System;
+using DG.Tweening;
 using UnityEngine;
 
 public class Resizer : MonoBehaviour 
 {
-	[SerializeField] private float selectedScale = 0.5f;
-	
-	[SerializeField] private float scalingSmoothTime = 1f;
-	
-	[SerializeField] private float maxScalingSpeed = 1f;
+	[SerializeField] private Ease scaleEase;
 
-	private bool isActive;
+	[SerializeField] private float scaleTweenTime = 0.5f;
+
+	[SerializeField] private float selectedScale = 0.5f;
 	
 	private float originScale;
 	
 	private float targetScale;
-	
-	private Vector3 scalingVelocity = Vector3.zero;
-	
-	private Deadzone deadzone = new Deadzone();
 
 	public event Action ResizeAnimationFinishedEvent;
 
@@ -29,31 +24,6 @@ public class Resizer : MonoBehaviour
 		targetScale = originScale;
 	}
 
-	private void Update() 
-	{
-		if (!isActive)
-		{
-			return;
-		}
-
-		Vector3 scale = new Vector3(targetScale, targetScale, targetScale);
-		
-		transform.localScale = Vector3.SmoothDamp(
-			transform.localScale, 
-			scale, 
-			ref scalingVelocity, 
-			scalingSmoothTime, 
-			maxScalingSpeed
-		);
-
-		if (!deadzone.OutOfReach(transform.localScale, scale))
-		{
-			DispatchResizeAnimationFinished();
-
-			isActive = false;
-		}
-	}
-
 	private void DispatchResizeAnimationFinished()
 	{
 		if (ResizeAnimationFinishedEvent != null)
@@ -61,8 +31,31 @@ public class Resizer : MonoBehaviour
 			ResizeAnimationFinishedEvent();
 		}
 	}
+
+	private void DoResizeTween(GameMode currentGameMode)
+	{
+		switch (currentGameMode)
+		{
+			case GameMode.Combine:
+
+				transform.DOScale(targetScale, scaleTweenTime)
+					.OnComplete(DispatchResizeAnimationFinished)
+					.SetEase(scaleEase);
+
+				break;
+			
+			default:
+
+				transform.DOScale(targetScale, scaleTweenTime)
+					.SetEase(scaleEase);
+
+				DispatchResizeAnimationFinished();
+
+				break;
+		}
+	}
 	
-	public void DoResize(SelectionState selectionState)
+	public void DoResize(SelectionState selectionState, GameMode currentGameMode)
 	{
 		if (selectionState == SelectionState.selected)
 		{
@@ -73,6 +66,6 @@ public class Resizer : MonoBehaviour
 			targetScale = originScale;
 		}
 
-		isActive = true;
+		DoResizeTween(currentGameMode);
 	}
 }

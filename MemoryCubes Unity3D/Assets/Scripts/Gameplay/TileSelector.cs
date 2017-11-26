@@ -9,6 +9,8 @@ public class TileSelector : MonoBehaviour
 
 	[SerializeField] private FreeTileChecker freeTileChecker;
 
+	[SerializeField] private GameModeController gameModeController;
+
 	// TODO: Change to List<Selector>
 	private List<GameObject> selectedTiles = new List<GameObject>();
 
@@ -123,7 +125,7 @@ public class TileSelector : MonoBehaviour
 	{
 		selector.SelectToggledEvent += OnSelectToggled;
 
-		selector.Toggle();
+		selector.Toggle(gameModeController.CurrentGameMode);
 	}
 
     private void OnSelectToggled(object sender, SelectorArgs e)
