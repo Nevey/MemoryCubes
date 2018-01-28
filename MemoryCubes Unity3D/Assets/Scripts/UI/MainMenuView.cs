@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainMenuView : MonoBehaviour
+public class MainMenuView : UIView
 {
     [SerializeField] private GameModeConfig gameModeConfig;
 
@@ -13,16 +13,6 @@ public class MainMenuView : MonoBehaviour
     [SerializeField] private ButtonGameModeCorresponder[] buttonGameModeCorresponders;
 
     public static event Action GameModePressedEvent;
-
-    private void OnEnable()
-    {
-        EnableButtons();
-    }
-
-    private void OnDisable()
-    {
-        DisableButtons();
-    }
 
     private void EnableButtons()
     {
@@ -81,5 +71,19 @@ public class MainMenuView : MonoBehaviour
         {
             GameModePressedEvent();
         }
+    }
+
+    public override void Show()
+    {
+        base.Show();
+
+        EnableButtons();
+    }
+
+    public override void Hide()
+    {
+        base.Hide();
+
+        DisableButtons();
     }
 }

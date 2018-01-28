@@ -1,4 +1,4 @@
-﻿public enum UIViewType
+﻿public enum UIViewID
 {
 	None,
 	Main,

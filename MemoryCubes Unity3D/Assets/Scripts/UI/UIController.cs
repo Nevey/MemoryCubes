@@ -7,10 +7,11 @@ public class UIController : MonoBehaviour
 {
 	[SerializeField] private UIView[] uiViews;
 
-	private UIViewType currentViewType;
+	private UIViewID currentViewType;
 
 	private void Awake()
 	{
+		// TODO: Create a class which can determine which UI to show based on game state enter
 		MainMenuState.MainMenuStateStartedEvent += OnMainMenuStateStarted;
 
 		SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
@@ -22,47 +23,47 @@ public class UIController : MonoBehaviour
 
 	private void OnMainMenuStateStarted()
 	{
-		SwitchView(UIViewType.Main);
+		SwitchView(UIViewID.Main);
 	}
 
 	private void OnSetupGameStateStarted()
 	{
-		SwitchView(UIViewType.InGame);
+		SwitchView(UIViewID.InGame);
 	}
 
 	private void OnGameOverStateStarted()
 	{
-		SwitchView(UIViewType.GameOver);
+		SwitchView(UIViewID.GameOver);
 	}
 
 	private void InitializeAllViews()
 	{
-		foreach (UIViewType uiViewType in Enum.GetValues(typeof(UIViewType)))
+		foreach (UIViewID uiViewType in Enum.GetValues(typeof(UIViewID)))
 		{
 			InitializeView(uiViewType);
 		}
 	}
 
-	private void InitializeView(UIViewType uiViewType)
+	private void InitializeView(UIViewID uiViewType)
 	{
 		for (int i = 0; i < uiViews.Length; i++)
 		{
 			UIView uiView = uiViews[i];
 
-			if (uiView.UIViewType == uiViewType)
+			if (uiView.UIViewID == uiViewType)
 			{
 				uiView.Initialize();
 			}
 		}
 	}
 
-	private void ShowView(UIViewType uiViewType)
+	private void ShowView(UIViewID uiViewType)
 	{
 		for (int i = 0; i < uiViews.Length; i++)
 		{
 			UIView uiView = uiViews[i];
 
-			if (uiView.UIViewType == uiViewType)
+			if (uiView.UIViewID == uiViewType)
 			{
 				uiView.Show();
 			}
@@ -71,13 +72,13 @@ public class UIController : MonoBehaviour
 		currentViewType = uiViewType;
 	}
 
-	private void HideView(UIViewType uiViewType)
+	private void HideView(UIViewID uiViewType)
 	{
 		for (int i = 0; i < uiViews.Length; i++)
 		{
 			UIView uiView = uiViews[i];
 
-			if (uiView.UIViewType == uiViewType)
+			if (uiView.UIViewID == uiViewType)
 			{
 				uiView.Hide();
 			}
@@ -89,7 +90,7 @@ public class UIController : MonoBehaviour
 		HideView(currentViewType);
 	}
 
-	private void SwitchView(UIViewType uiViewType)
+	private void SwitchView(UIViewID uiViewType)
 	{
 		HideCurrentView();
 
