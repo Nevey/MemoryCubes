@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 
+// TODO: Make this class something to inherit from, so we can create state flows seperately from each other
 public class GameStateController : MonoBehaviour
 {
     private GameStateType currentGameState = new GameStateType();

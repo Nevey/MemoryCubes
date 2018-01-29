@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 
+// TODO: Move to own file...
 public class GridBuildFinishedEventArgs : EventArgs
 {
 
 }
 
+// TODO: Move to own file...
 public class BuilderReadyEventArgs : EventArgs
 {
     
@@ -21,6 +23,8 @@ public class GridBuilder : MonoBehaviour
 	[SerializeField] private Transform parent;
 
 	[SerializeField] private GameObject tilePrefab;
+
+	[SerializeField] private GridBuilderAnimator gridBuilderAnimator;
 
 	[SerializeField] private GameOverView gameOverView;
 
@@ -69,7 +73,7 @@ public class GridBuilder : MonoBehaviour
         CreateGrid();
     }
 
-	 private void OnGameOverShowFinished()
+	private void OnGameOverShowFinished()
     {
         ClearGrid();
     }
@@ -105,8 +109,8 @@ public class GridBuilder : MonoBehaviour
 			GridBuildFinishedEvent(this, args);
 		}
 
-		// TODO: do some fancy animations before calling BuilderReady
-		BuilderReady();
+		// Do some animations, when done: building is ready!
+		gridBuilderAnimator.AnimateTiles(flattenedGridList, BuilderReady);
 	}
 	
 	private GameObject CreateTile(int x, int y, int z)
@@ -118,6 +122,8 @@ public class GridBuilder : MonoBehaviour
 
 		// Scale the tile based on grid size to make the grid fit the camera
 		float tileScale = tileScaleTweak / (gridSize + (spaceBetweenTiles * gridSize));
+
+		tile.GetComponent<Resizer>().SetOriginScale(tileScale);
 
 		tile.transform.localScale = new Vector3(
 			tileScale,
@@ -144,7 +150,7 @@ public class GridBuilder : MonoBehaviour
 		
 		return tile;
 	}
-    
+
     private void BuilderReady()
     {
         BuilderReadyEventArgs args = new BuilderReadyEventArgs();

@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class Resizer : MonoBehaviour 
 {
+	[Header("Scale amount when cube is built, before scaling it to 1")]
+	[SerializeField] private Ease startScaleEase;
+
+	[SerializeField] private float startScaleTime = 0.5f;
+
+	[SerializeField] private float startScaleDelay = 0.1f;
+
+	[Header("Gameplay tween values")]
 	[SerializeField] private Ease scaleEase;
 
 	[SerializeField] private float scaleTweenTime = 0.5f;
 
 	[SerializeField] private float selectedScale = 0.5f;
-	
+
 	private float originScale;
 	
 	private float targetScale;
 
-	public event Action ResizeAnimationFinishedEvent;
-
-	private void Start() 
-	{
-		// We want to scale all axes by the same amount, so using scale.x is OK
-		originScale = transform.localScale.x;
-		
-		targetScale = originScale;
-	}
+	public event Action<Resizer> ResizeAnimationFinishedEvent;
 
 	private void DispatchResizeAnimationFinished()
 	{
 		if (ResizeAnimationFinishedEvent != null)
 		{
-			ResizeAnimationFinishedEvent();
+			ResizeAnimationFinishedEvent(this);
 		}
 	}
 
@@ -54,18 +54,40 @@ public class Resizer : MonoBehaviour
 				break;
 		}
 	}
-	
-	public void DoResize(SelectionState selectionState, GameMode currentGameMode)
+
+	private float GetTargetScale(SelectionState selectionState)
 	{
 		if (selectionState == SelectionState.selected)
 		{
-			targetScale = originScale * selectedScale;
+			return originScale * selectedScale;
 		}
 		else
 		{
-			targetScale = originScale;
+			return originScale;
 		}
+	}
+
+	public void SetOriginScale(float scale)
+	{
+		originScale = scale;
+	}
+	
+	public void DoSelectionResize(SelectionState selectionState, GameMode currentGameMode)
+	{
+		targetScale = GetTargetScale(selectionState);
 
 		DoResizeTween(currentGameMode);
+	}
+
+	public void DoStartupResize(int index)
+	{
+		targetScale = GetTargetScale(SelectionState.notSelected);
+
+		float delay = startScaleDelay * index;
+
+		transform.DOScale(targetScale, startScaleTime)
+			.SetEase(startScaleEase)
+			.SetDelay(delay)
+			.OnComplete(DispatchResizeAnimationFinished);
 	}
 }

@@ -42,7 +42,7 @@ public class Selector : MonoBehaviour
 		resizer.ResizeAnimationFinishedEvent -= OnResizeAnimationFinished;
 	}
 
-    private void OnResizeAnimationFinished()
+    private void OnResizeAnimationFinished(Resizer resizer)
     {
 		// Create selector event args
 		SelectorArgs selectorArgs = new SelectorArgs();
@@ -72,6 +72,6 @@ public class Selector : MonoBehaviour
 			selectionState = SelectionState.notSelected;
 		}
 
-		resizer.DoResize(selectionState, currentGameMode);
+		resizer.DoSelectionResize(selectionState, currentGameMode);
 	}
 }
