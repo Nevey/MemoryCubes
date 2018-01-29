@@ -9,7 +9,7 @@ public class MainMenuState : GameState
 
     public MainMenuState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
-        mainMenuView = uiController.GetViewByID(UIViewID.Main) as MainMenuView;
+        mainMenuView = uiController.GetView<MainMenuView>();
     }
 
     public override void GameStateStarted()

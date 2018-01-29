@@ -55,6 +55,11 @@ public class UIView : MonoBehaviour, IUIView
 
 	private Vector2 endPosition;
 
+	/// <summary>
+	/// Use this boolean to determine whether or not this UI View is enabled
+	/// </summary>
+	protected bool isEnabled;
+
 	public UIViewID UIViewID
 	{
 		get { return uiViewID; }
@@ -141,6 +146,8 @@ public class UIView : MonoBehaviour, IUIView
 			{
 				ShowCompleteEvent(this);
 			}
+
+			isEnabled = true;
 		});
 
 		DOTween.Play(tween);
@@ -243,6 +250,8 @@ public class UIView : MonoBehaviour, IUIView
 		}
 
 		windowState = WindowState.Hidden;
+
+		isEnabled = false;
 
 		AnimateOut();
 	}

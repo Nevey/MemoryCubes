@@ -25,8 +25,7 @@ public class LevelController : MonoBehaviour
 
 		LevelWonState.LevelWonStateStartedEvent += OnLevelWonStateStarted;
 
-		// TODO: More like this...
-		gameStateController.GetGameStateByID(GameStateType.gameOverState).StateFinishedEvent += OnMainMenuStateFinished;
+		gameStateController.GetGameState<GameOverState>().StateFinishedEvent += OnMainMenuStateFinished;
 	}
 
     private void OnDisable()
@@ -35,7 +34,7 @@ public class LevelController : MonoBehaviour
 
 		LevelWonState.LevelWonStateStartedEvent -= OnLevelWonStateStarted;
 
-		gameStateController.GetGameStateByID(GameStateType.gameOverState).StateFinishedEvent -= OnMainMenuStateFinished;
+		gameStateController.GetGameState<GameOverState>().StateFinishedEvent -= OnMainMenuStateFinished;
 	}
 
 	private void OnCheckForCubeClearedStateStarted()

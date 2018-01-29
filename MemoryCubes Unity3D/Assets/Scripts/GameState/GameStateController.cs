@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 // TODO: Make this class something to inherit from, so we can create state flows seperately from each other
 public class GameStateController : MonoBehaviour
@@ -191,20 +192,19 @@ public class GameStateController : MonoBehaviour
         return gameState;
     }
 
-    // TODO: Use generic type in stead of ID/Type
-    public GameState GetGameStateByID(GameStateType gameStateType)
+    public T GetGameState<T>() where T : GameState
     {
         for (int i = 0; i < gameStateList.Count; i++)
         {
-            GameState gameState = gameStateList[i];
+            Type type = gameStateList[i].GetType();
 
-            if (gameState.gameStateType == gameStateType)
-            {
-                return gameState;
-            }
+            if (type == typeof(T))
+			{
+				return gameStateList[i] as T;
+			}
         }
 
-        Debug.LogError("Unable to find Game State with ID: " + gameStateType);
+        Debug.LogError("Unable to find Game State of type: " + typeof(T).Name);
 
         return null;
     }

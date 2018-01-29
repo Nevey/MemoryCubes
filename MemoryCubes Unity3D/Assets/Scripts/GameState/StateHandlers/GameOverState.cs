@@ -9,13 +9,13 @@ public class GameOverState : GameState
 
     public GameOverState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
-        gameOverView = uiController.GetViewByID(UIViewID.GameOver) as GameOverView;
+        gameOverView = uiController.GetView<GameOverView>();
     }
 
     public override void GameStateStarted()
     {
         base.GameStateStarted();
-        
+
         gameOverView.HideCompleteEvent += OnGameOverHideFinished;
 
         if (GameOverStateStartedEvent != null)

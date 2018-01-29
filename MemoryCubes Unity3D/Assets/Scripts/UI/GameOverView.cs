@@ -18,32 +18,14 @@ public class GameOverView : UIView
 
 	[SerializeField] private Image exclamation;
 
-	private bool canHide = false;
-
-	public event Action GameOverShowFinishedEvent;
-
 	private void Update()
 	{
-		if (canHide)
+		if (isEnabled)
 		{
 			if (Input.GetMouseButton(0))
 			{
 				Hide();
-
-				canHide = false;
 			}
-		}
-	}
-
-	protected override void OnShowComplete()
-	{
-		base.OnShowComplete();
-
-		canHide = true;
-
-		if (GameOverShowFinishedEvent != null)
-		{
-			GameOverShowFinishedEvent();
 		}
 	}
 

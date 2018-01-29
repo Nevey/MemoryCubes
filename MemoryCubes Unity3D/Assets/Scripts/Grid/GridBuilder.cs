@@ -26,8 +26,6 @@ public class GridBuilder : MonoBehaviour
 
 	[SerializeField] private GridBuilderAnimator gridBuilderAnimator;
 
-	[SerializeField] private GameOverView gameOverView;
-
 	[SerializeField] private LevelController levelController;
 
 	[SerializeField] private ParticlesSpawner particlesSpawner;
@@ -62,6 +60,7 @@ public class GridBuilder : MonoBehaviour
 
 	private void OnEnable()
 	{
+		// TODO: Don't wait for animation, clear grid on game over state enter instead
 		uiController.GetView<GameOverView>().ShowCompleteEvent += OnGameOverShowComplete;
 	}
 
