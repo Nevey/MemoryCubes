@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class GameOverView : UIView
 {
+	[SerializeField] private ScoreController scoreController;
+
+	[SerializeField] private Text scoreText;
+
 	private bool canHide = false;
 
 	public event Action GameOverShowFinishedEvent;
@@ -48,4 +52,10 @@ public class GameOverView : UIView
 		}
 	}
 
+	public override void Show()
+	{
+		base.Show();
+
+		scoreText.text = scoreController.LastScore.ToString();
+	}
 }
