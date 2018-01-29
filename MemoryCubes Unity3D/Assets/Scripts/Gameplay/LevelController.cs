@@ -23,7 +23,9 @@ public class LevelController : MonoBehaviour
 	{
 		CheckForCubeClearedState.CheckForCubeClearedStateStartedEvent += OnCheckForCubeClearedStateStarted;
 
-		LevelWonState.LevelWonStateStartedEvent += OnLevelWonStateStarted;
+		// gameStateController.GetGameState<CheckForCubeClearedState>().StateStartedEvent += OnCheckForCubeClearedStateStarted;
+
+		gameStateController.GetGameState<LevelWonState>().StateStartedEvent += OnLevelWonStateStarted;
 
 		gameStateController.GetGameState<GameOverState>().StateFinishedEvent += OnMainMenuStateFinished;
 	}
@@ -32,7 +34,7 @@ public class LevelController : MonoBehaviour
 	{
 		CheckForCubeClearedState.CheckForCubeClearedStateStartedEvent -= OnCheckForCubeClearedStateStarted;
 
-		LevelWonState.LevelWonStateStartedEvent -= OnLevelWonStateStarted;
+		gameStateController.GetGameState<LevelWonState>().StateStartedEvent -= OnLevelWonStateStarted;
 
 		gameStateController.GetGameState<GameOverState>().StateFinishedEvent -= OnMainMenuStateFinished;
 	}
@@ -46,11 +48,10 @@ public class LevelController : MonoBehaviour
 			{
 				GridClearedEvent();
 			}
-
-			// TODO: update level view?
 		}
 		else
 		{
+			// TODO: With new gamestate shizzle, this guy is NULL, remove static????
 			if (GridNotClearedEvent != null)
 			{
 				GridNotClearedEvent();
@@ -58,7 +59,7 @@ public class LevelController : MonoBehaviour
 		}
 	}
 
-	private void OnLevelWonStateStarted()
+	private void OnLevelWonStateStarted(object sender, StateStartedArgs e)
 	{
 		IncrementLevel();
 	}
