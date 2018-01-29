@@ -11,6 +11,8 @@ public class LevelController : MonoBehaviour
 
 	public int CurrentLevel { get { return currentLevel; } }
 
+	public int CurrentCubeCount { get { return currentLevel + 1; } }
+
 	public static event Action GridClearedEvent;
 
 	public static event Action GridNotClearedEvent;
