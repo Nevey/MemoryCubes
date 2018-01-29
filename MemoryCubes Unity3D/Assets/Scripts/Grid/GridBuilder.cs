@@ -32,6 +32,8 @@ public class GridBuilder : MonoBehaviour
 
 	[SerializeField] private ParticlesSpawner particlesSpawner;
 
+	[SerializeField] private UIController uiController;
+
 	[SerializeField] private GridConfig gridConfig;
 
 	private int gridSize;
@@ -60,12 +62,12 @@ public class GridBuilder : MonoBehaviour
 
 	private void OnEnable()
 	{
-		gameOverView.GameOverShowFinishedEvent += OnGameOverShowFinished;
+		uiController.GetView<GameOverView>().ShowCompleteEvent += OnGameOverShowComplete;
 	}
 
-	private void OnDisable()
+    private void OnDisable()
 	{
-		gameOverView.GameOverShowFinishedEvent -= OnGameOverShowFinished;
+		uiController.GetView<GameOverView>().ShowCompleteEvent -= OnGameOverShowComplete;
 	}
 
     private void OnBuildCubeStateStarted()
@@ -73,7 +75,7 @@ public class GridBuilder : MonoBehaviour
         CreateGrid();
     }
 
-	private void OnGameOverShowFinished()
+    private void OnGameOverShowComplete(UIView obj)
     {
         ClearGrid();
     }

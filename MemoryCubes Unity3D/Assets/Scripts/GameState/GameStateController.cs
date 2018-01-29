@@ -190,4 +190,22 @@ public class GameStateController : MonoBehaviour
 
         return gameState;
     }
+
+    // TODO: Use generic type in stead of ID/Type
+    public GameState GetGameStateByID(GameStateType gameStateType)
+    {
+        for (int i = 0; i < gameStateList.Count; i++)
+        {
+            GameState gameState = gameStateList[i];
+
+            if (gameState.gameStateType == gameStateType)
+            {
+                return gameState;
+            }
+        }
+
+        Debug.LogError("Unable to find Game State with ID: " + gameStateType);
+
+        return null;
+    }
 }

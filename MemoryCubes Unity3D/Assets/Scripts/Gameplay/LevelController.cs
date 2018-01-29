@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
+	[SerializeField] private GameStateController gameStateController;
+
 	[SerializeField] private GridBuilder gridBuilder;
 
 	private int currentLevel = 0;
@@ -23,16 +25,17 @@ public class LevelController : MonoBehaviour
 
 		LevelWonState.LevelWonStateStartedEvent += OnLevelWonStateStarted;
 
-		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+		// TODO: More like this...
+		gameStateController.GetGameStateByID(GameStateType.gameOverState).StateFinishedEvent += OnMainMenuStateFinished;
 	}
 
-	private void OnDisable()
+    private void OnDisable()
 	{
 		CheckForCubeClearedState.CheckForCubeClearedStateStartedEvent -= OnCheckForCubeClearedStateStarted;
 
 		LevelWonState.LevelWonStateStartedEvent -= OnLevelWonStateStarted;
 
-		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
+		gameStateController.GetGameStateByID(GameStateType.gameOverState).StateFinishedEvent -= OnMainMenuStateFinished;
 	}
 
 	private void OnCheckForCubeClearedStateStarted()
@@ -61,10 +64,10 @@ public class LevelController : MonoBehaviour
 		IncrementLevel();
 	}
 
-	private void OnGameOverStateStarted()
-	{
-		ResetLevel();
-	}
+	private void OnMainMenuStateFinished(object sender, StateFinishedArgs e)
+    {
+        ResetLevelCounter();
+    }
 
 	private void IncrementLevel()
 	{
@@ -73,7 +76,7 @@ public class LevelController : MonoBehaviour
 		Debug.Log("Level cleared, new level value: " + currentLevel);
 	}
 
-	private void ResetLevel()
+	private void ResetLevelCounter()
 	{
 		currentLevel = 0;
 	}

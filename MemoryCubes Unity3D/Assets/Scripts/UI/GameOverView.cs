@@ -8,6 +8,10 @@ public class GameOverView : UIView
 {
 	[SerializeField] private ScoreController scoreController;
 
+	[SerializeField] private LevelController levelController;
+
+	[SerializeField] private Text cubesClearedText;
+
 	[SerializeField] private Text scoreText;
 
 	[SerializeField] private Text highScoreText;
@@ -17,9 +21,6 @@ public class GameOverView : UIView
 	private bool canHide = false;
 
 	public event Action GameOverShowFinishedEvent;
-
-	// TODO: Make all screens accessible via ui controller and use generic show/hide events
-	public static event Action GameOverHideFinishedEvent;
 
 	private void Update()
 	{
@@ -46,18 +47,12 @@ public class GameOverView : UIView
 		}
 	}
 
-	protected override void OnHideComplete()
-	{
-		base.OnHideComplete();
-		
-		if (GameOverHideFinishedEvent != null)
-		{
-			GameOverHideFinishedEvent();
-		}
-	}
-
 	private void SetupTexts()
 	{
+		// Don't check current cube count, but current level
+		// instead, as the player did not finish the final cube he/she reached!
+		cubesClearedText.text = levelController.CurrentLevel.ToString();
+
 		scoreText.text = scoreController.LastScore.ToString();
 
 		highScoreText.text = scoreController.HighScore.ToString();

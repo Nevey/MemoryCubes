@@ -5,16 +5,18 @@ public class GameOverState : GameState
 {
     public static event Action GameOverStateStartedEvent;
 
+    private GameOverView gameOverView;
+
     public GameOverState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
-        
+        gameOverView = uiController.GetViewByID(UIViewID.GameOver) as GameOverView;
     }
 
     public override void GameStateStarted()
     {
         base.GameStateStarted();
-
-        GameOverView.GameOverHideFinishedEvent += OnGameOverHideFinished;
+        
+        gameOverView.HideCompleteEvent += OnGameOverHideFinished;
 
         if (GameOverStateStartedEvent != null)
         {
@@ -22,9 +24,9 @@ public class GameOverState : GameState
         }
     }
 
-    private void OnGameOverHideFinished()
+    private void OnGameOverHideFinished(UIView obj)
     {
-        GameOverView.GameOverHideFinishedEvent -= OnGameOverHideFinished;
+        gameOverView.HideCompleteEvent -= OnGameOverHideFinished;
 
         GameStateFinished(GameStateEvent.backToMenu);
     }

@@ -141,6 +141,7 @@ public class UIController : MonoBehaviour
 		HideCurrentView();
 	}
 
+	// TODO: Revamp to use generic type instead...
 	public UIView GetViewByID(UIViewID uiViewID)
 	{
 		for (int i = 0; i < uiViews.Length; i++)
@@ -152,6 +153,23 @@ public class UIController : MonoBehaviour
 		}
 
 		Debug.LogError("Unable to find UI View with ID: " + uiViewID);
+
+		return null;
+	}
+
+	public UIView GetView<T>() where T : UIView
+	{
+		for (int i = 0; i < uiViews.Length; i++)
+		{
+			Type type = uiViews[i].GetType();
+
+			if (type == typeof(T))
+			{
+				return uiViews[i];
+			}
+		}
+
+		Debug.LogError("Unable to find UI View of type: " + typeof(T).Name);
 
 		return null;
 	}
