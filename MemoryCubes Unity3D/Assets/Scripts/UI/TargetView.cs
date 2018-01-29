@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TargetView : MonoBehaviour
+public class TargetView : MonoBehaviour, IOnUIViewInitialize
 {
     [SerializeField] private GameObject targetSpritePrefab;
 
@@ -31,25 +31,6 @@ public class TargetView : MonoBehaviour
     private bool isActive;
 
     private Color targetColor;
-
-    private void OnEnable()
-    {
-        // TODO: Get rid of these listeners and let target controller manage all this...
-        StartGameState.StartGameStateStartedEvent += OnStartGameStateStarted;
-
-        GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
-
-        LevelWonState.LevelWonStateStartedEvent += OnLevelWonStateStarted;
-    }
-
-    private void OnDisable()
-    {
-        StartGameState.StartGameStateStartedEvent -= OnStartGameStateStarted;
-
-        GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
-
-        LevelWonState.LevelWonStateStartedEvent -= OnLevelWonStateStarted;
-    }
 	
 	// Update is called once per frame
 	private void Update()
@@ -192,6 +173,16 @@ public class TargetView : MonoBehaviour
                 targetBarSprites[x, y] = null;
             }
         }
+    }
+
+    public void OnUIViewInitialize()
+    {
+        // TODO: Get rid of these listeners and let target controller manage all this...
+        StartGameState.StartGameStateStartedEvent += OnStartGameStateStarted;
+
+        GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+
+        LevelWonState.LevelWonStateStartedEvent += OnLevelWonStateStarted;
     }
 
     public void SetNewTargetBar(Color targetColor)

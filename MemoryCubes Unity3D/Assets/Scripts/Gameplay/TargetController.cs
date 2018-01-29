@@ -14,8 +14,6 @@ public class TargetController : MonoBehaviour
 
     [SerializeField] private GameModeController gameModeController;
 
-    private bool isFirstTarget = true;
-
     private Color targetColor;
 
     private Color previousTargetColor;

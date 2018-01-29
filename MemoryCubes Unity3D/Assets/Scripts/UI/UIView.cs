@@ -50,6 +50,10 @@ public class UIView : MonoBehaviour, IUIView
 		get { return uiViewID; }
 	}
 
+	public event Action AnimateInFinishedEvent;
+
+	public event Action AnimateOutFinishedEvent;
+
 	private void SetupAnimation()
 	{
 		// The start position used for the "show" animation
@@ -68,7 +72,7 @@ public class UIView : MonoBehaviour, IUIView
 
 		Rect uiRect = rectTransform.rect;
 
-		switch (showAnimationDirection)
+		switch (direction)
 		{
 			case AnimationDirection.top:
 				
@@ -124,6 +128,11 @@ public class UIView : MonoBehaviour, IUIView
 		tween.OnComplete(() =>
 		{
 			OnShowComplete();
+
+			if (AnimateInFinishedEvent != null)
+			{
+				AnimateInFinishedEvent();
+			}
 		});
 
 		DOTween.Play(tween);
@@ -141,6 +150,11 @@ public class UIView : MonoBehaviour, IUIView
 		tween.OnComplete(() =>
 		{
 			OnHideComplete();
+
+			if (AnimateOutFinishedEvent != null)
+			{
+				AnimateOutFinishedEvent();
+			}
 		});
 
 		DOTween.Play(tween);

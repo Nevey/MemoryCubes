@@ -7,7 +7,11 @@ public class UIController : MonoBehaviour
 {
 	[SerializeField] private UIView[] uiViews;
 
-	private UIViewID currentViewType;
+	private UIViewID currentViewID = UIViewID.None;
+
+	private UIViewID nextViewID = UIViewID.None;
+
+	private bool isSwappingViews = false;
 
 	private void Awake()
 	{
@@ -38,62 +42,96 @@ public class UIController : MonoBehaviour
 
 	private void InitializeAllViews()
 	{
-		foreach (UIViewID uiViewType in Enum.GetValues(typeof(UIViewID)))
+		foreach (UIViewID uiViewID in Enum.GetValues(typeof(UIViewID)))
 		{
-			InitializeView(uiViewType);
+			InitializeView(uiViewID);
 		}
 	}
 
-	private void InitializeView(UIViewID uiViewType)
+	private void InitializeView(UIViewID uiViewID)
 	{
 		for (int i = 0; i < uiViews.Length; i++)
 		{
 			UIView uiView = uiViews[i];
 
-			if (uiView.UIViewID == uiViewType)
+			uiView.AnimateInFinishedEvent += OnAnimateInFinished;
+
+			uiView.AnimateOutFinishedEvent += OnAnimateOutFinished;
+
+			if (uiView.UIViewID == uiViewID)
 			{
 				uiView.Initialize();
 			}
 		}
 	}
 
-	private void ShowView(UIViewID uiViewType)
+    private void ShowView(UIViewID uiViewID)
 	{
 		for (int i = 0; i < uiViews.Length; i++)
 		{
 			UIView uiView = uiViews[i];
 
-			if (uiView.UIViewID == uiViewType)
+			if (uiView.UIViewID == uiViewID)
 			{
 				uiView.Show();
 			}
 		}
 
-		currentViewType = uiViewType;
+		currentViewID = uiViewID;
 	}
 
-	private void HideView(UIViewID uiViewType)
+	private void HideView(UIViewID uiViewID)
 	{
+		currentViewID = UIViewID.None;
+		
 		for (int i = 0; i < uiViews.Length; i++)
 		{
 			UIView uiView = uiViews[i];
 
-			if (uiView.UIViewID == uiViewType)
+			if (uiView.UIViewID == uiViewID)
 			{
 				uiView.Hide();
+
+				break;
 			}
 		}
 	}
 
+	private void OnAnimateInFinished()
+    {
+        
+    }
+
+    private void OnAnimateOutFinished()
+    {
+		if (isSwappingViews)
+		{
+        	ShowView(nextViewID);
+
+			nextViewID = UIViewID.None;
+
+			isSwappingViews = false;
+		}
+    }
+
 	private void HideCurrentView()
 	{
-		HideView(currentViewType);
+		HideView(currentViewID);
 	}
 
-	private void SwitchView(UIViewID uiViewType)
+	private void SwitchView(UIViewID uiViewID)
 	{
-		HideCurrentView();
+		if (currentViewID == UIViewID.None)
+		{
+			ShowView(uiViewID);
 
-		ShowView(uiViewType);
+			return;
+		}
+
+		nextViewID = uiViewID;
+
+		isSwappingViews = true;
+
+		HideCurrentView();
 	}
 }
