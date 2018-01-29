@@ -8,6 +8,8 @@ public class ScoreController : MonoBehaviour
 
 	[SerializeField] private ScoreView scoreView;
 
+	private const string highScoreKey = "highScore";
+
 	private int currentScore;
 
 	private int lastScore;
@@ -23,6 +25,12 @@ public class ScoreController : MonoBehaviour
 	/// </summary>
 	/// <returns></returns>
 	public int LastScore { get { return lastScore; } }
+
+	/// <summary>
+	/// Get the user's highscore
+	/// </summary>
+	/// <returns></returns>
+	public int HighScore { get { return LoadHighScore(); } }
 
 	private void OnEnable()
 	{
@@ -44,6 +52,11 @@ public class ScoreController : MonoBehaviour
 	private void StoreCurrentScore()
 	{
 		lastScore = currentScore;
+
+		if (LoadHighScore() < lastScore)
+		{
+			SaveHighScore(lastScore);
+		}
 	}
 
 	private void ResetScore()
@@ -51,6 +64,16 @@ public class ScoreController : MonoBehaviour
 		currentScore = 0;
 
 		scoreView.UpdateScoreText();
+	}
+
+	private void SaveHighScore(int score)
+	{
+		PlayerPrefs.SetInt(highScoreKey, score);
+	}
+
+	private int LoadHighScore()
+	{
+		return PlayerPrefs.GetInt(highScoreKey);
 	}
 
 	/// <summary>

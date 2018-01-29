@@ -10,6 +10,10 @@ public class GameOverView : UIView
 
 	[SerializeField] private Text scoreText;
 
+	[SerializeField] private Text highScoreText;
+
+	[SerializeField] private Image exclamation;
+
 	private bool canHide = false;
 
 	public event Action GameOverShowFinishedEvent;
@@ -52,10 +56,33 @@ public class GameOverView : UIView
 		}
 	}
 
+	private void SetupTexts()
+	{
+		scoreText.text = scoreController.LastScore.ToString();
+
+		highScoreText.text = scoreController.HighScore.ToString();
+	}
+
+	private void SetupHighscoreIndicator()
+	{
+		exclamation.gameObject.SetActive(IsNewHighScore());
+	}
+
+	/// <summary>
+	/// Don't do this in score controller for ordering reasons (TO FIX)
+	/// </summary>
+	/// <returns></returns>
+	private bool IsNewHighScore()
+	{
+		return scoreController.LastScore == scoreController.HighScore;
+	}
+
 	public override void Show()
 	{
 		base.Show();
 
-		scoreText.text = scoreController.LastScore.ToString();
+		SetupTexts();
+		
+		SetupHighscoreIndicator();
 	}
 }
