@@ -12,16 +12,9 @@ public class StartGameState : GameState
 
     public override void GameStateStarted()
     {
-        Debug.Log("StartGameState:GameStateStarted");
+        base.GameStateStarted();
 
         StartGameStateStartedEvent();
-
-        GameStateFinished();
-    }
-
-    private void GameStateFinished()
-    {
-        Debug.Log("StartGameState:GameStateFinished");
 
         GameStateFinished(GameStateEvent.startGameStateFinished);
     }

@@ -12,8 +12,6 @@ public class MainMenuView : UIView
 
     [SerializeField] private ButtonGameModeCorresponder[] buttonGameModeCorresponders;
 
-    public static event Action GameModePressedEvent;
-
     private void EnableButtons()
     {
         for (int i = 0; i < buttonGameModeCorresponders.Length; i++)
@@ -38,7 +36,9 @@ public class MainMenuView : UIView
     {
         buttonGameModeCorresponder.Button.onClick.AddListener(() => 
         {
-            OnGameModeButtonPressed(buttonGameModeCorresponder.CorrespindingGameMode);
+            gameModeController.SetGameMode(buttonGameModeCorresponder.CorrespindingGameMode);
+
+            Hide();
         });
     }
 
@@ -55,21 +55,6 @@ public class MainMenuView : UIView
 
                 break;
             }
-        }
-    }
-
-    private void OnGameModeButtonPressed(GameMode gameMode)
-    {
-        gameModeController.SetGameMode(gameMode);
-
-        DispatchGameModePressed();
-    }
-
-    private void DispatchGameModePressed()
-    {
-        if (GameModePressedEvent != null)
-        {
-            GameModePressedEvent();
         }
     }
 

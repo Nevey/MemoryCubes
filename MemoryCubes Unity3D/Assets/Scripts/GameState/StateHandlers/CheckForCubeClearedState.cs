@@ -12,7 +12,7 @@ public class CheckForCubeClearedState : GameState
 
 	public override void GameStateStarted()
 	{
-		Debug.Log("CheckForCubeClearedState:GameStateStarted");
+		base.GameStateStarted();
 
 		LevelController.GridClearedEvent += OnGridCleared;
 
@@ -26,8 +26,6 @@ public class CheckForCubeClearedState : GameState
 
 	private void OnGridCleared()
 	{
-		Debug.Log("CheckForCubeClearedState:OnGridCleared");
-
 		LevelController.GridClearedEvent -= OnGridCleared;
 
 		LevelController.GridNotClearedEvent -= OnGridNotCleared;
@@ -37,8 +35,6 @@ public class CheckForCubeClearedState : GameState
 
 	private void OnGridNotCleared()
 	{
-		Debug.Log("CheckForCubeClearedState:OnGridNotCleared");
-
 		LevelController.GridClearedEvent -= OnGridCleared;
 
 		LevelController.GridNotClearedEvent -= OnGridNotCleared;

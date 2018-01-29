@@ -31,6 +31,14 @@ public class UIView : MonoBehaviour, IUIView
 		right
 	}
 
+	private enum WindowState
+	{
+		Hidden,
+		Showing
+	}
+
+	private WindowState windowState = WindowState.Hidden;
+
 	private IOnUIViewInitialize[] onUIViewInitialize;
 
 	private IOnUIViewShow[] onUIViewShow;
@@ -52,9 +60,9 @@ public class UIView : MonoBehaviour, IUIView
 		get { return uiViewID; }
 	}
 
-	public event Action AnimateInFinishedEvent;
+	public event Action<UIView> ShowCompleteEvent;
 
-	public event Action AnimateOutFinishedEvent;
+	public event Action<UIView> HideCompleteEvent;
 
 	private void SetupAnimation()
 	{
@@ -129,9 +137,9 @@ public class UIView : MonoBehaviour, IUIView
 		{
 			OnShowComplete();
 
-			if (AnimateInFinishedEvent != null)
+			if (ShowCompleteEvent != null)
 			{
-				AnimateInFinishedEvent();
+				ShowCompleteEvent(this);
 			}
 		});
 
@@ -151,20 +159,26 @@ public class UIView : MonoBehaviour, IUIView
 		{
 			OnHideComplete();
 
-			if (AnimateOutFinishedEvent != null)
+			if (HideCompleteEvent != null)
 			{
-				AnimateOutFinishedEvent();
+				HideCompleteEvent(this);
 			}
 		});
 
 		DOTween.Play(tween);
 	}
 
+	/// <summary>
+	/// Use this method to do custom stuff internally
+	/// </summary>
 	protected virtual void OnShowComplete()
 	{
 		// Do custom stuff here...
 	}
 
+	/// <summary>
+	/// Use this method to do custom stuff internally
+	/// </summary>
 	protected virtual void OnHideComplete()
 	{
 		gameObject.SetActive(false);
@@ -204,6 +218,11 @@ public class UIView : MonoBehaviour, IUIView
 
 	public virtual void Show()
 	{
+		if (windowState == WindowState.Showing)
+		{
+			return;
+		}
+
 		gameObject.SetActive(true);
 
 		for (int i = 0; i < onUIViewShow.Length; i++)
@@ -211,11 +230,20 @@ public class UIView : MonoBehaviour, IUIView
 			onUIViewShow[i].OnUIViewShow();
 		}
 
+		windowState = WindowState.Showing;
+
 		AnimateIn();
 	}
 
 	public virtual void Hide()
 	{
+		if (windowState == WindowState.Hidden)
+		{
+			return;
+		}
+
+		windowState = WindowState.Hidden;
+
 		AnimateOut();
 	}
 }

@@ -12,8 +12,8 @@ public class SetupGameState : GameState
 
     public override void GameStateStarted()
     {
-        Debug.Log("SetupGameState:GameStateStarted");
-
+        base.GameStateStarted();
+        
         SetupGameStateStartedEvent();
 
         GameStateFinished();
@@ -21,8 +21,6 @@ public class SetupGameState : GameState
 
     private void GameStateFinished()
     {
-        Debug.Log("SetupGameState:GameStateFinished");
-
         GameStateFinished(GameStateEvent.setupGameStateFinished);
     }
 }

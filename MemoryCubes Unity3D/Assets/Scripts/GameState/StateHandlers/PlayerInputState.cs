@@ -14,8 +14,8 @@ public class PlayerInputState : GameState
 
     public override void GameStateStarted()
     {
-        Debug.Log("PlayerInputState:GameStateStarted");
-
+        base.GameStateStarted();
+        
         EnableListeners();
 
         DispatchPlayerInputStateStarted();
@@ -37,8 +37,6 @@ public class PlayerInputState : GameState
 
     private void OnDestroyFinished()
     {
-        Debug.Log("PlayerInputState:OnCollect");
-
         DispatchPlayerInputStateFinished();
 
         DisableListeners();
@@ -48,8 +46,6 @@ public class PlayerInputState : GameState
 
     private void OnOutOfTime()
     {
-        Debug.Log("PlayerInputState:OnOutOfTime");
-
         DispatchPlayerInputStateFinished();
 
         DisableListeners();

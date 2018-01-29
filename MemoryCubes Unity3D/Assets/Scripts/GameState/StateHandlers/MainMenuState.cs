@@ -5,25 +5,25 @@ public class MainMenuState : GameState
 {
     public static event Action MainMenuStateStartedEvent;
 
+    private MainMenuView mainMenuView;
+
     public MainMenuState(GameStateType gameStateEnum) : base(gameStateEnum)
     {
-        
+        mainMenuView = uiController.GetViewByID(UIViewID.Main) as MainMenuView;
     }
 
     public override void GameStateStarted()
     {
-        Debug.Log("MainMenuState:GameStateStarted");
-
-        MainMenuView.GameModePressedEvent += OnGameModePressed;
+        base.GameStateStarted();
+        
+        mainMenuView.HideCompleteEvent += OnHideComplete;
 
         MainMenuStateStartedEvent();
     }
 
-    private void OnGameModePressed()
+    private void OnHideComplete(UIView uIView)
     {
-        Debug.Log("MainMenuState:OnGameModePressed");
-
-        MainMenuView.GameModePressedEvent -= OnGameModePressed;
+        mainMenuView.HideCompleteEvent -= OnHideComplete;
 
         GameStateFinished(GameStateEvent.startGame);
     }

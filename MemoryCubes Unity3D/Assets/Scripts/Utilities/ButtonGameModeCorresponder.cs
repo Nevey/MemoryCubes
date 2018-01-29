@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// TODO: Rename...
+// TODO: Rename... to GameModeButton
 public class ButtonGameModeCorresponder : GameModeCorresponder
 {
 	[SerializeField] private Button button;

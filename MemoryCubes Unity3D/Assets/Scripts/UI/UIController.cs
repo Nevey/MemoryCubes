@@ -54,9 +54,9 @@ public class UIController : MonoBehaviour
 		{
 			UIView uiView = uiViews[i];
 
-			uiView.AnimateInFinishedEvent += OnAnimateInFinished;
+			uiView.ShowCompleteEvent += OnShowComplete;
 
-			uiView.AnimateOutFinishedEvent += OnAnimateOutFinished;
+			uiView.HideCompleteEvent += OnHideComplete;
 
 			if (uiView.UIViewID == uiViewID)
 			{
@@ -76,14 +76,10 @@ public class UIController : MonoBehaviour
 				uiView.Show();
 			}
 		}
-
-		currentViewID = uiViewID;
 	}
 
 	private void HideView(UIViewID uiViewID)
 	{
-		currentViewID = UIViewID.None;
-		
 		for (int i = 0; i < uiViews.Length; i++)
 		{
 			UIView uiView = uiViews[i];
@@ -97,12 +93,12 @@ public class UIController : MonoBehaviour
 		}
 	}
 
-	private void OnAnimateInFinished()
+	private void OnShowComplete(UIView uIView)
     {
-        
+        currentViewID = uIView.UIViewID;
     }
 
-    private void OnAnimateOutFinished()
+    private void OnHideComplete(UIView uIView)
     {
 		if (isSwappingViews)
 		{
@@ -112,6 +108,8 @@ public class UIController : MonoBehaviour
 
 			isSwappingViews = false;
 		}
+
+		currentViewID = UIViewID.None;
     }
 
 	private void HideCurrentView()
@@ -133,5 +131,20 @@ public class UIController : MonoBehaviour
 		isSwappingViews = true;
 
 		HideCurrentView();
+	}
+
+	public UIView GetViewByID(UIViewID uiViewID)
+	{
+		for (int i = 0; i < uiViews.Length; i++)
+		{
+			if (uiViews[i].UIViewID == uiViewID)
+			{
+				return uiViews[i];
+			}
+		}
+
+		Debug.LogError("Unable to find UI View with ID: " + uiViewID);
+
+		return null;
 	}
 }

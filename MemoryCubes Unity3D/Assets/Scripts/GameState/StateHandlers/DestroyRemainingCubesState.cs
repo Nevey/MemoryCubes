@@ -12,7 +12,7 @@ public class DestroyRemainingCubesState : GameState
 
     public override void GameStateStarted()
     {
-        Debug.Log("DestroyRemainingCubesState:GameStateStarted");
+        base.GameStateStarted();
 
         CollectController.ClearAllTilesFinishedEvent += OnClearAllTilesFinished;
 
@@ -24,8 +24,6 @@ public class DestroyRemainingCubesState : GameState
 
     private void OnClearAllTilesFinished()
     {
-        Debug.Log("DestroyRemainingCubesState:OnClearAllTilesFinished");
-
         CollectController.ClearAllTilesFinishedEvent -= OnClearAllTilesFinished;
 
         GameStateFinished(GameStateEvent.cubeCleared);

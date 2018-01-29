@@ -12,7 +12,7 @@ public class GameOverState : GameState
 
     public override void GameStateStarted()
     {
-        Debug.Log("GameOverState:GameStateStarted");
+        base.GameStateStarted();
 
         GameOverView.GameOverHideFinishedEvent += OnGameOverHideFinished;
 
@@ -24,8 +24,6 @@ public class GameOverState : GameState
 
     private void OnGameOverHideFinished()
     {
-        Debug.Log("GameOverState:OnGameOverHideFinished");
-
         GameOverView.GameOverHideFinishedEvent -= OnGameOverHideFinished;
 
         GameStateFinished(GameStateEvent.backToMenu);

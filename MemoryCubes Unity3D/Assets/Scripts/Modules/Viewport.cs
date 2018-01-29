@@ -19,6 +19,7 @@ public class Viewport : MonoBehaviour
 	
 	private void CalculateScale()
 	{
+		// TODO: Use Unity's internal system for this
 		float designPixelCount = designRect.x * designRect.y;
 		
 		float pixelCount = Screen.width * Screen.height;

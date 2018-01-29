@@ -12,7 +12,7 @@ public class BuildGridState : GameState
 
     public override void GameStateStarted()
     {
-        Debug.Log("BuildCubeState:GameStateStarted");
+        base.GameStateStarted();
 
         GridBuilder.BuilderReadyEvent += OnBuilderReady;
 
@@ -21,8 +21,6 @@ public class BuildGridState : GameState
 
     private void OnBuilderReady(object sender, BuilderReadyEventArgs e)
     {
-        Debug.Log("BuildCubeState:OnBuilderReady");
-
         GridBuilder.BuilderReadyEvent -= OnBuilderReady;
 
         GameStateFinished(GameStateEvent.cubeBuildingFinished);
