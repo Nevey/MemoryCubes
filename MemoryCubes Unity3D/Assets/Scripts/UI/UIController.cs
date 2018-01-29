@@ -15,17 +15,19 @@ public class UIController : MonoBehaviour
 
 	private void Awake()
 	{
-		// TODO: Create a class which can determine which UI to show based on game state enter
+		// TODO: Create a class which can determine which UI to show based on game state enter/exit
 		MainMenuState.MainMenuStateStartedEvent += OnMainMenuStateStarted;
 
 		SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
 
 		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
 
+		LevelWonState.LevelWonStateStartedEvent += OnLevelWonStateStarted;
+
 		InitializeAllViews();
 	}
 
-	private void OnMainMenuStateStarted()
+    private void OnMainMenuStateStarted()
 	{
 		SwitchView(UIViewID.Main);
 	}
@@ -39,6 +41,11 @@ public class UIController : MonoBehaviour
 	{
 		SwitchView(UIViewID.GameOver);
 	}
+
+    private void OnLevelWonStateStarted()
+    {
+        HideCurrentView();
+    }
 
 	private void InitializeAllViews()
 	{
@@ -119,7 +126,8 @@ public class UIController : MonoBehaviour
 
 	private void SwitchView(UIViewID uiViewID)
 	{
-		if (currentViewID == UIViewID.None)
+		if (currentViewID == UIViewID.None
+			|| currentViewID == uiViewID)
 		{
 			ShowView(uiViewID);
 

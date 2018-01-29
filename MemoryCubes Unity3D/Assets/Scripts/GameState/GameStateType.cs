@@ -1,4 +1,5 @@
-﻿public enum GameStateType
+﻿// TODO: Rename to GameStateID
+public enum GameStateType
 {
     mainMenu,
     buildCube,
