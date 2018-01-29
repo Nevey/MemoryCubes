@@ -37,6 +37,8 @@ public class UIView : MonoBehaviour, IUIView
 
 	private IOnUIViewHide[] onUIViewHide;
 
+	private Rect uiRect;
+
 	private RectTransform rectTransform;
 
 	private Vector2 startPosition;
@@ -69,8 +71,6 @@ public class UIView : MonoBehaviour, IUIView
 	private Vector2 GetDirectionPosition(AnimationDirection direction)
 	{
 		Vector2 position = Vector2.zero;
-
-		Rect uiRect = rectTransform.rect;
 
 		switch (direction)
 		{
@@ -194,6 +194,8 @@ public class UIView : MonoBehaviour, IUIView
 		}
 
 		rectTransform = GetComponent<RectTransform>();
+
+		uiRect = rectTransform.rect;
 
 		SetupAnimation();
 
