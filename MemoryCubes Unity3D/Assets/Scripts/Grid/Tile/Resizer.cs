@@ -9,8 +9,6 @@ public class Resizer : MonoBehaviour
 
 	[SerializeField] private float startScaleTime = 0.5f;
 
-	[SerializeField] private float startScaleDelay = 0.1f;
-
 	[Header("Gameplay tween values")]
 	[SerializeField] private Ease scaleEase;
 
@@ -79,11 +77,9 @@ public class Resizer : MonoBehaviour
 		DoResizeTween(currentGameMode);
 	}
 
-	public void DoStartupResize(int index)
+	public void DoStartupResize(float delay)
 	{
 		targetScale = GetTargetScale(SelectionState.notSelected);
-
-		float delay = startScaleDelay * index;
 
 		transform.DOScale(targetScale, startScaleTime)
 			.SetEase(startScaleEase)

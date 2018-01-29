@@ -8,6 +8,8 @@ public class GridBuilderAnimator : MonoBehaviour
     [Header("After this amount of animations, do lock the tween delays")]
     [SerializeField] private int maxAnimations = 8;
 
+    [SerializeField] private float startScaleDelay = 0.1f;
+
     private GridBuilder gridBuilder;
 
     private int currentAnimationCount = 0;
@@ -48,7 +50,9 @@ public class GridBuilderAnimator : MonoBehaviour
 
 			resizer.ResizeAnimationFinishedEvent += OnResizeAnimationFinished;
 
-			resizer.DoStartupResize(index);
+            float delay = startScaleDelay * index;
+
+			resizer.DoStartupResize(delay);
 
             if (index < maxAnimations)
             {
