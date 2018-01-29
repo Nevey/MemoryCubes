@@ -2,35 +2,10 @@
 
 public class Viewport : MonoBehaviour 
 {
-	private float scale;
-	
-	public Vector2 designRect;
+	[SerializeField] private Canvas canvas;
 
-	void Awake() 
-	{
-		CalculateScale();
-	}
-	
-	void Update()
-	{
-		// TODO: find a way to do this on screen size change only!
-		// CalculateScale();
-	}
-	
-	private void CalculateScale()
-	{
-		// TODO: Use Unity's internal system for this
-		float designPixelCount = designRect.x * designRect.y;
-		
-		float pixelCount = Screen.width * Screen.height;
-		
-		scale = pixelCount / designPixelCount;
-		
-		Debug.Log("Viewport scale: " + scale);
-	}
-	
 	public float Scale
 	{
-		get { return scale; }
+		get { return canvas.scaleFactor; }
 	}
 }
