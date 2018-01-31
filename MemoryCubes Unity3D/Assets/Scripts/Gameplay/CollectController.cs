@@ -82,18 +82,18 @@ public class CollectController : MonoBehaviour
         {
             GameObject selectedTile = tileList[i];
             
-            if (targetController.TargetColor != selectedTile.GetComponent<TileColor>().MyColor)
-            {
-                // Apply penalty for each incorrectly selected tile
-                timeController.ApplyTilePenalty();
+            // if (targetController.TargetColor != selectedTile.GetComponent<TileColor>().MyColor)
+            // {
+            //     // Apply penalty for each incorrectly selected tile
+            //     timeController.ApplyTilePenalty();
                 
-                scoreController.ApplyPenalty();
-            }
-            else
-            {
+            //     scoreController.ApplyPenalty();
+            // }
+            // else
+            // {
                 // Apply bonus time for each correctly selected tile
                 timeController.ApplyTileBonus();
-            }
+            // }
 
             gridBuilder.ClearTile(selectedTile);
         }
