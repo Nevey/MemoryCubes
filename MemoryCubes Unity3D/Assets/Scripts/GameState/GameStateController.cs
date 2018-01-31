@@ -74,7 +74,9 @@ public class GameStateController : MonoBehaviour
         AddTransition(GameStateEvent.setupGameStateFinished, GameStateType.startGameState);
 
         // Move from "start game state" to "select target color"
-        AddTransition(GameStateEvent.startGameStateFinished, GameStateType.selectColorTarget);
+        // AddTransition(GameStateEvent.startGameStateFinished, GameStateType.selectColorTarget);
+
+        AddTransition(GameStateEvent.startGameStateFinished, GameStateType.playerInputState);
 
         // ---------- Grid INIT ENDS here ---------- //
 
@@ -83,10 +85,10 @@ public class GameStateController : MonoBehaviour
         // ---------- Gameplay LOOP STARTS here ---------- //
 
         // Move from "select target color" to "player input"
-        AddTransition(GameStateEvent.selectTargetColorFinished, GameStateType.playerInputState);
+        // AddTransition(GameStateEvent.selectTargetColorFinished, GameStateType.playerInputState);
 
         // Move from "select target color" to "destroy cube"
-        AddTransition(GameStateEvent.noTargetColorFound, GameStateType.destroyRemainingCubesState);
+        // AddTransition(GameStateEvent.noTargetColorFound, GameStateType.destroyRemainingCubesState);
 
         // Move from "destroy cube" to "level won"
         AddTransition(GameStateEvent.cubeDestroyed, GameStateType.levelWonState);

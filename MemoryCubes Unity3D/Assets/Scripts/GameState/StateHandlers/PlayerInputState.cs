@@ -23,14 +23,14 @@ public class PlayerInputState : GameState
 
     private void EnableListeners()
     {
-        CollectController.CollectFinishedEvent += OnDestroyFinished;
+        // CollectController.CollectFinishedEvent += OnDestroyFinished;
 
         TimeController.OutOfTimeEvent += OnOutOfTime;
     }
 
     private void DisableListeners()
     {
-        CollectController.CollectFinishedEvent -= OnDestroyFinished;
+        // CollectController.CollectFinishedEvent -= OnDestroyFinished;
 
         TimeController.OutOfTimeEvent -= OnOutOfTime;
     }

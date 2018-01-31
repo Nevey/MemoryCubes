@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class TargetController : MonoBehaviour
 {
-    [SerializeField] private ColorConfig colorConfig;
+    [SerializeField] private GameStateController gameStateController;
 
     [SerializeField] private GridBuilder gridBuilder;
 
@@ -18,29 +18,38 @@ public class TargetController : MonoBehaviour
 
     private Color previousTargetColor;
 
+    /// <summary>
+    /// Use this color to assign "no target color"
+    /// </summary>
+    private Color noTarget = Color.black;
+
     public Color TargetColor { get { return targetColor; } }
 
-    public static event Action TargetUpdatedEvent;
+    public event Action TargetUpdatedEvent;
 
-    public static event Action NoTargetFoundEvent;
+    public event Action NoTargetFoundEvent;
 
-	// Use this for pre-initialization
 	private void OnEnable()
     {
-        SelectColorTargetState.SelectColorTargetStateStartedEvent += OnSelectColorTargetStateStarted;
+        // SelectColorTargetState.SelectColorTargetStateStartedEvent += OnSelectColorTargetStateStarted;
+
+        // TODO:
+        gameStateController.GetGameState<SelectColorTargetState>().StateStartedEvent += OnSelectColorTargetStateStarted;
 	}
 
     private void OnDisable()
     {
-        SelectColorTargetState.SelectColorTargetStateStartedEvent -= OnSelectColorTargetStateStarted;
+        // SelectColorTargetState.SelectColorTargetStateStartedEvent -= OnSelectColorTargetStateStarted;
+
+        gameStateController.GetGameState<SelectColorTargetState>().StateStartedEvent -= OnSelectColorTargetStateStarted;
     }
 
-    private void OnSelectColorTargetStateStarted()
+    private void OnSelectColorTargetStateStarted(object sender, StateStartedArgs e)
     {
-        SetNextTarget();
+        // SetNextTargetRandom();
     }
     
-    private void SetNextTarget()
+    private void SetNextTargetRandom()
     {
         // Get a random target color
         targetColor = GetRandomColor();
@@ -59,6 +68,11 @@ public class TargetController : MonoBehaviour
         {
             TargetUpdatedEvent();
         }
+    }
+
+    private void WaitForTarget()
+    {
+        targetColor = noTarget;
     }
 
     /// <summary>
@@ -180,5 +194,29 @@ public class TargetController : MonoBehaviour
         }
 
         return colorCount;
+    }
+    
+    public void SetNextTarget(Color color)
+    {
+        if (targetColor == color)
+        {
+            return;
+        }
+
+        targetColor = color;
+
+        // Set the previous target color
+        previousTargetColor = targetColor;
+
+        // Reset the target bars
+        for (int i = 0; i < targetViews.Length; i++)
+        {
+            targetViews[i].SetNewTargetBar(targetColor);
+        }
+
+        if (TargetUpdatedEvent != null)
+        {
+            TargetUpdatedEvent();
+        }
     }
 }

@@ -14,27 +14,27 @@ public class SelectColorTargetState : GameState
     {
         base.GameStateStarted();
 
-        TargetController.TargetUpdatedEvent += OnTargetUpdated;
+        // TargetController.TargetUpdatedEvent += OnTargetUpdated;
 
-        TargetController.NoTargetFoundEvent += OnNoTargetFound;
+        // TargetController.NoTargetFoundEvent += OnNoTargetFound;
 
         SelectColorTargetStateStartedEvent();
     }
 
     private void OnTargetUpdated()
     {
-        TargetController.TargetUpdatedEvent -= OnTargetUpdated;
+        // TargetController.TargetUpdatedEvent -= OnTargetUpdated;
 
-        TargetController.NoTargetFoundEvent -= OnNoTargetFound;
+        // TargetController.NoTargetFoundEvent -= OnNoTargetFound;
 
         GameStateFinished(GameStateEvent.selectTargetColorFinished);
     }
 
     private void OnNoTargetFound()
     {
-        TargetController.TargetUpdatedEvent -= OnTargetUpdated;
+        // TargetController.TargetUpdatedEvent -= OnTargetUpdated;
 
-        TargetController.NoTargetFoundEvent -= OnNoTargetFound;
+        // TargetController.NoTargetFoundEvent -= OnNoTargetFound;
 
         GameStateFinished(GameStateEvent.noTargetColorFound);
     }

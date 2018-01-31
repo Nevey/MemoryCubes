@@ -13,13 +13,21 @@ public class TileSelector : MonoBehaviour
 
 	[SerializeField] private RoutineUtility routineUtility;
 
+    [SerializeField] private TargetController targetController;
+
 	private List<GameObject> selectedTiles = new List<GameObject>();
+
+    private List<GameObject> previouslySelectedTiles = new List<GameObject>();
+
+    private Color previouslySelectedTileColor;
 
 	private bool canSelect;
 
 	private bool isActive;
 
 	public List<GameObject> SelectedTiles { get { return selectedTiles; } }
+
+    public List<GameObject> PreviouslySelectedTiles { get { return previouslySelectedTiles; } }
 
 	public event Action<List<GameObject>> SelectedTilesUpdatedEvent;
 
@@ -112,22 +120,33 @@ public class TileSelector : MonoBehaviour
 
 			Selector selector = collidedGO.GetComponent<Selector>();
 
-			if (selector != null)
+            TileColor tileColor = collidedGO.GetComponent<TileColor>();
+
+			if (selector != null && tileColor != null)
 			{
 				GridCoordinates gridCoordinates = selector.gameObject.GetComponent<GridCoordinates>();
 
 				if (gridCoordinates != null 
 					&& freeTileChecker.CanTapTile(gridCoordinates.MyPosition))
 				{
-					SelectTile(selector);
+					SelectTile(selector, tileColor);
 				}
 			}
 		}
     }
 
-	private void SelectTile(Selector selector)
-	{
+	private void SelectTile(Selector selector, TileColor tileColor)
+	{        
 		selector.SelectToggledEvent += OnSelectToggled;
+
+        if (previouslySelectedTileColor != tileColor.MyColor)
+        {
+            previouslySelectedTiles = selectedTiles;
+
+            previouslySelectedTileColor = tileColor.MyColor;
+
+            targetController.SetNextTarget(tileColor.MyColor);
+        }
 
 		selector.Toggle(gameModeController.CurrentGameMode);
 	}

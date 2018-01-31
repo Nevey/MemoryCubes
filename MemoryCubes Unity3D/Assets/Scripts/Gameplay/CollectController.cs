@@ -27,6 +27,8 @@ public class CollectController : MonoBehaviour
         DestroyRemainingCubesState.DestroyRemainingCubesStateStartedEvent += OnDestroyRemainingCubesStateStarted;
         
         tileSelector.SelectedTilesUpdatedEvent += OnSelectedTilesUpdatedEvent;
+
+        targetController.TargetUpdatedEvent += OnTargetUpdated;
     }
 
     private void OnDestroy()
@@ -34,6 +36,8 @@ public class CollectController : MonoBehaviour
         DestroyRemainingCubesState.DestroyRemainingCubesStateStartedEvent -= OnDestroyRemainingCubesStateStarted;
 
         tileSelector.SelectedTilesUpdatedEvent -= OnSelectedTilesUpdatedEvent;
+
+        targetController.TargetUpdatedEvent -= OnTargetUpdated;
     }
 
     private void OnDestroyRemainingCubesStateStarted()
@@ -44,6 +48,11 @@ public class CollectController : MonoBehaviour
     private void OnSelectedTilesUpdatedEvent(List<GameObject> selectedTiles)
     {
         CheckForCustomActions(selectedTiles);
+    }
+
+    private void OnTargetUpdated()
+    {
+        CollectPreviouslySelectedTiles();
     }
 
     private void CheckForCustomActions(List<GameObject> selectedTiles)
@@ -67,11 +76,11 @@ public class CollectController : MonoBehaviour
         }
     }
 
-    private void RemoveAllSelectedTiles()
+    private void RemoveAllSelectedTiles(List<GameObject> tileList)
     {
-        for (int i = 0; i < tileSelector.SelectedTiles.Count; i++)
+        for (int i = 0; i < tileList.Count; i++)
         {
-            GameObject selectedTile = tileSelector.SelectedTiles[i];
+            GameObject selectedTile = tileList[i];
             
             if (targetController.TargetColor != selectedTile.GetComponent<TileColor>().MyColor)
             {
@@ -122,7 +131,14 @@ public class CollectController : MonoBehaviour
         {
             scoreController.AddScore(tileSelector.SelectedTiles.Count);
 
-            RemoveAllSelectedTiles();
+            RemoveAllSelectedTiles(tileSelector.SelectedTiles);
         }
+    }
+
+    public void CollectPreviouslySelectedTiles()
+    {
+        scoreController.AddScore(tileSelector.PreviouslySelectedTiles.Count);
+
+        RemoveAllSelectedTiles(tileSelector.PreviouslySelectedTiles);
     }
 }
