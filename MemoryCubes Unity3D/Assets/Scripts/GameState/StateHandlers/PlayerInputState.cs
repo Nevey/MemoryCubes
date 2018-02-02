@@ -3,13 +3,15 @@ using System;
 
 public class PlayerInputState : GameState
 {
-    public static event Action PlayerInputStateStartedEvent;
+    private CollectController collectController;
 
-    public static event Action PlayerInputStateFinishedEvent;
+    private TimeController timeController;
 
-    public PlayerInputState(GameStateType gameStateEnum) : base(gameStateEnum)
+    public PlayerInputState(GameStateID gameStateEnum) : base(gameStateEnum)
     {
-        
+        collectController = MonoBehaviour.FindObjectOfType<CollectController>();
+
+        timeController = MonoBehaviour.FindObjectOfType<TimeController>();
     }
 
     public override void GameStateStarted()
@@ -17,28 +19,24 @@ public class PlayerInputState : GameState
         base.GameStateStarted();
         
         EnableListeners();
-
-        DispatchPlayerInputStateStarted();
     }
 
     private void EnableListeners()
     {
-        // CollectController.CollectFinishedEvent += OnDestroyFinished;
+        collectController.CollectFinishedEvent += OnDestroyFinished;
 
-        TimeController.OutOfTimeEvent += OnOutOfTime;
+        timeController.OutOfTimeEvent += OnOutOfTime;
     }
 
     private void DisableListeners()
     {
-        // CollectController.CollectFinishedEvent -= OnDestroyFinished;
+        collectController.CollectFinishedEvent -= OnDestroyFinished;
 
-        TimeController.OutOfTimeEvent -= OnOutOfTime;
+        timeController.OutOfTimeEvent -= OnOutOfTime;
     }
 
     private void OnDestroyFinished()
     {
-        DispatchPlayerInputStateFinished();
-
         DisableListeners();
 
         GameStateFinished(GameStateEvent.playerInputStateFinished);
@@ -46,26 +44,8 @@ public class PlayerInputState : GameState
 
     private void OnOutOfTime()
     {
-        DispatchPlayerInputStateFinished();
-
         DisableListeners();
 
         GameStateFinished(GameStateEvent.outOfTime);
-    }
-
-    private void DispatchPlayerInputStateStarted()
-    {
-        if (PlayerInputStateStartedEvent != null)
-        {
-            PlayerInputStateStartedEvent();
-        }
-    }
-
-    private void DispatchPlayerInputStateFinished()
-    {
-        if (PlayerInputStateFinishedEvent != null)
-        {
-            PlayerInputStateFinishedEvent();
-        }
     }
 }

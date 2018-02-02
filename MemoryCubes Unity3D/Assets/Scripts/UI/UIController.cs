@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
+	[SerializeField] private GameStateController gameStateController;
+
 	[SerializeField] private UIView[] uiViews;
 
 	private UIViewID currentViewID = UIViewID.None;
@@ -16,36 +18,37 @@ public class UIController : MonoBehaviour
 	private void Awake()
 	{
 		// TODO: Create a class which can determine which UI to show based on game state enter/exit
-		MainMenuState.MainMenuStateStartedEvent += OnMainMenuStateStarted;
 
-		SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
+		gameStateController.GetGameState<MainMenuState>().StateStartedEvent += OnMainMenuStateStarted;
 
-		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+		gameStateController.GetGameState<SetupGameState>().StateStartedEvent += OnSetupGameStateStarted;
 
-		LevelWonState.LevelWonStateStartedEvent += OnLevelWonStateStarted;
+		gameStateController.GetGameState<LevelWonState>().StateStartedEvent += OnLevelWonStateStarted;
+
+		gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
 
 		InitializeAllViews();
 	}
 
-    private void OnMainMenuStateStarted()
+    private void OnMainMenuStateStarted(object sender, StateStartedArgs e)
 	{
 		SwitchView(UIViewID.Main);
 	}
 
-	private void OnSetupGameStateStarted()
+	private void OnSetupGameStateStarted(object sender, StateStartedArgs e)
 	{
 		SwitchView(UIViewID.InGame);
 	}
 
-	private void OnGameOverStateStarted()
-	{
-		SwitchView(UIViewID.GameOver);
-	}
-
-    private void OnLevelWonStateStarted()
+    private void OnLevelWonStateStarted(object sender, StateStartedArgs e)
     {
         HideCurrentView();
     }
+
+	private void OnGameOverStateStarted(object sender, StateStartedArgs e)
+	{
+		SwitchView(UIViewID.GameOver);
+	}
 
 	private void InitializeAllViews()
 	{

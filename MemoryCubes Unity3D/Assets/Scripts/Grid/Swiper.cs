@@ -19,6 +19,8 @@ public enum SwipeDirection
 
 public class Swiper : MonoBehaviour 
 {
+	[SerializeField] private GameStateController gameStateController;
+
 	[SerializeField] private bool debugLogs = false;
 
     [SerializeField] private float maxSwipeDistance = 200f;
@@ -45,16 +47,16 @@ public class Swiper : MonoBehaviour
 
 	private void OnEnable()
 	{
-		SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
+		// gameStateController.GetGameState<SetupGameState>().StateStartedEvent += OnSetupGameStateStarted;
 
-		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+		// gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
 	}
 
 	private void OnDisable()
 	{
-		SetupGameState.SetupGameStateStartedEvent -= OnSetupGameStateStarted;
+		gameStateController.GetGameState<SetupGameState>().StateStartedEvent -= OnSetupGameStateStarted;
 
-		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
+		gameStateController.GetGameState<GameOverState>().StateStartedEvent -= OnGameOverStateStarted;
 	}
 	
 	// Update is called once per frame
@@ -78,12 +80,12 @@ public class Swiper : MonoBehaviour
 		UpdateSwipe();
 	}
 
-	private void OnSetupGameStateStarted()
+	private void OnSetupGameStateStarted(object sender, StateStartedArgs e)
 	{
 		EnableSwiping();
 	}
 
-	private void OnGameOverStateStarted()
+	private void OnGameOverStateStarted(object sender, StateStartedArgs e)
 	{
 		DisableSwiping();
 	}

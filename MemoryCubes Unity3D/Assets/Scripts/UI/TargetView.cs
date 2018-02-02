@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class TargetView : MonoBehaviour, IOnUIViewInitialize
 {
+    [SerializeField] private GameStateController gameStateController;
+
     [SerializeField] private GameObject targetSpritePrefab;
 
     [SerializeField] private GameObject targetBarPlaceholder;
@@ -50,12 +52,12 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
         SetupTargetView();
     }
 
-    private void OnGameOverStateStarted()
+    private void OnLevelWonStateStarted(object sender, StateStartedArgs e)
     {
         DisableTargetView();
     }
 
-    private void OnLevelWonStateStarted()
+    private void OnGameOverStateStarted(object sender, StateStartedArgs e)
     {
         DisableTargetView();
     }
@@ -180,9 +182,9 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
         // TODO: Get rid of these listeners and let target controller manage all this...
         StartGameState.StartGameStateStartedEvent += OnStartGameStateStarted;
 
-        GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+        gameStateController.GetGameState<LevelWonState>().StateStartedEvent += OnLevelWonStateStarted;
 
-        LevelWonState.LevelWonStateStartedEvent += OnLevelWonStateStarted;
+        gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
     }
 
     public void SetNewTargetBar(Color targetColor)

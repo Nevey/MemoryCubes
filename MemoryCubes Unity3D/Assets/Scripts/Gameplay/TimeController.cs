@@ -4,6 +4,8 @@ using System;
 
 public class TimeController : MonoBehaviour
 {
+    [SerializeField] private GameStateController gameStateController;
+
     [SerializeField] private TimeConfig timeConfig;
 
     [SerializeField] private LevelController levelController;
@@ -20,20 +22,21 @@ public class TimeController : MonoBehaviour
         }
     }
 
-    public static event Action OutOfTimeEvent;
+    public event Action OutOfTimeEvent;
 
     private void OnEnable()
     {
-        SetupGameState.SetupGameStateStartedEvent += OnSetupGameStateStarted;
+        gameStateController.GetGameState<SetupGameState>().StateStartedEvent += OnSetupGameStateStarted;
 
-        DestroyRemainingCubesState.DestroyRemainingCubesStateStartedEvent += OnDestroyRemainingCubesStateStarted;
+        gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent += OnDestroyRemainingCubesStateStarted;
+
     }
 
     private void OnDisable()
     {
-        SetupGameState.SetupGameStateStartedEvent -= OnSetupGameStateStarted;
+        gameStateController.GetGameState<SetupGameState>().StateStartedEvent -= OnSetupGameStateStarted;
 
-        DestroyRemainingCubesState.DestroyRemainingCubesStateStartedEvent -= OnDestroyRemainingCubesStateStarted;
+        gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent -= OnDestroyRemainingCubesStateStarted;
     }
 
     // Update is called once per frame
@@ -47,12 +50,12 @@ public class TimeController : MonoBehaviour
         UpdateCurrentTime();
 	}
 
-    private void OnSetupGameStateStarted()
+    private void OnSetupGameStateStarted(object sender, StateStartedArgs e)
     {
         ResetTimer();
     }
 
-    private void OnDestroyRemainingCubesStateStarted()
+    private void OnDestroyRemainingCubesStateStarted(object sender, StateStartedArgs e)
     {
         StopTimer();
     }

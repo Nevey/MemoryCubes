@@ -3,11 +3,9 @@ using System;
 
 public class GameOverState : GameState
 {
-    public static event Action GameOverStateStartedEvent;
-
     private GameOverView gameOverView;
 
-    public GameOverState(GameStateType gameStateEnum) : base(gameStateEnum)
+    public GameOverState(GameStateID gameStateEnum) : base(gameStateEnum)
     {
         gameOverView = uiController.GetView<GameOverView>();
     }
@@ -17,11 +15,6 @@ public class GameOverState : GameState
         base.GameStateStarted();
 
         gameOverView.HideCompleteEvent += OnGameOverHideFinished;
-
-        if (GameOverStateStartedEvent != null)
-        {
-            GameOverStateStartedEvent();
-        }
     }
 
     private void OnGameOverHideFinished(UIView obj)

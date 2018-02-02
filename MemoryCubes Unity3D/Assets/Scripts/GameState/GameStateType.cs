@@ -1,11 +1,9 @@
-﻿// TODO: Rename to GameStateID
-public enum GameStateType
+﻿public enum GameStateID
 {
     mainMenu,
     buildCube,
     setupGameState,
     startGameState,
-    selectColorTarget,
     destroyRemainingCubesState,
     playerInputState,
     checkForCubeClearedState,

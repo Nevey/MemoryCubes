@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class CollectController : MonoBehaviour
 {
+    [SerializeField] private GameStateController gameStateController;
+
     [SerializeField] private GridBuilder gridBuilder;
 
     [SerializeField] private TileSelector tileSelector;
@@ -18,13 +20,13 @@ public class CollectController : MonoBehaviour
 
     [SerializeField] private RoutineUtility routineUtility;
 
-    public static event Action CollectFinishedEvent;
+    public event Action CollectFinishedEvent;
 
-    public static event Action ClearAllTilesFinishedEvent;
+    public event Action ClearAllTilesFinishedEvent;
 
     private void Start()
     {
-        DestroyRemainingCubesState.DestroyRemainingCubesStateStartedEvent += OnDestroyRemainingCubesStateStarted;
+        gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent += OnDestroyRemainingCubesStateStarted;
         
         tileSelector.SelectedTilesUpdatedEvent += OnSelectedTilesUpdatedEvent;
 
@@ -33,16 +35,16 @@ public class CollectController : MonoBehaviour
 
     private void OnDestroy()
     {
-        DestroyRemainingCubesState.DestroyRemainingCubesStateStartedEvent -= OnDestroyRemainingCubesStateStarted;
+        gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent -= OnDestroyRemainingCubesStateStarted;
 
         tileSelector.SelectedTilesUpdatedEvent -= OnSelectedTilesUpdatedEvent;
 
         targetController.TargetUpdatedEvent -= OnTargetUpdated;
     }
 
-    private void OnDestroyRemainingCubesStateStarted()
+    private void OnDestroyRemainingCubesStateStarted(object sender, StateStartedArgs e)
     {
-        ClearAllTilesWithoutScore();
+        ClearLastStandingTilesWithDelay();
     }
 
     private void OnSelectedTilesUpdatedEvent(List<GameObject> selectedTiles)
@@ -81,19 +83,9 @@ public class CollectController : MonoBehaviour
         for (int i = 0; i < tileList.Count; i++)
         {
             GameObject selectedTile = tileList[i];
-            
-            // if (targetController.TargetColor != selectedTile.GetComponent<TileColor>().MyColor)
-            // {
-            //     // Apply penalty for each incorrectly selected tile
-            //     timeController.ApplyTilePenalty();
-                
-            //     scoreController.ApplyPenalty();
-            // }
-            // else
-            // {
-                // Apply bonus time for each correctly selected tile
-                timeController.ApplyTileBonus();
-            // }
+
+            // Apply bonus time for each correctly selected tile
+            timeController.ApplyTileBonus();
 
             gridBuilder.ClearTile(selectedTile);
         }
@@ -120,6 +112,25 @@ public class CollectController : MonoBehaviour
         });
     }
 
+    private void ClearLastStandingTilesWithDelay()
+    {
+        gridBuilder.ClearGridDelayed(0.1f, (bool isFinished) =>
+        {
+            scoreController.AddLastStandingTileScore();
+
+            if (isFinished)
+            {
+                routineUtility.StartWaitTimeRoutine(2f, () =>
+                {
+                    if (ClearAllTilesFinishedEvent != null)
+                    {
+                        ClearAllTilesFinishedEvent();
+                    }
+                });
+            }
+        });
+    }
+
     public void CollectSelectedTiles()
     {
         // Apply penalty if no tiles were selected
@@ -129,7 +140,7 @@ public class CollectController : MonoBehaviour
         }
         else
         {
-            scoreController.AddScore(tileSelector.SelectedTiles.Count);
+            scoreController.AddBulkScore(tileSelector.SelectedTiles.Count);
 
             RemoveAllSelectedTiles(tileSelector.SelectedTiles);
         }
@@ -137,7 +148,7 @@ public class CollectController : MonoBehaviour
 
     public void CollectPreviouslySelectedTiles()
     {
-        scoreController.AddScore(tileSelector.PreviouslySelectedTiles.Count);
+        scoreController.AddBulkScore(tileSelector.PreviouslySelectedTiles.Count);
 
         RemoveAllSelectedTiles(tileSelector.PreviouslySelectedTiles);
     }

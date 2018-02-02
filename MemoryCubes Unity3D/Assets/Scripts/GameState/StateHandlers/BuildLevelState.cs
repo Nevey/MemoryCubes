@@ -3,25 +3,23 @@ using System;
 
 public class BuildGridState : GameState
 {
-    public static event Action BuildGridStateStartedEvent;
+    private GridBuilder gridBuilder;
 
-    public BuildGridState(GameStateType gameStateEnum) : base(gameStateEnum)
+    public BuildGridState(GameStateID gameStateEnum) : base(gameStateEnum)
     {
-        
+        gridBuilder = MonoBehaviour.FindObjectOfType<GridBuilder>();
     }
 
     public override void GameStateStarted()
     {
         base.GameStateStarted();
 
-        GridBuilder.BuilderReadyEvent += OnBuilderReady;
-
-        BuildGridStateStartedEvent();
+        gridBuilder.BuilderReadyEvent += OnBuilderReady;
     }
 
     private void OnBuilderReady(object sender, BuilderReadyEventArgs e)
     {
-        GridBuilder.BuilderReadyEvent -= OnBuilderReady;
+        gridBuilder.BuilderReadyEvent -= OnBuilderReady;
 
         GameStateFinished(GameStateEvent.cubeBuildingFinished);
     }

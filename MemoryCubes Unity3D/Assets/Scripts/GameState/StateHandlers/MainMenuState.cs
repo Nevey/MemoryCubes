@@ -3,11 +3,9 @@ using System;
 
 public class MainMenuState : GameState
 {
-    public static event Action MainMenuStateStartedEvent;
-
     private MainMenuView mainMenuView;
 
-    public MainMenuState(GameStateType gameStateEnum) : base(gameStateEnum)
+    public MainMenuState(GameStateID gameStateEnum) : base(gameStateEnum)
     {
         mainMenuView = uiController.GetView<MainMenuView>();
     }
@@ -17,8 +15,6 @@ public class MainMenuState : GameState
         base.GameStateStarted();
         
         mainMenuView.HideCompleteEvent += OnHideComplete;
-
-        MainMenuStateStartedEvent();
     }
 
     private void OnHideComplete(UIView uIView)

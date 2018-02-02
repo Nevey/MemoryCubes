@@ -5,7 +5,7 @@ public class StartGameState : GameState
 {
     public static event Action StartGameStateStartedEvent;
 
-    public StartGameState(GameStateType gameStateEnum) : base(gameStateEnum)
+    public StartGameState(GameStateID gameStateEnum) : base(gameStateEnum)
     {
         
     }

@@ -28,57 +28,19 @@ public class TargetController : MonoBehaviour
     public event Action TargetUpdatedEvent;
 
     public event Action NoTargetFoundEvent;
-
-	private void OnEnable()
-    {
-        // SelectColorTargetState.SelectColorTargetStateStartedEvent += OnSelectColorTargetStateStarted;
-
-        // TODO:
-        gameStateController.GetGameState<SelectColorTargetState>().StateStartedEvent += OnSelectColorTargetStateStarted;
-	}
-
-    private void OnDisable()
-    {
-        // SelectColorTargetState.SelectColorTargetStateStartedEvent -= OnSelectColorTargetStateStarted;
-
-        gameStateController.GetGameState<SelectColorTargetState>().StateStartedEvent -= OnSelectColorTargetStateStarted;
-    }
-
-    private void OnSelectColorTargetStateStarted(object sender, StateStartedArgs e)
-    {
-        // SetNextTargetRandom();
-    }
     
     private void SetNextTargetRandom()
     {
         // Get a random target color
         targetColor = GetRandomColor();
 
-        // Set the previous target color
-        previousTargetColor = targetColor;
-
-        // Reset the target bars
-        for (int i = 0; i < targetViews.Length; i++)
-        {
-            targetViews[i].SetNewTargetBar(targetColor);
-        }
-
-        // We're ready, send target updated event
-        if (TargetUpdatedEvent != null)
-        {
-            TargetUpdatedEvent();
-        }
-    }
-
-    private void WaitForTarget()
-    {
-        targetColor = noTarget;
+        SetNextTarget(targetColor);
     }
 
     /// <summary>
     /// Returns a random active color, if there isn't any, returns the previous color
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Color</returns>
     private Color GetRandomColor()
     {
         List<Color> activeColors = GetFilteredListByGameMode(GetActiveColors());
@@ -138,11 +100,6 @@ public class TargetController : MonoBehaviour
             activeColors.Add(tileColor);
         }
 
-        if (activeColors.Contains(previousTargetColor))
-        {
-            activeColors.Remove(previousTargetColor);
-        }
-
         return activeColors;
     }
 
@@ -166,7 +123,7 @@ public class TargetController : MonoBehaviour
         {
             Color color = colorList[i];
 
-            int colorCount = GetColorCount(color);
+            int colorCount = GetCubeCountWithColor(color);
 
             if (colorCount < 2)
             {
@@ -179,7 +136,7 @@ public class TargetController : MonoBehaviour
         return combineColorList;
     }
 
-    private int GetColorCount(Color targetColor)
+    private int GetCubeCountWithColor(Color targetColor)
     {
         int colorCount = 0;
 
@@ -218,5 +175,10 @@ public class TargetController : MonoBehaviour
         {
             TargetUpdatedEvent();
         }
+    }
+
+    public int GetTargetColorCount()
+    {
+        return GetActiveColors().Count;
     }
 }

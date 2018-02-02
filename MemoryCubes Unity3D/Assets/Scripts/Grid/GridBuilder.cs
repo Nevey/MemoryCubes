@@ -34,6 +34,10 @@ public class GridBuilder : MonoBehaviour
 
 	[SerializeField] private GridConfig gridConfig;
 
+	[SerializeField] private RoutineUtility routineUtility;
+
+	[SerializeField] private GameStateController gameStateController;
+
 	private int gridSize;
 
 	private GameObject[,,] grid;
@@ -48,17 +52,17 @@ public class GridBuilder : MonoBehaviour
     
 	public event EventHandler<GridBuildFinishedEventArgs> GridBuildFinishedEvent;
 
-    public static event EventHandler<BuilderReadyEventArgs> BuilderReadyEvent;
+    public event EventHandler<BuilderReadyEventArgs> BuilderReadyEvent;
 	
 	// Use this for pre-initialization
 	private void Awake()
 	{
 		flattenedGridList = new List<GameObject>();
 
-        BuildGridState.BuildGridStateStartedEvent += OnBuildCubeStateStarted;
+		gameStateController.GetGameState<BuildGridState>().StateStartedEvent += OnBuildCubeStateStarted;
 	}
 
-	private void OnEnable()
+    private void OnEnable()
 	{
 		// TODO: Don't wait for animation, clear grid on game over state enter instead
 		uiController.GetView<GameOverView>().ShowCompleteEvent += OnGameOverShowComplete;
@@ -69,7 +73,7 @@ public class GridBuilder : MonoBehaviour
 		uiController.GetView<GameOverView>().ShowCompleteEvent -= OnGameOverShowComplete;
 	}
 
-    private void OnBuildCubeStateStarted()
+    private void OnBuildCubeStateStarted(object sender, StateStartedArgs e)
     {
         CreateGrid();
     }
@@ -94,6 +98,8 @@ public class GridBuilder : MonoBehaviour
 			{
 				for (int z = 0; z < gridSize; z++)
 				{
+					// TODO: Create Tile / CubeTile / GridTile class and keep track of data
+					// such as grid coordinates there
 					GameObject tile = CreateTile(x, y, z);
 
 					grid[x, y, z] = tile;
@@ -187,6 +193,34 @@ public class GridBuilder : MonoBehaviour
 		destroyer.DestroyCube();
 	}
 
+	private void DestroyTileDelayed(GameObject tile, float delay, Action callback = null)
+	{
+		routineUtility.StartWaitTimeRoutine(delay, () =>
+		{
+			DestroyTile(tile);
+
+			if (callback != null)
+			{
+				callback();
+			}
+		});
+	}
+
+	private int GetAliveTileCount()
+	{
+		int aliveTileCount = 0;
+
+		for (int i = 0; i < flattenedGridList.Count; i++)
+		{
+			if (flattenedGridList[i] != null)
+			{
+				aliveTileCount++;
+			}
+		}
+
+		return aliveTileCount;
+	}
+
 	public void ClearTile(GameObject tile)
 	{
 		for (int x = 0; x < gridSize; x++)
@@ -219,6 +253,47 @@ public class GridBuilder : MonoBehaviour
 					DestroyTile(grid[x, y, z]);
 
 					grid[x, y, z] = null;
+				}
+			}
+		}
+	}
+
+	public void ClearGridDelayed(float delayPerTile, Action<bool> callback = null)
+	{
+		int aliveTileCount = GetAliveTileCount();
+
+		int currentTileCount = 0;
+
+		int index = 1;
+
+		for (int x = 0; x < gridSize; x++)
+		{
+			for (int y = 0; y < gridSize; y++)
+			{
+				for (int z = 0; z < gridSize; z++)
+				{
+					GameObject tile = grid[x, y, z];
+
+					if (tile == null)
+					{
+						continue;
+					}
+
+					float delay = delayPerTile * index;
+
+					DestroyTileDelayed(tile, delay, () =>
+					{
+						if (callback != null)
+						{
+							currentTileCount++;
+
+							callback(currentTileCount == aliveTileCount);
+						}
+					});
+
+					grid[x, y, z] = null;
+
+					index++;
 				}
 			}
 		}

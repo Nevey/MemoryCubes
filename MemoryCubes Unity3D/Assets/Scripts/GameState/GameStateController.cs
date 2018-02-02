@@ -6,7 +6,7 @@ using System;
 // TODO: Make this class something to inherit from, so we can create state flows seperately from each other
 public class GameStateController : MonoBehaviour
 {
-    private GameStateType currentGameState = new GameStateType();
+    private GameStateID currentGameState = new GameStateID();
 
     private List<GameState> gameStateList = new List<GameState>();
 
@@ -16,7 +16,7 @@ public class GameStateController : MonoBehaviour
 	private void Awake()
     {
         // Set initial state
-        currentGameState = GameStateType.mainMenu;
+        currentGameState = GameStateID.mainMenu;
 
         CreateGameStateHandlers();
 
@@ -33,25 +33,23 @@ public class GameStateController : MonoBehaviour
 
     private void CreateGameStateHandlers()
     {
-        gameStateList.Add(new MainMenuState(GameStateType.mainMenu));
+        gameStateList.Add(new MainMenuState(GameStateID.mainMenu));
 
-        gameStateList.Add(new BuildGridState(GameStateType.buildCube));
+        gameStateList.Add(new BuildGridState(GameStateID.buildCube));
 
-        gameStateList.Add(new SetupGameState(GameStateType.setupGameState));
+        gameStateList.Add(new SetupGameState(GameStateID.setupGameState));
 
-        gameStateList.Add(new StartGameState(GameStateType.startGameState));
+        gameStateList.Add(new StartGameState(GameStateID.startGameState));
 
-        gameStateList.Add(new SelectColorTargetState(GameStateType.selectColorTarget));
+        gameStateList.Add(new DestroyRemainingCubesState(GameStateID.destroyRemainingCubesState));
 
-        gameStateList.Add(new DestroyRemainingCubesState(GameStateType.destroyRemainingCubesState));
+        gameStateList.Add(new PlayerInputState(GameStateID.playerInputState));
 
-        gameStateList.Add(new PlayerInputState(GameStateType.playerInputState));
+        gameStateList.Add(new CheckForCubeClearedState(GameStateID.checkForCubeClearedState));
 
-        gameStateList.Add(new CheckForCubeClearedState(GameStateType.checkForCubeClearedState));
+        gameStateList.Add(new LevelWonState(GameStateID.levelWonState));
 
-        gameStateList.Add(new LevelWonState(GameStateType.levelWonState));
-
-        gameStateList.Add(new GameOverState(GameStateType.gameOverState));
+        gameStateList.Add(new GameOverState(GameStateID.gameOverState));
     }
 
     private void CreateStateFlow()
@@ -59,7 +57,7 @@ public class GameStateController : MonoBehaviour
         // ---------- Menu flow STARTS here ---------- //
 
         // Move to "build cube" state
-        AddTransition(GameStateEvent.startGame, GameStateType.buildCube);
+        AddTransition(GameStateEvent.startGame, GameStateID.buildCube);
 
         // ---------- Menu flow ENDS here ---------- //
 
@@ -68,15 +66,16 @@ public class GameStateController : MonoBehaviour
         // ---------- Grid INIT STARTS here ---------- //
 
         // Move from "build cube state" to "setup game state values"
-        AddTransition(GameStateEvent.cubeBuildingFinished, GameStateType.setupGameState);
+        AddTransition(GameStateEvent.cubeBuildingFinished, GameStateID.setupGameState);
 
         // Move from "setup game state" to "start game state"
-        AddTransition(GameStateEvent.setupGameStateFinished, GameStateType.startGameState);
+        AddTransition(GameStateEvent.setupGameStateFinished, GameStateID.startGameState);
 
         // Move from "start game state" to "select target color"
         // AddTransition(GameStateEvent.startGameStateFinished, GameStateType.selectColorTarget);
 
-        AddTransition(GameStateEvent.startGameStateFinished, GameStateType.playerInputState);
+        // Move from "start game state" to "player input state"
+        AddTransition(GameStateEvent.startGameStateFinished, GameStateID.playerInputState);
 
         // ---------- Grid INIT ENDS here ---------- //
 
@@ -84,26 +83,20 @@ public class GameStateController : MonoBehaviour
 
         // ---------- Gameplay LOOP STARTS here ---------- //
 
-        // Move from "select target color" to "player input"
-        // AddTransition(GameStateEvent.selectTargetColorFinished, GameStateType.playerInputState);
-
-        // Move from "select target color" to "destroy cube"
-        // AddTransition(GameStateEvent.noTargetColorFound, GameStateType.destroyRemainingCubesState);
-
         // Move from "destroy cube" to "level won"
-        AddTransition(GameStateEvent.cubeDestroyed, GameStateType.levelWonState);
+        AddTransition(GameStateEvent.cubeDestroyed, GameStateID.levelWonState);
 
         // Move from "player input" to "check for cube cleared"
-        AddTransition(GameStateEvent.playerInputStateFinished, GameStateType.checkForCubeClearedState);
+        AddTransition(GameStateEvent.playerInputStateFinished, GameStateID.checkForCubeClearedState);
 
         // Move from "check for cube cleared" to "select target color"
-        AddTransition(GameStateEvent.cubeNotCleared, GameStateType.selectColorTarget);
+        AddTransition(GameStateEvent.cubeNotCleared, GameStateID.playerInputState);
 
         // Move from "check for cube cleared" to "level won state"
-        AddTransition(GameStateEvent.cubeCleared, GameStateType.levelWonState);
+        AddTransition(GameStateEvent.cubeCleared, GameStateID.destroyRemainingCubesState);
 
         // Move from "level won state" to "build cube state"
-        AddTransition(GameStateEvent.levelWonFinished, GameStateType.buildCube);
+        AddTransition(GameStateEvent.levelWonFinished, GameStateID.buildCube);
 
         // ---------- Gameplay LOOP ENDS here ---------- //
 
@@ -112,18 +105,18 @@ public class GameStateController : MonoBehaviour
         // ---------- Game over flow STARTS here ---------- //
 
         // Move from "player input" to "game over state"
-        AddTransition(GameStateEvent.outOfTime, GameStateType.gameOverState);
+        AddTransition(GameStateEvent.outOfTime, GameStateID.gameOverState);
 
         // Move from "game over state" to "build cube state"
-        AddTransition(GameStateEvent.restartGame, GameStateType.buildCube);
+        AddTransition(GameStateEvent.restartGame, GameStateID.buildCube);
 
         // Move from "game over state" to "main menu state"
-        AddTransition(GameStateEvent.backToMenu, GameStateType.mainMenu);
+        AddTransition(GameStateEvent.backToMenu, GameStateID.mainMenu);
 
         // ---------- Game over flow ENDS here ---------- //
     }
 
-    private void AddTransition(GameStateEvent stateEvent, GameStateType state)
+    private void AddTransition(GameStateEvent stateEvent, GameStateID state)
     {
         transitionList.Add(new StateTransition(stateEvent, state));
     }
@@ -169,7 +162,7 @@ public class GameStateController : MonoBehaviour
         gameState.GameStateStarted();
     }
 
-    private GameState GetGameStateByEnum(GameStateType gameStateEnum)
+    private GameState GetGameStateByEnum(GameStateID gameStateEnum)
     {
         GameState gameState = null;
 

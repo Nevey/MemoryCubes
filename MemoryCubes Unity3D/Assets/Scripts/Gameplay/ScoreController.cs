@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,10 @@ public class ScoreController : MonoBehaviour
 	[SerializeField] private ScoreConfig scoreConfig;
 
 	[SerializeField] private ScoreView scoreView;
+
+	[SerializeField] private LevelController levelController;
+
+	[SerializeField] private GameStateController gameStateController;
 
 	private const string highScoreKey = "highScore";
 
@@ -34,15 +39,16 @@ public class ScoreController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameOverState.GameOverStateStartedEvent += OnGameOverStateStarted;
+		gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
+
 	}
 
-	private void OnDisable()
+    private void OnDisable()
 	{
-		GameOverState.GameOverStateStartedEvent -= OnGameOverStateStarted;
+		gameStateController.GetGameState<GameOverState>().StateStartedEvent -= OnGameOverStateStarted;
 	}
 
-	private void OnGameOverStateStarted()
+	private void OnGameOverStateStarted(object sender, StateStartedArgs e)
 	{
 		StoreCurrentScore();
 
@@ -76,22 +82,28 @@ public class ScoreController : MonoBehaviour
 		return PlayerPrefs.GetInt(highScoreKey);
 	}
 
-	/// <summary>
-	/// Add score based on collected tile amount
-	/// </summary>
-	/// <param name="collectedTileAmount"></param>
-	public void AddScore(int collectedTileAmount)
+	private void AddScore(int score)
 	{
-		int bonusScore = (int)Mathf.Round(scoreConfig.TileScoreMultiplier * collectedTileAmount);
-
-		int addedScore = scoreConfig.ScorePerTile + bonusScore;
-
-		currentScore += addedScore;
+		// Give bonus for cube count
+		currentScore += score * levelController.CurrentCubeCount;
 
 		scoreView.UpdateScoreText();
 
 		// TODO: Show separate score floaters for tile score and bonus score
-		scoreView.ShowScoreFloater(addedScore);
+		scoreView.ShowScoreFloater(score);
+	}
+
+	/// <summary>
+	/// Add score based on collected tile amount
+	/// </summary>
+	/// <param name="collectedTileAmount"></param>
+	public void AddBulkScore(int collectedTileAmount)
+	{
+		int tileScore = scoreConfig.ScorePerTile * collectedTileAmount;
+
+		int bonusScore = scoreConfig.TileScoreMultiplier * collectedTileAmount;
+
+		AddScore(tileScore + bonusScore);
 	}
 
 	/// <summary>
@@ -100,12 +112,14 @@ public class ScoreController : MonoBehaviour
 	/// </summary>
 	public void ApplyPenalty()
 	{
-		int penaltyValue = scoreConfig.PenaltyPerTile;
+		AddScore(scoreConfig.PenaltyPerTile);
+	}
 
-		currentScore -= penaltyValue;
-
-		scoreView.UpdateScoreText();
-
-		scoreView.ShowScoreFloater(penaltyValue);
+	/// <summary>
+	/// Add score per tile for last tiles standing
+	/// </summary>
+	public void AddLastStandingTileScore()
+	{
+		AddScore(scoreConfig.ScorePerLastStandingTile);
 	}
 }

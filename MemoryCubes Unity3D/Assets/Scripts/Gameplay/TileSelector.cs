@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TileSelector : MonoBehaviour
 {
+	[SerializeField] private GameStateController gameStateController;
+
 	[SerializeField] private Swiper swiper;
 
 	[SerializeField] private FreeTileChecker freeTileChecker;
@@ -35,16 +37,16 @@ public class TileSelector : MonoBehaviour
 	{
 		canSelect = true;
 
-		PlayerInputState.PlayerInputStateStartedEvent += OnPlayerInputStateStarted;
+		gameStateController.GetGameState<PlayerInputState>().StateStartedEvent += OnPlayerInputStateStarted;
 
-		PlayerInputState.PlayerInputStateFinishedEvent += OnPlayerInputStateFinished;
+		gameStateController.GetGameState<PlayerInputState>().StateFinishedEvent += OnPlayerInputStateFinished;
 	}
 
     private void OnDisable()
 	{
-		PlayerInputState.PlayerInputStateStartedEvent -= OnPlayerInputStateStarted;
+		gameStateController.GetGameState<PlayerInputState>().StateStartedEvent -= OnPlayerInputStateStarted;
 
-		PlayerInputState.PlayerInputStateFinishedEvent -= OnPlayerInputStateFinished;
+		gameStateController.GetGameState<PlayerInputState>().StateFinishedEvent -= OnPlayerInputStateFinished;
 	}
 	
 	// LateUpdate is called once per frame, after Update
@@ -67,12 +69,12 @@ public class TileSelector : MonoBehaviour
 		}
 	}
 
-	private void OnPlayerInputStateStarted()
+	private void OnPlayerInputStateStarted(object sender, StateStartedArgs e)
 	{
 		EnableInput();
 	}
 
-    private void OnPlayerInputStateFinished()
+    private void OnPlayerInputStateFinished(object sender, StateFinishedArgs e)
     {
         DisableInput();
 

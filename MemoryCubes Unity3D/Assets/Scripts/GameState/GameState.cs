@@ -5,13 +5,13 @@ public abstract class GameState
 {
     protected UIController uiController;
 
-    public GameStateType gameStateType { get; set; }
+    public GameStateID gameStateType { get; set; }
 
     public event EventHandler<StateStartedArgs> StateStartedEvent;
 
     public event EventHandler<StateFinishedArgs> StateFinishedEvent;
 
-    public GameState(GameStateType gameStateType)
+    public GameState(GameStateID gameStateType)
     {
         this.gameStateType = gameStateType;
 

@@ -1,10 +1,10 @@
 ﻿public class StateTransition
 {
-    public GameStateType gameStateEnum { get; set; }
+    public GameStateID gameStateEnum { get; set; }
 
     public GameStateEvent gameStateEventEnum { get; set; }
 
-    public StateTransition(GameStateEvent gameStateEventEnum, GameStateType gameStateEnum)
+    public StateTransition(GameStateEvent gameStateEventEnum, GameStateID gameStateEnum)
     {
         this.gameStateEnum = gameStateEnum;
 

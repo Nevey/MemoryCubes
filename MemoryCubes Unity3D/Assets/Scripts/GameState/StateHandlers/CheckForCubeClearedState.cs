@@ -3,42 +3,26 @@ using UnityEngine;
 
 public class CheckForCubeClearedState : GameState
 {
-	public static event Action CheckForCubeClearedStateStartedEvent;
+	private TargetController targetController;
 
-	public CheckForCubeClearedState(GameStateType gameStateEnum) : base(gameStateEnum)
+	public CheckForCubeClearedState(GameStateID gameStateEnum) : base(gameStateEnum)
     {
-        
+        targetController = MonoBehaviour.FindObjectOfType<TargetController>();
     }
 
 	public override void GameStateStarted()
 	{
 		base.GameStateStarted();
 
-		LevelController.GridClearedEvent += OnGridCleared;
+		int targetColorCount = targetController.GetTargetColorCount();
 
-		LevelController.GridNotClearedEvent += OnGridNotCleared;
-
-		if (CheckForCubeClearedStateStartedEvent != null)
+		if (targetColorCount == 1)
 		{
-			CheckForCubeClearedStateStartedEvent();
+			GameStateFinished(GameStateEvent.cubeCleared);
 		}
-	}
-
-	private void OnGridCleared()
-	{
-		LevelController.GridClearedEvent -= OnGridCleared;
-
-		LevelController.GridNotClearedEvent -= OnGridNotCleared;
-
-		GameStateFinished(GameStateEvent.cubeCleared);
-	}
-
-	private void OnGridNotCleared()
-	{
-		LevelController.GridClearedEvent -= OnGridCleared;
-
-		LevelController.GridNotClearedEvent -= OnGridNotCleared;
-
-		GameStateFinished(GameStateEvent.cubeNotCleared);
+		else
+		{
+			GameStateFinished(GameStateEvent.cubeNotCleared);
+		}
 	}
 }

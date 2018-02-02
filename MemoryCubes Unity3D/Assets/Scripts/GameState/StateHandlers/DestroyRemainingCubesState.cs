@@ -3,29 +3,24 @@ using UnityEngine;
 
 public class DestroyRemainingCubesState : GameState
 {
-    public static event Action DestroyRemainingCubesStateStartedEvent;
+    private CollectController collectController;
 
-    public DestroyRemainingCubesState(GameStateType gameStateType) : base(gameStateType)
+    public DestroyRemainingCubesState(GameStateID gameStateType) : base(gameStateType)
     {
-
+        collectController = MonoBehaviour.FindObjectOfType<CollectController>();
     }
 
     public override void GameStateStarted()
     {
         base.GameStateStarted();
 
-        CollectController.ClearAllTilesFinishedEvent += OnClearAllTilesFinished;
-
-        if (DestroyRemainingCubesStateStartedEvent != null)
-        {
-            DestroyRemainingCubesStateStartedEvent();
-        }
+        collectController.ClearAllTilesFinishedEvent += OnClearAllTilesFinished;
     }
 
     private void OnClearAllTilesFinished()
     {
-        CollectController.ClearAllTilesFinishedEvent -= OnClearAllTilesFinished;
+        collectController.ClearAllTilesFinishedEvent -= OnClearAllTilesFinished;
 
-        GameStateFinished(GameStateEvent.cubeCleared);
+        GameStateFinished(GameStateEvent.cubeDestroyed);
     }
 }

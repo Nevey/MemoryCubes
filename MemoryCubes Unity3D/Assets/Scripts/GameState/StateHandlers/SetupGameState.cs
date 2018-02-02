@@ -3,9 +3,7 @@ using System;
 
 public class SetupGameState : GameState
 {
-    public static event Action SetupGameStateStartedEvent;
-
-    public SetupGameState(GameStateType gameStateEnum) : base(gameStateEnum)
+    public SetupGameState(GameStateID gameStateEnum) : base(gameStateEnum)
     {
         
     }
@@ -13,8 +11,6 @@ public class SetupGameState : GameState
     public override void GameStateStarted()
     {
         base.GameStateStarted();
-        
-        SetupGameStateStartedEvent();
 
         GameStateFinished();
     }
