@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class BuildGridState : GameState
+public class BuildGridState : GameState2
 {
     private GridBuilder gridBuilder;
 
-    public BuildGridState(GameStateID gameStateEnum) : base(gameStateEnum)
+    public BuildGridState(StateID stateID) : base(stateID)
     {
         gridBuilder = MonoBehaviour.FindObjectOfType<GridBuilder>();
     }

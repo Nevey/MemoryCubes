@@ -36,8 +36,6 @@ public class GridBuilder : MonoBehaviour
 
 	[SerializeField] private RoutineUtility routineUtility;
 
-	[SerializeField] private GameStateController gameStateController;
-
 	private int gridSize;
 
 	private GameObject[,,] grid;
@@ -59,7 +57,7 @@ public class GridBuilder : MonoBehaviour
 	{
 		flattenedGridList = new List<GameObject>();
 
-		gameStateController.GetGameState<BuildGridState>().StateStartedEvent += OnBuildCubeStateStarted;
+		// gameStateController.GetGameState<BuildGridState>().StateStartedEvent += OnBuildCubeStateStarted;
 	}
 
     private void OnEnable()

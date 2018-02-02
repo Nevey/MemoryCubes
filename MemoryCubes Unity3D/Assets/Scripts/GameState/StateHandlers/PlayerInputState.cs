@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System;
 
-public class PlayerInputState : GameState
+public class PlayerInputState : GameState2
 {
     private CollectController collectController;
 
     private TimeController timeController;
 
-    public PlayerInputState(GameStateID gameStateEnum) : base(gameStateEnum)
+    public PlayerInputState(StateID stateID) : base(stateID)
     {
         collectController = MonoBehaviour.FindObjectOfType<CollectController>();
 

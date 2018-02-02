@@ -11,8 +11,6 @@ public class ScoreController : MonoBehaviour
 
 	[SerializeField] private LevelController levelController;
 
-	[SerializeField] private GameStateController gameStateController;
-
 	private const string highScoreKey = "highScore";
 
 	private int currentScore;
@@ -39,13 +37,13 @@ public class ScoreController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
+		// gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
 
 	}
 
     private void OnDisable()
 	{
-		gameStateController.GetGameState<GameOverState>().StateStartedEvent -= OnGameOverStateStarted;
+		// gameStateController.GetGameState<GameOverState>().StateStartedEvent -= OnGameOverStateStarted;
 	}
 
 	private void OnGameOverStateStarted(object sender, StateStartedArgs e)

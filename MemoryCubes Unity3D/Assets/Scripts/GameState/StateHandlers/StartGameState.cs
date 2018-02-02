@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class StartGameState : GameState
+public class StartGameState : GameState2
 {
     public static event Action StartGameStateStartedEvent;
 
-    public StartGameState(GameStateID gameStateEnum) : base(gameStateEnum)
+    public StartGameState(StateID stateID) : base(stateID)
     {
         
     }

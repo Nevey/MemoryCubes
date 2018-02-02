@@ -4,8 +4,6 @@ using System;
 
 public class TimeController : MonoBehaviour
 {
-    [SerializeField] private GameStateController gameStateController;
-
     [SerializeField] private TimeConfig timeConfig;
 
     [SerializeField] private LevelController levelController;
@@ -26,17 +24,17 @@ public class TimeController : MonoBehaviour
 
     private void OnEnable()
     {
-        gameStateController.GetGameState<SetupGameState>().StateStartedEvent += OnSetupGameStateStarted;
+        // gameStateController.GetGameState<SetupGameState>().StateStartedEvent += OnSetupGameStateStarted;
 
-        gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent += OnDestroyRemainingCubesStateStarted;
+        // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent += OnDestroyRemainingCubesStateStarted;
 
     }
 
     private void OnDisable()
     {
-        gameStateController.GetGameState<SetupGameState>().StateStartedEvent -= OnSetupGameStateStarted;
+        // gameStateController.GetGameState<SetupGameState>().StateStartedEvent -= OnSetupGameStateStarted;
 
-        gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent -= OnDestroyRemainingCubesStateStarted;
+        // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent -= OnDestroyRemainingCubesStateStarted;
     }
 
     // Update is called once per frame

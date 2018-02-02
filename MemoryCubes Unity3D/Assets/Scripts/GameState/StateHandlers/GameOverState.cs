@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class GameOverState : GameState
+public class GameOverState : GameState2
 {
     private GameOverView gameOverView;
 
-    public GameOverState(GameStateID gameStateEnum) : base(gameStateEnum)
+    public GameOverState(StateID stateID) : base(stateID)
     {
         gameOverView = uiController.GetView<GameOverView>();
     }

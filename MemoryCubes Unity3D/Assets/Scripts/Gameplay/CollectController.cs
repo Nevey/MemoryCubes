@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class CollectController : MonoBehaviour
 {
-    [SerializeField] private GameStateController gameStateController;
-
     [SerializeField] private GridBuilder gridBuilder;
 
     [SerializeField] private TileSelector tileSelector;
@@ -26,7 +24,7 @@ public class CollectController : MonoBehaviour
 
     private void Start()
     {
-        gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent += OnDestroyRemainingCubesStateStarted;
+        // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent += OnDestroyRemainingCubesStateStarted;
         
         tileSelector.SelectedTilesUpdatedEvent += OnSelectedTilesUpdatedEvent;
 
@@ -35,7 +33,7 @@ public class CollectController : MonoBehaviour
 
     private void OnDestroy()
     {
-        gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent -= OnDestroyRemainingCubesStateStarted;
+        // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent -= OnDestroyRemainingCubesStateStarted;
 
         tileSelector.SelectedTilesUpdatedEvent -= OnSelectedTilesUpdatedEvent;
 

@@ -1,4 +1,4 @@
-﻿public enum GameStateID
+﻿public enum StateID
 {
     mainMenu,
     buildCube,

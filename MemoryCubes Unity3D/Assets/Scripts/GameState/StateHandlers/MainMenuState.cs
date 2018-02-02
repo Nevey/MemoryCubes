@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System;
 
-public class MainMenuState : GameState
+public class MainMenuState2 : GameState2
 {
     private MainMenuView mainMenuView;
 
-    public MainMenuState(GameStateID gameStateEnum) : base(gameStateEnum)
+    public MainMenuState2(StateID stateID) : base(stateID)
     {
         mainMenuView = uiController.GetView<MainMenuView>();
     }

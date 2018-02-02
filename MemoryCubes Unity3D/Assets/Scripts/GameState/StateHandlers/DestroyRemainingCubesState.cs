@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-public class DestroyRemainingCubesState : GameState
+public class DestroyRemainingCubesState : GameState2
 {
     private CollectController collectController;
 
-    public DestroyRemainingCubesState(GameStateID gameStateType) : base(gameStateType)
+    public DestroyRemainingCubesState(StateID stateID) : base(stateID)
     {
         collectController = MonoBehaviour.FindObjectOfType<CollectController>();
     }

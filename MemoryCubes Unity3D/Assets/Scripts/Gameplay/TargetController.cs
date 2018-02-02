@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class TargetController : MonoBehaviour
 {
-    [SerializeField] private GameStateController gameStateController;
-
     [SerializeField] private GridBuilder gridBuilder;
 
     [SerializeField] private TargetView[] targetViews;

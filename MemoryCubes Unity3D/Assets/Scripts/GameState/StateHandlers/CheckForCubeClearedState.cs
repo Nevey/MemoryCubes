@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-public class CheckForCubeClearedState : GameState
+public class CheckForCubeClearedState : GameState2
 {
 	private TargetController targetController;
 
-	public CheckForCubeClearedState(GameStateID gameStateEnum) : base(gameStateEnum)
+	public CheckForCubeClearedState(StateID stateID) : base(stateID)
     {
         targetController = MonoBehaviour.FindObjectOfType<TargetController>();
     }

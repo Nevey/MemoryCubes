@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
-	[SerializeField] private GameStateController gameStateController;
-
 	private int currentLevel = 0;
 
 	public int CurrentLevel { get { return currentLevel; } }
@@ -15,16 +13,16 @@ public class LevelController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		gameStateController.GetGameState<LevelWonState>().StateStartedEvent += OnLevelWonStateStarted;
+		// gameStateController.GetGameState<LevelWonState>().StateStartedEvent += OnLevelWonStateStarted;
 
-		gameStateController.GetGameState<GameOverState>().StateFinishedEvent += OnMainMenuStateFinished;
+		// gameStateController.GetGameState<GameOverState>().StateFinishedEvent += OnMainMenuStateFinished;
 	}
 
     private void OnDisable()
 	{
-		gameStateController.GetGameState<LevelWonState>().StateStartedEvent -= OnLevelWonStateStarted;
+		// gameStateController.GetGameState<LevelWonState>().StateStartedEvent -= OnLevelWonStateStarted;
 
-		gameStateController.GetGameState<GameOverState>().StateFinishedEvent -= OnMainMenuStateFinished;
+		// gameStateController.GetGameState<GameOverState>().StateFinishedEvent -= OnMainMenuStateFinished;
 	}
 
 	private void OnLevelWonStateStarted(object sender, StateStartedArgs e)
