@@ -12,4 +12,9 @@ public class Loader : MonoBehaviour
 
         gameStateMachine = new GameStateMachine();
     }
+
+    private void Start()
+    {
+        applicationStateMachine.DoTransition<ToInitializeTransition>();
+    }
 }

@@ -2,18 +2,18 @@ using System;
 
 public class MainMenuState : GameState
 {
-    private MainMenuView mainMenuView;
+    // private MainMenuView mainMenuView;
 
     public MainMenuState()
     {
-        mainMenuView = uiController.GetView<MainMenuView>();
+        // mainMenuView = uiController.GetView<MainMenuView>();
     }
 
     public override void Start()
     {
         base.Start();
 
-        mainMenuView.HideCompleteEvent += OnHideComplete;
+        // mainMenuView.HideCompleteEvent += OnHideComplete;
     }
 
     private void OnHideComplete(UIView obj)

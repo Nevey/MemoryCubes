@@ -58,6 +58,11 @@ public class MainMenuView : UIView
         }
     }
 
+    protected override void OnHideComplete()
+    {
+        GameStateMachine.Instance.DoTransition<ToBuildCubeTransition>();
+    }
+
     public override void Show()
     {
         base.Show();

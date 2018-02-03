@@ -56,8 +56,8 @@ public class GridBuilder : MonoBehaviour
 	private void Awake()
 	{
 		flattenedGridList = new List<GameObject>();
-
-		// gameStateController.GetGameState<BuildGridState>().StateStartedEvent += OnBuildCubeStateStarted;
+		
+		GameStateMachine.Instance.GetState<BuildCubeState>().StartEvent += OnBuildCubeStateStarted;
 	}
 
     private void OnEnable()
@@ -71,7 +71,7 @@ public class GridBuilder : MonoBehaviour
 		uiController.GetView<GameOverView>().ShowCompleteEvent -= OnGameOverShowComplete;
 	}
 
-    private void OnBuildCubeStateStarted(object sender, StateStartedArgs e)
+    private void OnBuildCubeStateStarted()
     {
         CreateGrid();
     }
@@ -160,12 +160,7 @@ public class GridBuilder : MonoBehaviour
 
     private void BuilderReady()
     {
-        BuilderReadyEventArgs args = new BuilderReadyEventArgs();
-        
-        if (BuilderReadyEvent != null)
-        {
-            BuilderReadyEvent(this, args);
-        }
+        GameStateMachine.Instance.DoTransition<ToSetupGameTransition>();
     }
 
 	private void DestroyTile(GameObject tile)

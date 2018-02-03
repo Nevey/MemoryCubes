@@ -37,9 +37,9 @@ public class GameStateController : MonoBehaviour
 
         gameStateList.Add(new BuildGridState(StateID.buildCube));
 
-        gameStateList.Add(new SetupGameState(StateID.setupGameState));
+        gameStateList.Add(new SetupGameState2(StateID.setupGameState));
 
-        gameStateList.Add(new StartGameState(StateID.startGameState));
+        gameStateList.Add(new StartGameState2(StateID.startGameState));
 
         gameStateList.Add(new DestroyRemainingCubesState(StateID.destroyRemainingCubesState));
 

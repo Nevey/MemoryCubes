@@ -21,7 +21,7 @@ public class UIController : MonoBehaviour
 
 		// gameStateController.GetGameState<MainMenuState2>().StateStartedEvent += OnMainMenuStateStarted;
 
-		// gameStateController.GetGameState<SetupGameState>().StateStartedEvent += OnSetupGameStateStarted;
+		GameStateMachine.Instance.GetState<SetupGameState>().StartEvent += OnSetupGameStateStarted;
 
 		// gameStateController.GetGameState<LevelWonState>().StateStartedEvent += OnLevelWonStateStarted;
 
@@ -35,17 +35,17 @@ public class UIController : MonoBehaviour
 		SwitchView(UIViewID.Main);
 	}
 
-	private void OnSetupGameStateStarted(object sender, StateStartedArgs e)
+	private void OnSetupGameStateStarted()
 	{
 		SwitchView(UIViewID.InGame);
 	}
 
-    private void OnLevelWonStateStarted(object sender, StateStartedArgs e)
+    private void OnLevelWonStateStarted()
     {
         HideCurrentView();
     }
 
-	private void OnGameOverStateStarted(object sender, StateStartedArgs e)
+	private void OnGameOverStateStarted()
 	{
 		SwitchView(UIViewID.GameOver);
 	}

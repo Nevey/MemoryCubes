@@ -177,8 +177,7 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
 
     public void OnUIViewInitialize()
     {
-        // TODO: Get rid of these listeners and let target controller manage all this...
-        StartGameState.StartGameStateStartedEvent += OnStartGameStateStarted;
+        GameStateMachine.Instance.GetState<StartGameState>().StartEvent += OnStartGameStateStarted;
 
         // gameStateController.GetGameState<LevelWonState>().StateStartedEvent += OnLevelWonStateStarted;
 

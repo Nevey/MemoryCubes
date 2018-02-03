@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System;
 
-public class SetupGameState : GameState2
+public class SetupGameState2 : GameState2
 {
-    public SetupGameState(StateID stateID) : base(stateID)
+    public SetupGameState2(StateID stateID) : base(stateID)
     {
         
     }

@@ -24,7 +24,7 @@ public class TimeController : MonoBehaviour
 
     private void OnEnable()
     {
-        // gameStateController.GetGameState<SetupGameState>().StateStartedEvent += OnSetupGameStateStarted;
+        GameStateMachine.Instance.GetState<SetupGameState>().StartEvent += OnSetupGameStateStarted;
 
         // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent += OnDestroyRemainingCubesStateStarted;
 
@@ -32,7 +32,7 @@ public class TimeController : MonoBehaviour
 
     private void OnDisable()
     {
-        // gameStateController.GetGameState<SetupGameState>().StateStartedEvent -= OnSetupGameStateStarted;
+        GameStateMachine.Instance.GetState<SetupGameState>().StartEvent -= OnSetupGameStateStarted;
 
         // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent -= OnDestroyRemainingCubesStateStarted;
     }
@@ -48,12 +48,12 @@ public class TimeController : MonoBehaviour
         UpdateCurrentTime();
 	}
 
-    private void OnSetupGameStateStarted(object sender, StateStartedArgs e)
+    private void OnSetupGameStateStarted()
     {
         ResetTimer();
     }
 
-    private void OnDestroyRemainingCubesStateStarted(object sender, StateStartedArgs e)
+    private void OnDestroyRemainingCubesStateStarted()
     {
         StopTimer();
     }

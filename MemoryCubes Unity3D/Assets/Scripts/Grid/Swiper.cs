@@ -45,14 +45,14 @@ public class Swiper : MonoBehaviour
 
 	private void OnEnable()
 	{
-		// gameStateController.GetGameState<SetupGameState>().StateStartedEvent += OnSetupGameStateStarted;
+		GameStateMachine.Instance.GetState<SetupGameState>().StartEvent += OnSetupGameStateStarted;
 
 		// gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
 	}
 
 	private void OnDisable()
 	{
-		// gameStateController.GetGameState<SetupGameState>().StateStartedEvent -= OnSetupGameStateStarted;
+		GameStateMachine.Instance.GetState<SetupGameState>().StartEvent -= OnSetupGameStateStarted;
 
 		// gameStateController.GetGameState<GameOverState>().StateStartedEvent -= OnGameOverStateStarted;
 	}
@@ -78,12 +78,12 @@ public class Swiper : MonoBehaviour
 		UpdateSwipe();
 	}
 
-	private void OnSetupGameStateStarted(object sender, StateStartedArgs e)
+	private void OnSetupGameStateStarted()
 	{
 		EnableSwiping();
 	}
 
-	private void OnGameOverStateStarted(object sender, StateStartedArgs e)
+	private void OnGameOverStateStarted()
 	{
 		DisableSwiping();
 	}
