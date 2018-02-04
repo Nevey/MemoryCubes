@@ -9,7 +9,7 @@ public class TargetController : MonoBehaviourSingleton<TargetController>
 
     [SerializeField] private FreeTileChecker freeTileChecker;
 
-    private Color targetColor;
+    private Color targetColor = Color.magenta;
 
     private Color previousTargetColor;
 

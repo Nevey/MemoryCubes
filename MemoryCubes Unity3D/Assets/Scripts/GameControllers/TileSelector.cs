@@ -16,7 +16,8 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
 
     private List<GameObject> previouslySelectedTiles = new List<GameObject>();
 
-    private Color previouslySelectedTileColor;
+	// Use the color magenta to determine unselected color
+    private Color previouslySelectedTileColor = Color.magenta;
 
 	private bool canSelect;
 
@@ -66,6 +67,8 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
 
 	private void OnPlayerInputStateStarted()
 	{
+		ClearSelectedTiles();
+
 		EnableInput();
 	}
 
@@ -73,7 +76,7 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
     {
         DisableInput();
 
-		ClearSelectedTiles();
+		previouslySelectedTileColor = Color.black;
     }
 
 	private void EnableInput()
@@ -136,13 +139,14 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
 	{        
 		selector.SelectToggledEvent += OnSelectToggled;
 
-        if (previouslySelectedTileColor != tileColor.MyColor)
+        if (previouslySelectedTileColor != tileColor.MyColor
+			|| previouslySelectedTileColor == Color.magenta)
         {
+            TargetController.Instance.SetNextTarget(tileColor.MyColor);
+
             previouslySelectedTiles = selectedTiles;
 
             previouslySelectedTileColor = tileColor.MyColor;
-
-            TargetController.Instance.SetNextTarget(tileColor.MyColor);
         }
 
 		selector.Toggle(GameModeController.Instance.CurrentGameMode);
@@ -190,5 +194,7 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
     public void ClearSelectedTiles()
 	{
 		selectedTiles.Clear();
+
+		previouslySelectedTiles.Clear();
 	}
 }

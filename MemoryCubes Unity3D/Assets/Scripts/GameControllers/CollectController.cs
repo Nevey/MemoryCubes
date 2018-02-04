@@ -135,6 +135,13 @@ public class CollectController : MonoBehaviourSingleton<CollectController>
 
     public void CollectPreviouslySelectedTiles()
     {
+        // TODO: Clean this up, think about adding an extra state for when "Selecting first target" per level
+        // At start of the game, no tiles were selected
+        if (TileSelector.Instance.PreviouslySelectedTiles.Count == 0)
+        {
+            return;
+        }
+
         ScoreController.Instance.AddBulkScore(TileSelector.Instance.PreviouslySelectedTiles.Count);
 
         RemoveAllSelectedTiles(TileSelector.Instance.PreviouslySelectedTiles);
