@@ -49,17 +49,8 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 		flattenedGridList = new List<GameObject>();
 		
 		GameStateMachine.Instance.GetState<BuildCubeState>().StartEvent += OnBuildCubeStateStarted;
-	}
 
-    private void OnEnable()
-	{
-		// TODO: Wait for a specific game state instead
-		UIController.Instance.GetView<GameOverView>().ShowCompleteEvent += OnGameOverShowComplete;
-	}
-
-    private void OnDisable()
-	{
-		UIController.Instance.GetView<GameOverView>().ShowCompleteEvent -= OnGameOverShowComplete;
+		GameStateMachine.Instance.GetState<GameOverState>().StartEvent += OnGameOverStateStarted;
 	}
 
     private void OnBuildCubeStateStarted()
@@ -67,7 +58,7 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
         CreateGrid();
     }
 
-    private void OnGameOverShowComplete(UIView obj)
+    private void OnGameOverStateStarted()
     {
         ClearGrid();
     }
