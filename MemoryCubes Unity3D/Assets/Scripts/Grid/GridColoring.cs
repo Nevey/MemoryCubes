@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(GridBuilder))]
 public class GridColoring : MonoBehaviour
 {
 	[SerializeField] private ColorConfig colorConfig;
@@ -12,25 +13,12 @@ public class GridColoring : MonoBehaviour
 	private void Awake()
 	{
 		propertyBlock = new MaterialPropertyBlock();
-
-		GridBuilder.Instance.GridBuildFinishedEvent += OnGridBuildFinished;
-	}
-	
-	// Update is called once per frame
-	private void Update()
-	{
-		
-	}
-
-	private void OnGridBuildFinished(object sender, GridBuildFinishedEventArgs args)
-	{
-		SetupColors();
 	}
 
 	/// <summary>
-	/// Get random color for each tile and set color via gpu-instancing
+	/// Get random color for each tile and set color via gpu instancing
 	/// </summary>
-	private void SetupColors()
+	public void SetupColors()
 	{
 		for (int i = 0; i < GridBuilder.Instance.FlattenedGridList.Count; i++)
 		{

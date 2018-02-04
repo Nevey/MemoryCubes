@@ -19,6 +19,8 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 
 	[SerializeField] private GameObject tilePrefab;
 
+	[SerializeField] private GridColoring gridColoring;
+
 	[SerializeField] private GridBuilderAnimator gridBuilderAnimator;
 
 	[SerializeField] private ParticlesSpawner particlesSpawner;
@@ -38,8 +40,6 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 	public GameObject[,,] Grid { get { return grid; } }
 
 	public List<GameObject> FlattenedGridList {	get { return flattenedGridList; } }
-    
-	public event EventHandler<GridBuildFinishedEventArgs> GridBuildFinishedEvent;
 
     public event Action BuilderReadyEvent;
 	
@@ -98,12 +98,8 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 			}
 		}
 
-		if (GridBuildFinishedEvent != null)
-		{
-			GridBuildFinishedEventArgs args = new GridBuildFinishedEventArgs();
-
-			GridBuildFinishedEvent(this, args);
-		}
+		// Setup colors in the grid
+		gridColoring.SetupColors();
 
 		// Do some animations, when done: building is ready!
 		gridBuilderAnimator.AnimateTiles(flattenedGridList, BuilderReady);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(GridConfig))]
 public class ColorConfig : MonoBehaviour
 {
 	[SerializeField] private Color[] colors;
@@ -10,7 +11,13 @@ public class ColorConfig : MonoBehaviour
 
 	public Color GetRandomColor()
 	{
-		int randomIndex = Random.Range(0, colors.Length);
+		GridConfig gridConfig = GetComponent<GridConfig>();
+
+		int gridColorCount = (int)gridConfig.GridColorCount.Evaluate(LevelController.Instance.CurrentLevel);
+
+		int maxColorCount = gridColorCount < colors.Length ? gridColorCount : colors.Length;
+		
+		int randomIndex = Random.Range(0, maxColorCount);
 
 		return colors[randomIndex];
 	}
