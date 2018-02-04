@@ -63,11 +63,16 @@ public class StateMachine
 
     public void DoTransition<T>() where T : StateTransition
     {
+        if (currentState != null)
+        {
+            currentState.Finish();
+        }
+
         KeyValuePair<StateTransition, State> transitionPair = GetTransitionPairByKey<T>();
 
-        transitionPair.Value.Start();
-
         currentState = transitionPair.Value;
+
+        currentState.Start();
     }
 
     public T GetTransition<T>() where T : StateTransition
