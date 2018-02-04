@@ -25,15 +25,14 @@ public class TimeController : MonoBehaviourSingleton<TimeController>
     {
         GameStateMachine.Instance.GetState<SetupGameState>().StartEvent += OnSetupGameStateStarted;
 
-        // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent += OnDestroyRemainingCubesStateStarted;
-
+        GameStateMachine.Instance.GetState<DestroyRemainingCubesState>().StartEvent += OnDestroyRemainingCubesStateStarted;
     }
 
     private void OnDisable()
     {
         GameStateMachine.Instance.GetState<SetupGameState>().StartEvent -= OnSetupGameStateStarted;
 
-        // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent -= OnDestroyRemainingCubesStateStarted;
+        GameStateMachine.Instance.GetState<DestroyRemainingCubesState>().StartEvent -= OnDestroyRemainingCubesStateStarted;
     }
 
     // Update is called once per frame

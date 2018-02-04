@@ -48,12 +48,12 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
         SetupTargetView();
     }
 
-    private void OnLevelWonStateStarted(object sender, StateStartedArgs e)
+    private void OnLevelWonStateStarted()
     {
         DisableTargetView();
     }
 
-    private void OnGameOverStateStarted(object sender, StateStartedArgs e)
+    private void OnGameOverStateStarted()
     {
         DisableTargetView();
     }
@@ -177,9 +177,9 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
     {
         GameStateMachine.Instance.GetState<StartGameState>().StartEvent += OnStartGameStateStarted;
 
-        // gameStateController.GetGameState<LevelWonState>().StateStartedEvent += OnLevelWonStateStarted;
+        GameStateMachine.Instance.GetState<LevelWonState>().StartEvent += OnLevelWonStateStarted;
 
-        // gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
+        GameStateMachine.Instance.GetState<GameOverState>().StartEvent += OnGameOverStateStarted;
     }
 
     public void SetNewTargetBar(Color targetColor)

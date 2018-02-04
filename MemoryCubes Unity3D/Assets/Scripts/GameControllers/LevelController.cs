@@ -14,24 +14,24 @@ public class LevelController : MonoBehaviourSingleton<LevelController>
 
 	private void OnEnable()
 	{
-		// gameStateController.GetGameState<LevelWonState>().StateStartedEvent += OnLevelWonStateStarted;
+		GameStateMachine.Instance.GetState<LevelWonState>().StartEvent += OnLevelWonStateStarted;
 
-		// gameStateController.GetGameState<GameOverState>().StateFinishedEvent += OnMainMenuStateFinished;
+		GameStateMachine.Instance.GetState<GameOverState>().StartEvent += OnGameOverStateStarted;
 	}
 
     private void OnDisable()
 	{
-		// gameStateController.GetGameState<LevelWonState>().StateStartedEvent -= OnLevelWonStateStarted;
+		GameStateMachine.Instance.GetState<LevelWonState>().StartEvent -= OnLevelWonStateStarted;
 
-		// gameStateController.GetGameState<GameOverState>().StateFinishedEvent -= OnMainMenuStateFinished;
+		GameStateMachine.Instance.GetState<GameOverState>().StartEvent -= OnGameOverStateStarted;
 	}
 
-	private void OnLevelWonStateStarted(object sender, StateStartedArgs e)
+	private void OnLevelWonStateStarted()
 	{
 		IncrementLevel();
 	}
 
-	private void OnMainMenuStateFinished(object sender, StateFinishedArgs e)
+	private void OnGameOverStateStarted()
     {
         ResetLevelCounter();
     }

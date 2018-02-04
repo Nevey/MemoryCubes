@@ -36,16 +36,16 @@ public class ScoreController : MonoBehaviourSingleton<ScoreController>
 
 	private void OnEnable()
 	{
-		// gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
+		GameStateMachine.Instance.GetState<GameOverState>().StartEvent += OnGameOverStateStarted;
 
 	}
 
     private void OnDisable()
 	{
-		// gameStateController.GetGameState<GameOverState>().StateStartedEvent -= OnGameOverStateStarted;
+		GameStateMachine.Instance.GetState<GameOverState>().StartEvent -= OnGameOverStateStarted;
 	}
 
-	private void OnGameOverStateStarted(object sender, StateStartedArgs e)
+	private void OnGameOverStateStarted()
 	{
 		StoreCurrentScore();
 

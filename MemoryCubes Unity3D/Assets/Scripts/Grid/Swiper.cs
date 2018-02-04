@@ -47,14 +47,14 @@ public class Swiper : MonoBehaviour
 	{
 		GameStateMachine.Instance.GetState<SetupGameState>().StartEvent += OnSetupGameStateStarted;
 
-		// gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
+		GameStateMachine.Instance.GetState<GameOverState>().StartEvent += OnGameOverStateStarted;
 	}
 
 	private void OnDisable()
 	{
 		GameStateMachine.Instance.GetState<SetupGameState>().StartEvent -= OnSetupGameStateStarted;
 
-		// gameStateController.GetGameState<GameOverState>().StateStartedEvent -= OnGameOverStateStarted;
+		GameStateMachine.Instance.GetState<GameOverState>().StartEvent -= OnGameOverStateStarted;
 	}
 	
 	// Update is called once per frame
