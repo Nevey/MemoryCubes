@@ -1,0 +1,4 @@
+public class ToPlayerInputTransition : GameStateTransition
+{
+    
+}

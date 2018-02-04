@@ -1,23 +1,17 @@
 using System;
 
+// TODO: Create ui/menu state machine?
 public class MainMenuState : GameState
 {
-    // private MainMenuView mainMenuView;
-
-    public MainMenuState()
+    protected override void PreStart()
     {
-        // mainMenuView = uiController.GetView<MainMenuView>();
+        UIController.Instance.GetView<MainMenuView>().GameStartPressedEvent += OnGameStartPressed;
     }
 
-    public override void Start()
+    private void OnGameStartPressed()
     {
-        base.Start();
+        UIController.Instance.GetView<MainMenuView>().GameStartPressedEvent -= OnGameStartPressed;
 
-        // mainMenuView.HideCompleteEvent += OnHideComplete;
-    }
-
-    private void OnHideComplete(UIView obj)
-    {
-        // do transition to start game
+        GameStateMachine.Instance.DoTransition<ToBuildCubeTransition>();
     }
 }

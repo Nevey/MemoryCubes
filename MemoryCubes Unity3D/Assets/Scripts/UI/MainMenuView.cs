@@ -10,6 +10,8 @@ public class MainMenuView : UIView
 
     [SerializeField] private ButtonGameModeCorresponder[] buttonGameModeCorresponders;
 
+    public event Action GameStartPressedEvent;
+
     private void EnableButtons()
     {
         for (int i = 0; i < buttonGameModeCorresponders.Length; i++)
@@ -58,7 +60,13 @@ public class MainMenuView : UIView
 
     protected override void OnHideComplete()
     {
-        GameStateMachine.Instance.DoTransition<ToBuildCubeTransition>();
+        base.OnHideComplete();
+
+        // TODO: When more options in main menu arise, find nice way to know what to do...
+        if (GameStartPressedEvent != null)
+        {
+            GameStartPressedEvent();
+        }
     }
 
     public override void Show()

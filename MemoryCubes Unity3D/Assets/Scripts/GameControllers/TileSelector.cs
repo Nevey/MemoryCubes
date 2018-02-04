@@ -32,16 +32,16 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
 	{
 		canSelect = true;
 
-		// gameStateController.GetGameState<PlayerInputState>().StateStartedEvent += OnPlayerInputStateStarted;
+		GameStateMachine.Instance.GetState<PlayerInputState>().StartEvent += OnPlayerInputStateStarted;
 
-		// gameStateController.GetGameState<PlayerInputState>().StateFinishedEvent += OnPlayerInputStateFinished;
+		GameStateMachine.Instance.GetState<PlayerInputState>().FinishedEvent += OnPlayerInputStateFinished;
 	}
 
     private void OnDisable()
 	{
-		// gameStateController.GetGameState<PlayerInputState>().StateStartedEvent -= OnPlayerInputStateStarted;
+		GameStateMachine.Instance.GetState<PlayerInputState>().StartEvent -= OnPlayerInputStateStarted;
 
-		// gameStateController.GetGameState<PlayerInputState>().StateFinishedEvent -= OnPlayerInputStateFinished;
+		GameStateMachine.Instance.GetState<PlayerInputState>().FinishedEvent -= OnPlayerInputStateFinished;
 	}
 	
 	// LateUpdate is called once per frame, after Update
@@ -64,12 +64,12 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
 		}
 	}
 
-	private void OnPlayerInputStateStarted(object sender, StateStartedArgs e)
+	private void OnPlayerInputStateStarted()
 	{
 		EnableInput();
 	}
 
-    private void OnPlayerInputStateFinished(object sender, StateFinishedArgs e)
+    private void OnPlayerInputStateFinished()
     {
         DisableInput();
 

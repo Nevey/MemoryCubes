@@ -9,12 +9,6 @@ public class GridBuildFinishedEventArgs : EventArgs
 
 }
 
-// TODO: Move to own file...
-public class BuilderReadyEventArgs : EventArgs
-{
-    
-}
-
 public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 {
 	[SerializeField] private float spaceBetweenTiles = 0.2f;
@@ -47,7 +41,7 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
     
 	public event EventHandler<GridBuildFinishedEventArgs> GridBuildFinishedEvent;
 
-    public event EventHandler<BuilderReadyEventArgs> BuilderReadyEvent;
+    public event Action BuilderReadyEvent;
 	
 	// Use this for pre-initialization
 	private void Awake()
@@ -157,7 +151,10 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 
     private void BuilderReady()
     {
-        GameStateMachine.Instance.DoTransition<ToSetupGameTransition>();
+		if (BuilderReadyEvent != null)
+		{
+			BuilderReadyEvent();
+		}
     }
 
 	private void DestroyTile(GameObject tile)

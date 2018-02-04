@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 
-public class State
+public abstract class State
 {
     public event Action StartEvent;
 
@@ -20,10 +20,14 @@ public class State
     {
         Debug.LogFormat("{0}:Start", this.GetType().Name);
 
+        PreStart();
+
         if (StartEvent != null)
         {
             StartEvent();
         }
+
+        PostStart();
     }
 
     /// <summary>
@@ -33,9 +37,21 @@ public class State
     {
         Debug.LogFormat("{0}:Finish", this.GetType().Name);
 
+        PreFinish();
+
         if (FinishedEvent != null)
         {
             FinishedEvent();
         }
+
+        PostFinish();
     }
+
+    protected abstract void PreStart();
+
+    protected abstract void PostStart();
+
+    protected abstract void PreFinish();
+
+    protected abstract void PostFinish();
 }

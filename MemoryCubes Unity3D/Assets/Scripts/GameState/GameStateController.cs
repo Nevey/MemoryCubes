@@ -43,7 +43,7 @@ public class GameStateController : MonoBehaviour
 
         gameStateList.Add(new DestroyRemainingCubesState(StateID.destroyRemainingCubesState));
 
-        gameStateList.Add(new PlayerInputState(StateID.playerInputState));
+        gameStateList.Add(new PlayerInputState2(StateID.playerInputState));
 
         gameStateList.Add(new CheckForCubeClearedState(StateID.checkForCubeClearedState));
 

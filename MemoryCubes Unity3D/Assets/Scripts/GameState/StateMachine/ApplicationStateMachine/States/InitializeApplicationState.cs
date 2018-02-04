@@ -3,10 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class InitializeApplicationState : ApplicationState
 {
-    public override void Start()
+    protected override void PostStart()
     {
-        base.Start();
-
         // TODO: Shove in to a scene controller/manager for more generic approach
         SceneManager.sceneLoaded += OnSceneLoaded;
 

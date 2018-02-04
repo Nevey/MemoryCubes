@@ -9,5 +9,7 @@ public class GameStateMachine : StateMachine
         AddTransition<ToSetupGameTransition, SetupGameState>();
 
         AddTransition<ToStartGameTransition, StartGameState>();
+
+        AddTransition<ToPlayerInputTransition, PlayerInputState>();
     }
 }

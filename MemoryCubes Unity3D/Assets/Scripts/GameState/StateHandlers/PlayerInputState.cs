@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System;
 
-public class PlayerInputState : GameState2
+public class PlayerInputState2 : GameState2
 {
-    public PlayerInputState(StateID stateID) : base(stateID)
+    public PlayerInputState2(StateID stateID) : base(stateID)
     {
         
     }
