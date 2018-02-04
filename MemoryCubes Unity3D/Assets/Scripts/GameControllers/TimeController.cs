@@ -35,8 +35,7 @@ public class TimeController : MonoBehaviourSingleton<TimeController>
         GameStateMachine.Instance.GetState<DestroyRemainingCubesState>().StartEvent -= OnDestroyRemainingCubesStateStarted;
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
         if (!isActive)
         {
@@ -49,6 +48,8 @@ public class TimeController : MonoBehaviourSingleton<TimeController>
     private void OnSetupGameStateStarted()
     {
         ResetTimer();
+
+        StartTimer();
     }
 
     private void OnDestroyRemainingCubesStateStarted()
@@ -59,7 +60,10 @@ public class TimeController : MonoBehaviourSingleton<TimeController>
     private void ResetTimer()
     {
         currentTime = GetMaxTimeForCurrentLevel();
+    }
 
+    private void StartTimer()
+    {
         isActive = true;
     }
 

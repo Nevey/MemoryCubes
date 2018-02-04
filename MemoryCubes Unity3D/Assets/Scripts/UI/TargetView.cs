@@ -14,6 +14,8 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
 
     [SerializeField] private Direction direction;
 
+    [SerializeField] private Color noTargetSelectedColor = Color.black;
+
     private enum Direction
     {
         Left = -1,
@@ -43,9 +45,13 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
 
     private void OnStartGameStateStarted()
     {
-        wasVisible = true;
+        targetColor = noTargetSelectedColor;
 
         SetupTargetView();
+
+        ToggleTargetBarVisibility(true);
+
+        UpdateTargetBar();
     }
 
     private void OnLevelWonStateStarted()
@@ -185,8 +191,6 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
     public void SetNewTargetBar(Color targetColor)
     {
         this.targetColor = targetColor;
-
-        ToggleTargetBarVisibility(true);
 
         UpdateTargetBar();
     }
