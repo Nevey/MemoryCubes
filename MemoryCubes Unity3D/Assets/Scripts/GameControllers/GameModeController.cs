@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityTools.Base;
 
-public class GameModeController : MonoBehaviour
+public class GameModeController : MonoBehaviourSingleton<GameModeController>
 {
 	private GameMode currentGameMode;
 

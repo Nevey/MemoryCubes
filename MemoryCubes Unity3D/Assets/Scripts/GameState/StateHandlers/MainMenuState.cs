@@ -7,7 +7,7 @@ public class MainMenuState2 : GameState2
 
     public MainMenuState2(StateID stateID) : base(stateID)
     {
-        mainMenuView = uiController.GetView<MainMenuView>();
+        mainMenuView = UIController.Instance.GetView<MainMenuView>();
     }
 
     public override void GameStateStarted()

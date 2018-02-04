@@ -14,8 +14,6 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
 
     [SerializeField] private Direction direction;
 
-    [SerializeField] private TimeController targetTime;
-
     private enum Direction
     {
         Left = -1,
@@ -155,7 +153,7 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
             {
                 float spritePercent = (100f / (targetBarArraySize.x + targetBarArraySize.y)) * (x + y);
 
-                bool isActive = spritePercent < targetTime.TimeLeftPercent;
+                bool isActive = spritePercent < TimeController.Instance.TimeLeftPercent;
 
                 targetBarSprites[x, y].SetActive(isActive);
             }

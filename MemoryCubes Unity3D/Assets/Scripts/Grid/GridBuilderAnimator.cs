@@ -10,8 +10,6 @@ public class GridBuilderAnimator : MonoBehaviour
 
     [SerializeField] private float startScaleDelay = 0.1f;
 
-    private GridBuilder gridBuilder;
-
     private int currentAnimationCount = 0;
 
     private Action callback;

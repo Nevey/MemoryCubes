@@ -2,14 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityTools.Base;
 
-public class ScoreController : MonoBehaviour 
+public class ScoreController : MonoBehaviourSingleton<ScoreController>
 {
 	[SerializeField] private ScoreConfig scoreConfig;
 
 	[SerializeField] private ScoreView scoreView;
-
-	[SerializeField] private LevelController levelController;
 
 	private const string highScoreKey = "highScore";
 
@@ -83,7 +82,7 @@ public class ScoreController : MonoBehaviour
 	private void AddScore(int score)
 	{
 		// Give bonus for cube count
-		currentScore += score * levelController.CurrentCubeCount;
+		currentScore += score * LevelController.Instance.CurrentCubeCount;
 
 		scoreView.UpdateScoreText();
 

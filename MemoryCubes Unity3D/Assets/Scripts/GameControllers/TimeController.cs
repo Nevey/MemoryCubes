@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityTools.Base;
 
-public class TimeController : MonoBehaviour
+public class TimeController : MonoBehaviourSingleton<TimeController>
 {
     [SerializeField] private TimeConfig timeConfig;
-
-    [SerializeField] private LevelController levelController;
 
     private float currentTime = 0f;
     
@@ -87,7 +86,7 @@ public class TimeController : MonoBehaviour
 
     private float GetMaxTimeForCurrentLevel()
     {
-        int index = levelController.CurrentLevel + 1;
+        int index = LevelController.Instance.CurrentLevel + 1;
 
         // float maxTime = timeConfig.LevelTimeCurve.keys[index].value;
         float maxTime = timeConfig.LevelTimeCurve.Evaluate(index);

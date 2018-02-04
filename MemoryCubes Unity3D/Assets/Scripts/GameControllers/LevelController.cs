@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityTools.Base;
 
-public class LevelController : MonoBehaviour
+public class LevelController : MonoBehaviourSingleton<LevelController>
 {
 	private int currentLevel = 0;
 

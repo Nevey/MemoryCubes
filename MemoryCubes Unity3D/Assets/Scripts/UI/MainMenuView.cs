@@ -8,8 +8,6 @@ public class MainMenuView : UIView
 {
     [SerializeField] private GameModeConfig gameModeConfig;
 
-    [SerializeField] private GameModeController gameModeController;
-
     [SerializeField] private ButtonGameModeCorresponder[] buttonGameModeCorresponders;
 
     private void EnableButtons()
@@ -36,7 +34,7 @@ public class MainMenuView : UIView
     {
         buttonGameModeCorresponder.Button.onClick.AddListener(() => 
         {
-            gameModeController.SetGameMode(buttonGameModeCorresponder.CorrespindingGameMode);
+            GameModeController.Instance.SetGameMode(buttonGameModeCorresponder.CorrespindingGameMode);
 
             Hide();
         });

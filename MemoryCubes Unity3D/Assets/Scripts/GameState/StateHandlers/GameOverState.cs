@@ -7,7 +7,7 @@ public class GameOverState : GameState2
 
     public GameOverState(StateID stateID) : base(stateID)
     {
-        gameOverView = uiController.GetView<GameOverView>();
+        gameOverView = UIController.Instance.GetView<GameOverView>();
     }
 
     public override void GameStateStarted()

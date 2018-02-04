@@ -2,18 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityTools.Base;
 
-public class TileSelector : MonoBehaviour
+public class TileSelector : MonoBehaviourSingleton<TileSelector>
 {
 	[SerializeField] private Swiper swiper;
 
 	[SerializeField] private FreeTileChecker freeTileChecker;
 
-	[SerializeField] private GameModeController gameModeController;
-
 	[SerializeField] private RoutineUtility routineUtility;
-
-    [SerializeField] private TargetController targetController;
 
 	private List<GameObject> selectedTiles = new List<GameObject>();
 
@@ -145,10 +142,10 @@ public class TileSelector : MonoBehaviour
 
             previouslySelectedTileColor = tileColor.MyColor;
 
-            targetController.SetNextTarget(tileColor.MyColor);
+            TargetController.Instance.SetNextTarget(tileColor.MyColor);
         }
 
-		selector.Toggle(gameModeController.CurrentGameMode);
+		selector.Toggle(GameModeController.Instance.CurrentGameMode);
 	}
 
     private void OnSelectToggled(object sender, SelectorArgs e)

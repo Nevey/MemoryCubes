@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityTools.Base;
 
-public class UIController : MonoBehaviour
+public class UIController : MonoBehaviourSingleton<UIController>
 {
 	[SerializeField] private UIView[] uiViews;
 

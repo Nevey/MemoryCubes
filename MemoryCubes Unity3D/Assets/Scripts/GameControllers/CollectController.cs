@@ -1,21 +1,10 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityTools.Base;
 
-public class CollectController : MonoBehaviour
+public class CollectController : MonoBehaviourSingleton<CollectController>
 {
-    [SerializeField] private GridBuilder gridBuilder;
-
-    [SerializeField] private TileSelector tileSelector;
-
-    [SerializeField] private TargetController targetController;
-
-    [SerializeField] private TimeController timeController;
-
-    [SerializeField] private ScoreController scoreController;
-
-    [SerializeField] private GameModeController gameModeController;
-
     [SerializeField] private RoutineUtility routineUtility;
 
     public event Action CollectFinishedEvent;
@@ -26,18 +15,18 @@ public class CollectController : MonoBehaviour
     {
         // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent += OnDestroyRemainingCubesStateStarted;
         
-        tileSelector.SelectedTilesUpdatedEvent += OnSelectedTilesUpdatedEvent;
+        TileSelector.Instance.SelectedTilesUpdatedEvent += OnSelectedTilesUpdatedEvent;
 
-        targetController.TargetUpdatedEvent += OnTargetUpdated;
+        TargetController.Instance.TargetUpdatedEvent += OnTargetUpdated;
     }
 
     private void OnDestroy()
     {
         // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent -= OnDestroyRemainingCubesStateStarted;
 
-        tileSelector.SelectedTilesUpdatedEvent -= OnSelectedTilesUpdatedEvent;
+        TileSelector.Instance.SelectedTilesUpdatedEvent -= OnSelectedTilesUpdatedEvent;
 
-        targetController.TargetUpdatedEvent -= OnTargetUpdated;
+        TargetController.Instance.TargetUpdatedEvent -= OnTargetUpdated;
     }
 
     private void OnDestroyRemainingCubesStateStarted(object sender, StateStartedArgs e)
@@ -57,7 +46,7 @@ public class CollectController : MonoBehaviour
 
     private void CheckForCustomActions(List<GameObject> selectedTiles)
     {
-        switch (gameModeController.CurrentGameMode)
+        switch (GameModeController.Instance.CurrentGameMode)
         {            
             case GameMode.Combine:
 
@@ -83,12 +72,12 @@ public class CollectController : MonoBehaviour
             GameObject selectedTile = tileList[i];
 
             // Apply bonus time for each correctly selected tile
-            timeController.ApplyTileBonus();
+            TimeController.Instance.ApplyTileBonus();
 
-            gridBuilder.ClearTile(selectedTile);
+            GridBuilder.Instance.ClearTile(selectedTile);
         }
 
-        tileSelector.ClearSelectedTiles();
+        TileSelector.Instance.ClearSelectedTiles();
 
         // We're ready, send collect finished event
         if (CollectFinishedEvent != null)
@@ -99,7 +88,7 @@ public class CollectController : MonoBehaviour
 
     private void ClearAllTilesWithoutScore()
     {
-        gridBuilder.ClearGrid();
+        GridBuilder.Instance.ClearGrid();
 
         routineUtility.StartWaitTimeRoutine(2f, () =>
         {
@@ -112,9 +101,9 @@ public class CollectController : MonoBehaviour
 
     private void ClearLastStandingTilesWithDelay()
     {
-        gridBuilder.ClearGridDelayed(0.1f, (bool isFinished) =>
+        GridBuilder.Instance.ClearGridDelayed(0.1f, (bool isFinished) =>
         {
-            scoreController.AddLastStandingTileScore();
+            ScoreController.Instance.AddLastStandingTileScore();
 
             if (isFinished)
             {
@@ -132,22 +121,22 @@ public class CollectController : MonoBehaviour
     public void CollectSelectedTiles()
     {
         // Apply penalty if no tiles were selected
-        if (tileSelector.SelectedTiles.Count == 0)
+        if (TileSelector.Instance.SelectedTiles.Count == 0)
         {
-            timeController.ApplyPenaltyNoSelectedTiles();
+            TimeController.Instance.ApplyPenaltyNoSelectedTiles();
         }
         else
         {
-            scoreController.AddBulkScore(tileSelector.SelectedTiles.Count);
+            ScoreController.Instance.AddBulkScore(TileSelector.Instance.SelectedTiles.Count);
 
-            RemoveAllSelectedTiles(tileSelector.SelectedTiles);
+            RemoveAllSelectedTiles(TileSelector.Instance.SelectedTiles);
         }
     }
 
     public void CollectPreviouslySelectedTiles()
     {
-        scoreController.AddBulkScore(tileSelector.PreviouslySelectedTiles.Count);
+        ScoreController.Instance.AddBulkScore(TileSelector.Instance.PreviouslySelectedTiles.Count);
 
-        RemoveAllSelectedTiles(tileSelector.PreviouslySelectedTiles);
+        RemoveAllSelectedTiles(TileSelector.Instance.PreviouslySelectedTiles);
     }
 }

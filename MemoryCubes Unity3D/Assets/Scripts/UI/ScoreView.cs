@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class ScoreView : MonoBehaviour
 {
-	[SerializeField] private ScoreController scoreController;
-
 	[SerializeField] private Text scoreText;
 
 	[SerializeField] private ScoreFloater scoreFloaterPrefab;
@@ -15,7 +13,7 @@ public class ScoreView : MonoBehaviour
 
 	public void UpdateScoreText()
 	{
-		scoreText.text = scoreController.CurrentScore.ToString();
+		scoreText.text = ScoreController.Instance.CurrentScore.ToString();
 	}
 
 	public void ShowScoreFloater(int scoreValue)

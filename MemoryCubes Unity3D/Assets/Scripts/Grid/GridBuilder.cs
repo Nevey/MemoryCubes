@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityTools.Base;
 
 // TODO: Move to own file...
 public class GridBuildFinishedEventArgs : EventArgs
@@ -14,7 +15,7 @@ public class BuilderReadyEventArgs : EventArgs
     
 }
 
-public class GridBuilder : MonoBehaviour 
+public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 {
 	[SerializeField] private float spaceBetweenTiles = 0.2f;
 
@@ -26,11 +27,7 @@ public class GridBuilder : MonoBehaviour
 
 	[SerializeField] private GridBuilderAnimator gridBuilderAnimator;
 
-	[SerializeField] private LevelController levelController;
-
 	[SerializeField] private ParticlesSpawner particlesSpawner;
-
-	[SerializeField] private UIController uiController;
 
 	[SerializeField] private GridConfig gridConfig;
 
@@ -63,12 +60,12 @@ public class GridBuilder : MonoBehaviour
     private void OnEnable()
 	{
 		// TODO: Don't wait for animation, clear grid on game over state enter instead
-		uiController.GetView<GameOverView>().ShowCompleteEvent += OnGameOverShowComplete;
+		UIController.Instance.GetView<GameOverView>().ShowCompleteEvent += OnGameOverShowComplete;
 	}
 
     private void OnDisable()
 	{
-		uiController.GetView<GameOverView>().ShowCompleteEvent -= OnGameOverShowComplete;
+		UIController.Instance.GetView<GameOverView>().ShowCompleteEvent -= OnGameOverShowComplete;
 	}
 
     private void OnBuildCubeStateStarted()
@@ -85,7 +82,7 @@ public class GridBuilder : MonoBehaviour
 	{
 		// Get the grid size based on current level, value is determined in
 		// an animation curve from the grid config
-		gridSize = (int)gridConfig.GridSizeCurve.Evaluate(levelController.CurrentLevel);
+		gridSize = (int)gridConfig.GridSizeCurve.Evaluate(LevelController.Instance.CurrentLevel);
 
 		// Create new game object array
 		grid = new GameObject[gridSize, gridSize, gridSize];

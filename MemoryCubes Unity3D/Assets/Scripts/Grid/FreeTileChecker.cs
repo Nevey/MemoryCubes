@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class FreeTileChecker : MonoBehaviour
 {
-	[SerializeField] private GridBuilder gridBuilder;
-
 	/// <summary>
 	/// Checks if the current tile is completely surrounded by other tiles
 	/// </summary>
@@ -31,19 +29,19 @@ public class FreeTileChecker : MonoBehaviour
 	private bool IsTileOnEdgeOfGrid(Vector3 gridPosition)
 	{
 		if (gridPosition.x == 0
-			|| gridPosition.x == gridBuilder.GridSize - 1)
+			|| gridPosition.x == GridBuilder.Instance.GridSize - 1)
 		{
 			return true;
 		}
 
 		if (gridPosition.y == 0
-			|| gridPosition.y == gridBuilder.GridSize - 1)
+			|| gridPosition.y == GridBuilder.Instance.GridSize - 1)
 		{
 			return true;
 		}
 
 		if (gridPosition.z == 0
-			|| gridPosition.z == gridBuilder.GridSize - 1)
+			|| gridPosition.z == GridBuilder.Instance.GridSize - 1)
 		{
 			return true;
 		}
@@ -57,12 +55,12 @@ public class FreeTileChecker : MonoBehaviour
 		int y = (int)gridPosition.y;
 		int z = (int)gridPosition.z;
 
-		if (gridBuilder.Grid[x - 1, y, z] != null
-			&& gridBuilder.Grid[x + 1, y, z] != null
-			&& gridBuilder.Grid[x, y - 1, z] != null
-			&& gridBuilder.Grid[x, y + 1, z] != null
-			&& gridBuilder.Grid[x, y, z - 1] != null
-			&& gridBuilder.Grid[x, y, z + 1] != null)
+		if (GridBuilder.Instance.Grid[x - 1, y, z] != null
+			&& GridBuilder.Instance.Grid[x + 1, y, z] != null
+			&& GridBuilder.Instance.Grid[x, y - 1, z] != null
+			&& GridBuilder.Instance.Grid[x, y + 1, z] != null
+			&& GridBuilder.Instance.Grid[x, y, z - 1] != null
+			&& GridBuilder.Instance.Grid[x, y, z + 1] != null)
 		{
 			return true;
 		}

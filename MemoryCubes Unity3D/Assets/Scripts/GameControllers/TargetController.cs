@@ -1,16 +1,13 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityTools.Base;
 
-public class TargetController : MonoBehaviour
+public class TargetController : MonoBehaviourSingleton<TargetController>
 {
-    [SerializeField] private GridBuilder gridBuilder;
-
     [SerializeField] private TargetView[] targetViews;
 
     [SerializeField] private FreeTileChecker freeTileChecker;
-
-    [SerializeField] private GameModeController gameModeController;
 
     private Color targetColor;
 
@@ -45,7 +42,7 @@ public class TargetController : MonoBehaviour
 
         if (activeColors.Count == 0)
         {
-            switch (gameModeController.CurrentGameMode)
+            switch (GameModeController.Instance.CurrentGameMode)
             {
                 case GameMode.Combine:
 
@@ -75,9 +72,9 @@ public class TargetController : MonoBehaviour
     {
         List<Color> activeColors = new List<Color>();
 
-        for (int i = 0; i < gridBuilder.FlattenedGridList.Count; i++)
+        for (int i = 0; i < GridBuilder.Instance.FlattenedGridList.Count; i++)
         {
-            GameObject tile = gridBuilder.FlattenedGridList[i];
+            GameObject tile = GridBuilder.Instance.FlattenedGridList[i];
 
             // Don't add a color that's already in the list
             Color tileColor = tile.GetComponent<TileColor>().MyColor;
@@ -103,7 +100,7 @@ public class TargetController : MonoBehaviour
 
     private List<Color> GetFilteredListByGameMode(List<Color> colorList)
     {
-        switch (gameModeController.CurrentGameMode)
+        switch (GameModeController.Instance.CurrentGameMode)
         {            
             case GameMode.Combine:
                 return GetCombineGameModeColorList(colorList);
@@ -138,9 +135,9 @@ public class TargetController : MonoBehaviour
     {
         int colorCount = 0;
 
-        for (int i = 0; i < gridBuilder.FlattenedGridList.Count; i++)
+        for (int i = 0; i < GridBuilder.Instance.FlattenedGridList.Count; i++)
         {
-            TileColor tileColor = gridBuilder.FlattenedGridList[i].GetComponent<TileColor>();
+            TileColor tileColor = GridBuilder.Instance.FlattenedGridList[i].GetComponent<TileColor>();
 
             if (tileColor.MyColor == targetColor)
             {

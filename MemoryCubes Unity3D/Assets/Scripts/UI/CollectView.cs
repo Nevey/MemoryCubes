@@ -7,11 +7,7 @@ public class CollectView : MonoBehaviour, IOnUIViewInitialize, IOnUIViewShow, IO
 {
 	[SerializeField] private Button collectButton;
 
-	[SerializeField] private CollectController collectController;
-
 	[SerializeField] private GameModeCorresponder gameModeCorresponder;
-
-	[SerializeField] private GameModeController gameModeController;
 
     public void OnUIViewInitialize()
     {
@@ -20,18 +16,18 @@ public class CollectView : MonoBehaviour, IOnUIViewInitialize, IOnUIViewShow, IO
 
     public void OnUIViewShow()
     {
-        collectButton.onClick.AddListener(collectController.CollectSelectedTiles);
+        collectButton.onClick.AddListener(CollectController.Instance.CollectSelectedTiles);
 
 		collectButton.enabled = true;
 
-		bool isActive = gameModeCorresponder.CorrespindingGameMode == gameModeController.CurrentGameMode;
+		bool isActive = gameModeCorresponder.CorrespindingGameMode == GameModeController.Instance.CurrentGameMode;
 
 		gameObject.SetActive(isActive);
     }
 
     public void OnUIViewHide()
     {
-        collectButton.onClick.RemoveListener(collectController.CollectSelectedTiles);
+        collectButton.onClick.RemoveListener(CollectController.Instance.CollectSelectedTiles);
 
 		collectButton.enabled = false;
     }
