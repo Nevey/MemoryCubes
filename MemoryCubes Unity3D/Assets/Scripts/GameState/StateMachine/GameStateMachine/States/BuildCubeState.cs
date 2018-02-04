@@ -7,10 +7,13 @@ public class BuildCubeState : GameState
         GridBuilder.Instance.BuilderReadyEvent += OnBuilderReady;
     }
 
-    private void OnBuilderReady()
+    protected override void PreFinish()
     {
         GridBuilder.Instance.BuilderReadyEvent -= OnBuilderReady;
+    }
 
+    private void OnBuilderReady()
+    {
         GameStateMachine.Instance.DoTransition<ToSetupGameTransition>();
     }
 }
