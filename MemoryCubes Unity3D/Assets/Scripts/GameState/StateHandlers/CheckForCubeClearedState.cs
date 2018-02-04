@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-public class CheckForCubeClearedState : GameState2
+public class CheckForCubeClearedState2 : GameState2
 {
-	public CheckForCubeClearedState(StateID stateID) : base(stateID)
+	public CheckForCubeClearedState2(StateID stateID) : base(stateID)
     {
         
     }

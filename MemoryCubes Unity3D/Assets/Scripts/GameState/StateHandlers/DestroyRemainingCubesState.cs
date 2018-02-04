@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class DestroyRemainingCubesState : GameState2
+public class DestroyRemainingCubesState2 : GameState2
 {
-    public DestroyRemainingCubesState(StateID stateID) : base(stateID)
+    public DestroyRemainingCubesState2(StateID stateID) : base(stateID)
     {
         
     }

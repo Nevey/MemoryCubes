@@ -41,13 +41,13 @@ public class GameStateController : MonoBehaviour
 
         gameStateList.Add(new StartGameState2(StateID.startGameState));
 
-        gameStateList.Add(new DestroyRemainingCubesState(StateID.destroyRemainingCubesState));
+        gameStateList.Add(new DestroyRemainingCubesState2(StateID.destroyRemainingCubesState));
 
         gameStateList.Add(new PlayerInputState2(StateID.playerInputState));
 
-        gameStateList.Add(new CheckForCubeClearedState(StateID.checkForCubeClearedState));
+        gameStateList.Add(new CheckForCubeClearedState2(StateID.checkForCubeClearedState));
 
-        gameStateList.Add(new LevelWonState(StateID.levelWonState));
+        gameStateList.Add(new LevelWonState2(StateID.levelWonState));
 
         gameStateList.Add(new GameOverState(StateID.gameOverState));
     }

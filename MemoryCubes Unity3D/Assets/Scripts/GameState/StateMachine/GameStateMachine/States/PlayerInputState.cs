@@ -4,23 +4,21 @@ public class PlayerInputState : GameState
 {
     protected override void PreStart()
     {
-        CollectController.Instance.CollectFinishedEvent += OnDestroyFinished;
+        CollectController.Instance.CollectFinishedEvent += OnCollectFinished;
 
         TimeController.Instance.OutOfTimeEvent += OnOutOfTime;
     }
 
     protected override void PreFinish()
     {
-        CollectController.Instance.CollectFinishedEvent -= OnDestroyFinished;
+        CollectController.Instance.CollectFinishedEvent -= OnCollectFinished;
 
         TimeController.Instance.OutOfTimeEvent -= OnOutOfTime;
     }
 
-    private void OnDestroyFinished()
+    private void OnCollectFinished()
     {
-        throw new NotImplementedException();
-
-        // TODO: To check for cube cleared transition
+        GameStateMachine.Instance.DoTransition<ToCheckForCubeClearedTransition>();
     }
 
     private void OnOutOfTime()
