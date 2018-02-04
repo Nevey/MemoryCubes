@@ -43,7 +43,7 @@ public class ScoreFloater : MonoBehaviour
 
 		if (scoreValue <= 0)
 		{
-			scoreString = "-";
+			scoreString = "";
 
 			textColor = negativeColor;
 		}

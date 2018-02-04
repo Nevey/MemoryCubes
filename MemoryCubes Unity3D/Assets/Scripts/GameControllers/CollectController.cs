@@ -142,7 +142,20 @@ public class CollectController : MonoBehaviourSingleton<CollectController>
             return;
         }
 
-        ScoreController.Instance.AddBulkScore(TileSelector.Instance.PreviouslySelectedTiles.Count);
+        if (TileSelector.Instance.PreviouslySelectedTiles.Count == 1)
+        {
+            // Only apply penalties if grid size is big enough
+            if (GridBuilder.Instance.GridSize > 2)
+            {
+                ScoreController.Instance.ApplyPenalty();
+
+                TimeController.Instance.ApplyTilePenalty();
+            }
+        }
+        else
+        {
+            ScoreController.Instance.AddBulkScore(TileSelector.Instance.PreviouslySelectedTiles.Count);
+        }
 
         RemoveAllSelectedTiles(TileSelector.Instance.PreviouslySelectedTiles);
     }
