@@ -136,18 +136,19 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
     }
 
 	private void SelectTile(Selector selector, TileColor tileColor)
+	{
+		SetPreviouslySelectedValues(tileColor);
+
+		selector.Select(GameModeController.Instance.CurrentGameMode);
+
+		selectedTiles.Add(selector.gameObject);
+	}
+
+	private void ToggleTile(Selector selector, TileColor tileColor)
 	{        
+        SetPreviouslySelectedValues(tileColor);
+
 		selector.SelectToggledEvent += OnSelectToggled;
-
-        if (previouslySelectedTileColor != tileColor.MyColor
-			|| previouslySelectedTileColor == Color.magenta)
-        {
-            TargetController.Instance.SetNextTarget(tileColor.MyColor);
-
-            previouslySelectedTiles = selectedTiles;
-
-            previouslySelectedTileColor = tileColor.MyColor;
-        }
 
 		selector.Toggle(GameModeController.Instance.CurrentGameMode);
 	}
@@ -182,6 +183,19 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
 
 		DispatchSelectedTilesUpdate();
     }
+
+	private void SetPreviouslySelectedValues(TileColor tileColor)
+	{
+		if (previouslySelectedTileColor != tileColor.MyColor
+			|| previouslySelectedTileColor == Color.magenta)
+        {
+            TargetController.Instance.SetNextTarget(tileColor.MyColor);
+
+            previouslySelectedTiles = selectedTiles;
+
+            previouslySelectedTileColor = tileColor.MyColor;
+        }
+	}
 
 	private void DispatchSelectedTilesUpdate()
 	{

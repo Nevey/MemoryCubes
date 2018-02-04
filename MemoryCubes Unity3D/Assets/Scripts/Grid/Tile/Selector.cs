@@ -74,4 +74,11 @@ public class Selector : MonoBehaviour
 
 		resizer.DoSelectionResize(selectionState, currentGameMode);
 	}
+
+	public void Select(GameMode currentGameMode)
+	{
+		selectionState = SelectionState.selected;
+		
+		resizer.DoSelectionResize(selectionState, currentGameMode);
+	}
 }
