@@ -20,13 +20,11 @@ public class UIController : MonoBehaviourSingleton<UIController>
 
 		GameStateMachine.Instance.GetState<MainMenuState>().StartEvent += OnMainMenuStateStarted;
 
-		// gameStateController.GetGameState<MainMenuState2>().StateStartedEvent += OnMainMenuStateStarted;
-
 		GameStateMachine.Instance.GetState<SetupGameState>().StartEvent += OnSetupGameStateStarted;
 
-		// gameStateController.GetGameState<LevelWonState>().StateStartedEvent += OnLevelWonStateStarted;
+		GameStateMachine.Instance.GetState<LevelWonState>().StartEvent += OnLevelWonStateStarted;
 
-		// gameStateController.GetGameState<GameOverState>().StateStartedEvent += OnGameOverStateStarted;
+		GameStateMachine.Instance.GetState<GameOverState>().StartEvent += OnGameOverStateStarted;
 
 		InitializeAllViews();
 	}

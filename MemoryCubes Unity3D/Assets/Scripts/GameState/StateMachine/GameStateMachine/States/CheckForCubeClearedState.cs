@@ -1,12 +1,12 @@
 public class CheckForCubeClearedState : GameState
 {
-    protected override void PostFinish()
+    protected override void PostStart()
     {
         int targetColorCount = TargetController.Instance.GetTargetColorCount();
 
 		if (targetColorCount == 1)
 		{
-			// TODO: To destroy remaining cubes state
+			GameStateMachine.Instance.DoTransition<ToDestroyRemainingCubesTransition>();
 		}
 		else
 		{

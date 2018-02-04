@@ -1,4 +1,4 @@
-public class ToLevelWonTrainsition : GameStateTransition
+public class ToLevelWonTransition : GameStateTransition
 {
     
 }

@@ -11,6 +11,6 @@ public class DestroyRemainingCubesState : GameState
     {
         CollectController.Instance.ClearAllTilesFinishedEvent -= OnClearAllTilesFinished;
 
-        // TODO: To level won state transition
+        GameStateMachine.Instance.DoTransition<ToLevelWonTransition>();
     }
 }

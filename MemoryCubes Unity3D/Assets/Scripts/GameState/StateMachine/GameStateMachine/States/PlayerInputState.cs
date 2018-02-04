@@ -23,8 +23,6 @@ public class PlayerInputState : GameState
 
     private void OnOutOfTime()
     {
-        throw new NotImplementedException();
-
-        // TODO: To out of time transition
+        GameStateMachine.Instance.DoTransition<ToGameOverTransition>();
     }
 }

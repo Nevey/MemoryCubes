@@ -22,6 +22,8 @@ public class GameStateMachine : StateMachine
 
         AddTransition<ToDestroyRemainingCubesTransition, DestroyRemainingCubesState>();
 
-        AddTransition<ToLevelWonTrainsition, LevelWonState>();
+        AddTransition<ToLevelWonTransition, LevelWonState>();
+
+        AddTransition<ToGameOverTransition, GameOverState>();
     }
 }

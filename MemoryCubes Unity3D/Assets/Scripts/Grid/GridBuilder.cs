@@ -53,7 +53,7 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 
     private void OnEnable()
 	{
-		// TODO: Don't wait for animation, clear grid on game over state enter instead
+		// TODO: Wait for a specific game state instead
 		UIController.Instance.GetView<GameOverView>().ShowCompleteEvent += OnGameOverShowComplete;
 	}
 

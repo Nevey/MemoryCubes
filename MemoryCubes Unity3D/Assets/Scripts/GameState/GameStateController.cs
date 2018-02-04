@@ -49,7 +49,7 @@ public class GameStateController : MonoBehaviour
 
         gameStateList.Add(new LevelWonState2(StateID.levelWonState));
 
-        gameStateList.Add(new GameOverState(StateID.gameOverState));
+        gameStateList.Add(new GameOverState2(StateID.gameOverState));
     }
 
     private void CreateStateFlow()

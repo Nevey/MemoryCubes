@@ -13,7 +13,7 @@ public class CollectController : MonoBehaviourSingleton<CollectController>
 
     private void Start()
     {
-        // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent += OnDestroyRemainingCubesStateStarted;
+        GameStateMachine.Instance.GetState<DestroyRemainingCubesState>().StartEvent += OnDestroyRemainingCubesStateStarted;
         
         TileSelector.Instance.SelectedTilesUpdatedEvent += OnSelectedTilesUpdatedEvent;
 
@@ -22,14 +22,14 @@ public class CollectController : MonoBehaviourSingleton<CollectController>
 
     private void OnDestroy()
     {
-        // gameStateController.GetGameState<DestroyRemainingCubesState>().StateStartedEvent -= OnDestroyRemainingCubesStateStarted;
+        GameStateMachine.Instance.GetState<DestroyRemainingCubesState>().StartEvent -= OnDestroyRemainingCubesStateStarted;
 
         TileSelector.Instance.SelectedTilesUpdatedEvent -= OnSelectedTilesUpdatedEvent;
 
         TargetController.Instance.TargetUpdatedEvent -= OnTargetUpdated;
     }
 
-    private void OnDestroyRemainingCubesStateStarted(object sender, StateStartedArgs e)
+    private void OnDestroyRemainingCubesStateStarted()
     {
         ClearLastStandingTilesWithDelay();
     }
