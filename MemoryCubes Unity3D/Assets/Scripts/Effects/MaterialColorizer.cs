@@ -28,6 +28,8 @@ public class MaterialColorizer : MonoBehaviour
     {
         GameStateMachine.Instance.GetState<MainMenuState>().StartEvent += OnMainMenuStateStarted;
 
+        GameStateMachine.Instance.GetState<StartGameState>().StartEvent += OnStartGameStateStarted;
+
         TargetController.Instance.TargetUpdatedEvent += OnTargetUpdated;
 
         currentColor = startColor;
@@ -49,14 +51,17 @@ public class MaterialColorizer : MonoBehaviour
         currentColor.b = Mathf.SmoothDamp(currentColor.b, targetColor.b, ref velocity.z, colorChangeTime);
         currentColor.a = Mathf.SmoothDamp(currentColor.a, targetColor.a, ref velocity.w, colorChangeTime);
 
-        Debug.Log(currentColor);
-
         targetMaterial.color = currentColor;
     }
 
     private void OnMainMenuStateStarted()
     {
-        StartMainMenuColoring();
+        SetTargetColor(startColor);
+    }
+
+    private void OnStartGameStateStarted()
+    {
+        SetTargetColor(startColor);
     }
 
     private void OnTargetUpdated()
@@ -67,11 +72,6 @@ public class MaterialColorizer : MonoBehaviour
     private void SmoothChangeFloat(float current, float target, ref float velocity)
     {
         current = Mathf.SmoothDamp(current, target, ref velocity, colorChangeTime);
-    }
-
-    private void StartMainMenuColoring()
-    {
-        SetTargetColor(startColor);
     }
 
     private void SetTargetColor(Color color)
