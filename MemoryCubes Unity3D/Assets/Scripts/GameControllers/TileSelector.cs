@@ -33,6 +33,8 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
 	{
 		canSelect = true;
 
+		GameStateMachine.Instance.GetState<StartGameState>().StartEvent += OnStartGameStateStarted;
+
 		GameStateMachine.Instance.GetState<PlayerInputState>().StartEvent += OnPlayerInputStateStarted;
 
 		GameStateMachine.Instance.GetState<PlayerInputState>().FinishedEvent += OnPlayerInputStateFinished;
@@ -40,6 +42,8 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
 
     private void OnDisable()
 	{
+		GameStateMachine.Instance.GetState<StartGameState>().StartEvent -= OnStartGameStateStarted;
+
 		GameStateMachine.Instance.GetState<PlayerInputState>().StartEvent -= OnPlayerInputStateStarted;
 
 		GameStateMachine.Instance.GetState<PlayerInputState>().FinishedEvent -= OnPlayerInputStateFinished;
@@ -64,6 +68,11 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
 			canSelect = true;
 		}
 	}
+
+    private void OnStartGameStateStarted()
+    {
+        previouslySelectedTileColor = Color.magenta;
+    }
 
 	private void OnPlayerInputStateStarted()
 	{

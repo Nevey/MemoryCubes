@@ -18,7 +18,22 @@ public class TargetController : MonoBehaviourSingleton<TargetController>
     public event Action TargetUpdatedEvent;
 
     public event Action NoTargetFoundEvent;
-    
+
+    private void OnEnable()
+    {
+        GameStateMachine.Instance.GetState<StartGameState>().StartEvent += OnStartGameStateStarted;
+    }
+
+    private void OnDisable()
+    {
+        GameStateMachine.Instance.GetState<StartGameState>().StartEvent -= OnStartGameStateStarted;
+    }
+
+    private void OnStartGameStateStarted()
+    {
+        targetColor = Color.magenta;
+    }
+
     private void SetNextTargetRandom()
     {
         // Get a random target color
