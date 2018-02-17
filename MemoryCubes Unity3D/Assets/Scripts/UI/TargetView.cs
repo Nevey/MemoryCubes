@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,7 +52,7 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
 
         ToggleTargetBarVisibility(true);
 
-        UpdateTargetBar();
+        UpdateTargetBarColor();
     }
 
     private void OnLevelWonStateStarted()
@@ -89,13 +90,22 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
     private void CreateTargetBar()
     {
         // Create array
-        targetBarArraySize.x = targetBarHeight;
-        targetBarArraySize.y = targetBarWidth;
+        targetBarArraySize.x = targetBarWidth;
+        targetBarArraySize.y = targetBarHeight;
         
         targetBarSprites = new GameObject[(int)targetBarArraySize.x, (int)targetBarArraySize.y];
 
         for (int x = 0; x < targetBarArraySize.x; x++)
         {
+            List<int> shuffledYList = new List<int>();
+
+            for (int i = 0; i < targetBarArraySize.y; i++)
+            {
+                shuffledYList.Add(i);
+            }
+
+            shuffledYList.Shuffle();
+
             for (int y = 0; y < targetBarArraySize.y; y++)
             {
                 GameObject targetBarSprite = Instantiate(targetSpritePrefab);
@@ -109,10 +119,12 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
                     image.rectTransform.sizeDelta.y * image.canvas.scaleFactor
                 );
 
+                int randomYIndex = shuffledYList[y];
+
                 // Horizontal position is based on y and vertical position is based on placeholder position
                 Vector2 position = new Vector2(
-                    targetBarPlaceholder.transform.position.x + (scaledSizeDelta.x * y) * (float)direction,
-                    targetBarPlaceholder.transform.position.y - (scaledSizeDelta.y * x)
+                    targetBarPlaceholder.transform.position.x + (scaledSizeDelta.x * x) * (float)direction,
+                    targetBarPlaceholder.transform.position.y - (scaledSizeDelta.y * randomYIndex)
                 );
 
                 targetBarSprite.transform.position = position;
@@ -138,7 +150,7 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
         wasVisible = isVisible;
     }
     
-    private void UpdateTargetBar()
+    private void UpdateTargetBarColor()
     {
         // Set correct color based on target (image swap)
         foreach (GameObject targetBarSprite in targetBarSprites)
@@ -153,15 +165,21 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
 
     private void UpdateVisibility()
     {
+        int totalSprites = (int)targetBarArraySize.x * (int)targetBarArraySize.y;
+
+        int index = 1;
+
         for (int x = 0; x < targetBarArraySize.x; x++)
         {
             for (int y = 0; y < targetBarArraySize.y; y++)
             {
-                float spritePercent = (100f / (targetBarArraySize.x + targetBarArraySize.y)) * (x + y);
+                float spritePercent = ((float)index / (float)totalSprites) * 100f;
 
                 bool isActive = spritePercent < TimeController.Instance.TimeLeftPercent;
 
                 targetBarSprites[x, y].SetActive(isActive);
+
+                index++;
             }
         }
     }
@@ -192,6 +210,6 @@ public class TargetView : MonoBehaviour, IOnUIViewInitialize
     {
         this.targetColor = targetColor;
 
-        UpdateTargetBar();
+        UpdateTargetBarColor();
     }
 }
