@@ -18,13 +18,13 @@ public class RoutineUtility : MonoBehaviour
         callback();
     }
     
-    public void StartWaitTimeRoutine(float time, Action callback)
+    public Coroutine StartWaitTimeRoutine(float time, Action callback)
     {
-        StartCoroutine(WaitTimeRoutine(time, callback));
+        return StartCoroutine(WaitTimeRoutine(time, callback));
     }
 
-    public void StartWaitOneFrameRoutine(Action callback)
+    public Coroutine StartWaitOneFrameRoutine(Action callback)
     {
-        StartCoroutine(WaitOneFrameRoutine(callback));
+        return StartCoroutine(WaitOneFrameRoutine(callback));
     }
 }

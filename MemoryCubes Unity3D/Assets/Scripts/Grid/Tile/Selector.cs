@@ -23,7 +23,7 @@ public class Selector : MonoBehaviour
 
 	private SelectionState selectionState = new SelectionState();
 
-    public SelectionState CurrentSelection
+    public SelectionState SeletionState
     {
         get { return selectionState; }
     }

@@ -16,11 +16,33 @@ public class Resizer : MonoBehaviour
 
 	[SerializeField] private float selectedScale = 0.5f;
 
+	[Header("Grid Scaling Values")]
+	[SerializeField] private float gridScaleValue = 1.1f;
+
+	[SerializeField] private float gridScaleTime = 0.2f;
+
+	private Selector selector;
+
 	private float originScale;
 	
 	private float targetScale;
 
+	private Sequence gridTweenSequence;
+
 	public event Action<Resizer> ResizeAnimationFinishedEvent;
+
+	private void Awake()
+	{
+		selector = GetComponent<Selector>();
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.W))
+		{
+			DoGridScaleUpTween(0f);
+		}
+	}
 
 	private void DispatchResizeAnimationFinished()
 	{
@@ -53,7 +75,7 @@ public class Resizer : MonoBehaviour
 		}
 	}
 
-	private float GetTargetScale(SelectionState selectionState)
+	private float GetCurrentScale(SelectionState selectionState)
 	{
 		if (selectionState == SelectionState.selected)
 		{
@@ -72,18 +94,43 @@ public class Resizer : MonoBehaviour
 	
 	public void DoSelectionResize(SelectionState selectionState, GameMode currentGameMode)
 	{
-		targetScale = GetTargetScale(selectionState);
+		if (gridTweenSequence != null && gridTweenSequence.IsPlaying())
+		{
+			gridTweenSequence.Kill();
+		}
+
+		targetScale = GetCurrentScale(selectionState);
 
 		DoResizeTween(currentGameMode);
 	}
 
 	public void DoStartupResize(float delay)
 	{
-		targetScale = GetTargetScale(SelectionState.notSelected);
+		targetScale = GetCurrentScale(SelectionState.notSelected);
 
 		transform.DOScale(targetScale, startScaleTime)
 			.SetEase(startScaleEase)
 			.SetDelay(delay)
 			.OnComplete(DispatchResizeAnimationFinished);
+	}
+
+	public void DoGridScaleUpTween(float delay)
+	{
+		// TODO: Look into re-using the same sequence
+		gridTweenSequence = DOTween.Sequence();
+
+		float scale = GetCurrentScale(selector.SeletionState);
+
+		Tweener tweenUp = transform.DOScale(scale * gridScaleValue, gridScaleTime);
+		tweenUp.SetEase(Ease.InOutQuad);
+
+		Tweener tweenDown = transform.DOScale(scale, gridScaleTime);
+		tweenDown.SetEase(Ease.InOutQuad);
+
+		gridTweenSequence.Append(tweenUp);
+
+		gridTweenSequence.Append(tweenDown);
+
+		gridTweenSequence.PrependInterval(delay);
 	}
 }
