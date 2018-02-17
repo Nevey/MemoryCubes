@@ -13,11 +13,6 @@ public class TargetController : MonoBehaviourSingleton<TargetController>
 
     private Color previousTargetColor;
 
-    /// <summary>
-    /// Use this color to assign "no target color"
-    /// </summary>
-    private Color noTarget = Color.black;
-
     public Color TargetColor { get { return targetColor; } }
 
     public event Action TargetUpdatedEvent;
