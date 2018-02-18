@@ -8,11 +8,10 @@ public class TileAnimations : MonoBehaviourSingleton<TileAnimations>
     [Header("Used when building the cube")]
     [SerializeField] private float buildDelayPerTile = 0.025f;
 
-    [Header("Used when delaying collect tweens")]
-    [SerializeField] private float collectDelayPerTile = 0.15f;
-
-    [Header("Used when scaling down tiles for cube clearance")]
+    [Header("Cube clearance values")]
     [SerializeField] private float resizeLastStandingDelayPerTile = 0.15f;
+
+    [SerializeField] private float collectDelayPerTile = 0.15f;
 
     private List<TileAnimationBatch> animationBatches = new List<TileAnimationBatch>();
 
@@ -46,7 +45,7 @@ public class TileAnimations : MonoBehaviourSingleton<TileAnimations>
     public void PlayCollectLastStandingTilesAnimation(List<GameObject> tileList, Action callback = null)
     {
         CreateNewAnimationBatch(tileList, callback)
-            .PlayCollectLastStandingTilesAnimation(collectDelayPerTile, resizeLastStandingDelayPerTile);
+            .PlayCollectLastStandingTilesAnimation(resizeLastStandingDelayPerTile, collectDelayPerTile);
     }
 
     private void OnAnimationBatchfinished(TileAnimationBatch tileAnimationBatch)

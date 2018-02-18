@@ -82,7 +82,7 @@ public class TileAnimationBatch
         }
     }
 
-    public void PlayCollectLastStandingTilesAnimation(float collectDelay, float resizeDelay)
+    public void PlayCollectLastStandingTilesAnimation(float resizeDelay, float collectDelay)
     {
         for (int i = 0; i < tileList.Count; i++)
         {
@@ -97,7 +97,6 @@ public class TileAnimationBatch
                     OnCollectAnimationFinished(tileAnimator);
                 });
             });
-
         }
     }
 
