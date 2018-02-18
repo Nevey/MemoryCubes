@@ -181,6 +181,8 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 
 	public void ClearGrid()
 	{
+		TileAnimations.Instance.PlayCollectLastStandingTilesAnimation(flattenedGridList);
+		
 		for (int x = 0; x < gridSize; x++)
 		{
 			for (int y = 0; y < gridSize; y++)
