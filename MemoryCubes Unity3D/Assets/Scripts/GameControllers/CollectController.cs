@@ -3,11 +3,8 @@ using System;
 using System.Collections.Generic;
 using UnityTools.Base;
 
-[RequireComponent(typeof(CollectAnimator))]
 public class CollectController : MonoBehaviourSingleton<CollectController>
 {
-    private CollectAnimator collectAnimator;
-
     public event Action CollectFinishedEvent;
 
     public event Action ClearAllTilesFinishedEvent;
@@ -19,8 +16,6 @@ public class CollectController : MonoBehaviourSingleton<CollectController>
         TileSelector.Instance.SelectedTilesUpdatedEvent += OnSelectedTilesUpdatedEvent;
 
         TargetController.Instance.TargetUpdatedEvent += OnTargetUpdated;
-
-        collectAnimator = GetComponent<CollectAnimator>();
     }
 
     private void OnDestroy()
@@ -80,7 +75,7 @@ public class CollectController : MonoBehaviourSingleton<CollectController>
             GridBuilder.Instance.ClearTile(tile);
         }
 
-        collectAnimator.PlayCollectAnimation(tileList);
+        TileAnimations.Instance.PlayCollectAnimation(tileList);
 
         TileSelector.Instance.ClearSelectedTiles();
 
@@ -117,7 +112,7 @@ public class CollectController : MonoBehaviourSingleton<CollectController>
             }
         }
 
-        collectAnimator.PlayCollectLastStandingTilesAnimation(tileAnimationList, ClearAllTilesFinishedEvent);
+        TileAnimations.Instance.PlayCollectLastStandingTilesAnimation(tileAnimationList, ClearAllTilesFinishedEvent);
     }
 
     public void CollectSelectedTiles()

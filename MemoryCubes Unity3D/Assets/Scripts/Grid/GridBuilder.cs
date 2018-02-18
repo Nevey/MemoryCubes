@@ -21,8 +21,6 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 
 	[SerializeField] private GridColoring gridColoring;
 
-	[SerializeField] private GridBuilderAnimator gridBuilderAnimator;
-
 	[SerializeField] private GridConfig gridConfig;
 
 	[SerializeField] private RoutineUtility routineUtility;
@@ -91,7 +89,7 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 		gridColoring.SetupColors();
 
 		// Do some animations, when done: building is ready!
-		gridBuilderAnimator.AnimateTiles(flattenedGridList, BuilderReady);
+		TileAnimations.Instance.PlayBuildAnimation(flattenedGridList, BuilderReadyEvent);
 	}
 	
 	private GameObject CreateTile(int x, int y, int z)
@@ -106,7 +104,7 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 		// Scale the tile based on grid size to make the grid fit the camera
 		float tileScale = tileScaleTweak / (gridSize + (scaledSpaceBetweenTiles * gridSize));
 
-		tile.GetComponent<Resizer>().SetOriginScale(tileScale);
+		tile.GetComponent<TileAnimator>().SetOriginScale(tileScale);
 
 		tile.transform.localScale = new Vector3(
 			tileScale,

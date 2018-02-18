@@ -35,25 +35,33 @@ public class TileAnimationBatch
         totalAnimationCount = tileList.Count;
     }
 
-    private void OnCollectAnimationFinished(Resizer resizer)
+    /// <summary>
+    /// Spawn particles and destroy tile gameobject
+    /// </summary>
+    /// <param name="tileAnimator"></param>
+    private void OnCollectAnimationFinished(TileAnimator tileAnimator)
     {
-        tileList.Remove(resizer.gameObject);
-
         // TODO: Move spawning of these particles to Destroyer
         ParticlesSpawner.Instance.Spawn(
-            resizer.transform,
-            resizer.GetComponent<TileColor>().MyColor
+            tileAnimator.transform,
+            tileAnimator.GetComponent<TileColor>().MyColor
         );
 
-		Destroyer destroyer = resizer.GetComponent<Destroyer>();
+		Destroyer destroyer = tileAnimator.GetComponent<Destroyer>();
 
 		destroyer.DestroyCube();
 
-        CheckForAnimationBatchFinished();
+        CheckForAnimationBatchFinished(tileAnimator);
     }
 
-    private void CheckForAnimationBatchFinished()
+    /// <summary>
+    /// Check if this animation batch has finished
+    /// </summary>
+    /// <param name="tileAnimator"></param>
+    private void CheckForAnimationBatchFinished(TileAnimator tileAnimator)
     {
+        tileList.Remove(tileAnimator.gameObject);
+
         if (tileList.Count == 0)
         {
             if (AnimationBatchFinishedEvent != null)
@@ -65,7 +73,6 @@ public class TileAnimationBatch
             {
                 callback();
             }
-
         }
     }
 
@@ -75,38 +82,55 @@ public class TileAnimationBatch
 
         for (int i = 0; i < tileList.Count; i++)
         {
-            // TODO: Move resizer/animator logic to destroyer?
-
-            Resizer resizer = tileList[i].GetComponent<Resizer>();
+            TileAnimator tileAnimator = tileList[i].GetComponent<TileAnimator>();
 
             float delay = batchDelay + (delayPerTile * i);
 
-            resizer.DoCollectTween(delay, () =>
+            tileAnimator.DoCollectTween(delay, () =>
             {
-                OnCollectAnimationFinished(resizer);
+                OnCollectAnimationFinished(tileAnimator);
             });
         }
     }
 
-    public void PlayCollectLastStandingTilesAnimation(float delayPerTile, float batchDelay = 0f)
+    public void PlayCollectLastStandingTilesAnimation(float delayPerTile, float resizeDelay, float batchDelay = 0f)
     {
         this.delayPerTile = delayPerTile;
 
         for (int i = 0; i < tileList.Count; i++)
         {
-            // TODO: Move resizer/animator logic to destroyer?
+            TileAnimator tileAnimator = tileList[i].GetComponent<TileAnimator>();
 
-            Resizer resizer = tileList[i].GetComponent<Resizer>();
-
-            float resizeDelay = 0.2f * i;
+            resizeDelay *= i;
 
             float collectDelay = batchDelay + (delayPerTile * i);
 
-            resizer.DoSelectionResize(resizeDelay, SelectionState.selected);
-
-            resizer.DoCollectTween(collectDelay, () =>
+            tileAnimator.DoSelectedTween(resizeDelay, () =>
             {
-                OnCollectAnimationFinished(resizer);
+                tileAnimator.DoCollectTween(collectDelay, () =>
+                {
+                    OnCollectAnimationFinished(tileAnimator);
+                });
+            });
+
+        }
+    }
+
+    public void PlayBuildAnimation(float delayPerTile)
+    {
+        for (int i = 0; i < tileList.Count; i++)
+        {
+            GameObject tile = tileList[i];
+
+            tile.transform.localScale = Vector3.zero;
+ 
+            TileAnimator tileAnimator = tile.GetComponent<TileAnimator>();
+
+            float delay = delayPerTile * i;
+
+            tileAnimator.DoStartupResize(delay, () =>
+            {
+                CheckForAnimationBatchFinished(tileAnimator);
             });
         }
     }

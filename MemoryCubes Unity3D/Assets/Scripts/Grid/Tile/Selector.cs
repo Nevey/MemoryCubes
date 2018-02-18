@@ -16,10 +16,10 @@ public class SelectorArgs : EventArgs
 	public SelectionState selectionState { get; set; }
 }
 
-[RequireComponent(typeof(Resizer))]
+[RequireComponent(typeof(TileAnimator))]
 public class Selector : MonoBehaviour 
 {
-	private Resizer resizer;
+	private TileAnimator tileAnimator;
 
 	private SelectionState selectionState = new SelectionState();
 
@@ -32,17 +32,10 @@ public class Selector : MonoBehaviour
 
 	private void Start()
 	{
-		resizer = GetComponent<Resizer>();
-
-		resizer.ResizeAnimationFinishedEvent += OnResizeAnimationFinished;
+		tileAnimator = GetComponent<TileAnimator>();
 	}
 
-	private void OnDestroy()
-	{
-		resizer.ResizeAnimationFinishedEvent -= OnResizeAnimationFinished;
-	}
-
-    private void OnResizeAnimationFinished(Resizer resizer)
+	private void OnSelectTweenFinished()
     {
 		// Create selector event args
 		SelectorArgs selectorArgs = new SelectorArgs();
@@ -65,20 +58,29 @@ public class Selector : MonoBehaviour
         // Set selection state
         if (selectionState == SelectionState.notSelected)
 		{
-			selectionState = SelectionState.selected;
+			Select(currentGameMode);
 		}
 		else
-		{
-			selectionState = SelectionState.notSelected;
-		}
+        {
+            UnSelect(currentGameMode);
+        }
+    }
 
-		resizer.DoSelectionResize(selectionState, currentGameMode);
-	}
-
-	public void Select(GameMode currentGameMode)
+    public void Select(GameMode currentGameMode)
 	{
+		// TODO: Figure out game mode specifics...
+
 		selectionState = SelectionState.selected;
 		
-		resizer.DoSelectionResize(selectionState, currentGameMode);
+		tileAnimator.DoSelectedTween(0f, OnSelectTweenFinished);
 	}
+
+    public void UnSelect(GameMode currentGameMode)
+    {
+		// TODO: Figure out game mode specifics...
+
+        selectionState = SelectionState.notSelected;
+
+        tileAnimator.DoUnselectedTween(0f, OnSelectTweenFinished);
+    }
 }
