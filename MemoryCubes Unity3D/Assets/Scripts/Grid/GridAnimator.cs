@@ -22,7 +22,7 @@ public class GridAnimator : MonoBehaviour
 
     private void OnPlayerInputStateStarted()
     {
-        StartTimer();
+        // StartTimer();
     }
 
     private void OnDestroyRemainingCubesStateStarted()

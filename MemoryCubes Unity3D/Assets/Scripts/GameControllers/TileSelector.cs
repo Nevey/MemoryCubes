@@ -77,7 +77,7 @@ public class TileSelector : MonoBehaviourSingleton<TileSelector>
 	private void OnPlayerInputStateStarted()
 	{
 		ClearSelectedTiles();
-
+		
 		EnableInput();
 	}
 

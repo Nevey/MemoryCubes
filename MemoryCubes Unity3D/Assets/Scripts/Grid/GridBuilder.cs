@@ -23,8 +23,6 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 
 	[SerializeField] private GridBuilderAnimator gridBuilderAnimator;
 
-	[SerializeField] private ParticlesSpawner particlesSpawner;
-
 	[SerializeField] private GridConfig gridConfig;
 
 	[SerializeField] private RoutineUtility routineUtility;
@@ -144,42 +142,6 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 		}
     }
 
-	private void DestroyTile(GameObject tile)
-	{
-		if (flattenedGridList.Contains(tile))
-		{
-			flattenedGridList.Remove(tile);
-		}
-
-		// Check if tile was already destroyed
-		if (tile == null)
-		{
-			return;
-		}
-
-		particlesSpawner.Spawn(
-            tile.transform,
-            tile.GetComponent<TileColor>().MyColor
-        );
-
-		Destroyer destroyer = tile.GetComponent<Destroyer>();
-
-		destroyer.DestroyCube();
-	}
-
-	private void DestroyTileDelayed(GameObject tile, float delay, Action callback = null)
-	{
-		routineUtility.StartWaitTimeRoutine(delay, () =>
-		{
-			DestroyTile(tile);
-
-			if (callback != null)
-			{
-				callback();
-			}
-		});
-	}
-
 	private int GetAliveTileCount()
 	{
 		int aliveTileCount = 0;
@@ -205,7 +167,10 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 				{
 					if (grid[x, y, z] == tile)
 					{
-						DestroyTile(grid[x, y, z]);
+						if (flattenedGridList.Contains(tile))
+						{
+							flattenedGridList.Remove(tile);
+						}
 
 						grid[x, y, z] = null;
 
@@ -224,50 +189,14 @@ public class GridBuilder : MonoBehaviourSingleton<GridBuilder>
 			{
 				for (int z = 0; z < gridSize; z++)
 				{
-					DestroyTile(grid[x, y, z]);
-
-					grid[x, y, z] = null;
-				}
-			}
-		}
-	}
-
-	public void ClearGridDelayed(float delayPerTile, Action<bool> callback = null)
-	{
-		int aliveTileCount = GetAliveTileCount();
-
-		int currentTileCount = 0;
-
-		int index = 1;
-
-		for (int x = 0; x < gridSize; x++)
-		{
-			for (int y = 0; y < gridSize; y++)
-			{
-				for (int z = 0; z < gridSize; z++)
-				{
 					GameObject tile = grid[x, y, z];
-
-					if (tile == null)
+					
+					if (flattenedGridList.Contains(tile))
 					{
-						continue;
+						flattenedGridList.Remove(tile);
 					}
 
-					float delay = delayPerTile * index;
-
-					DestroyTileDelayed(tile, delay, () =>
-					{
-						if (callback != null)
-						{
-							currentTileCount++;
-
-							callback(currentTileCount == aliveTileCount);
-						}
-					});
-
 					grid[x, y, z] = null;
-
-					index++;
 				}
 			}
 		}

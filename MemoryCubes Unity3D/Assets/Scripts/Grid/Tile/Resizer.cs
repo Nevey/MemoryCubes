@@ -21,6 +21,11 @@ public class Resizer : MonoBehaviour
 
 	[SerializeField] private float gridScaleTime = 0.2f;
 
+	[Header("Destroy Tile Values")]
+	[SerializeField] private float destroyScaleValue = 1.15f;
+
+	[SerializeField] private float destroyScaleTime = 0.4f;
+
 	private Selector selector;
 
 	private float originScale;
@@ -104,6 +109,12 @@ public class Resizer : MonoBehaviour
 		DoResizeTween(currentGameMode);
 	}
 
+	public void DoSelectionResize(float delay, SelectionState selectionState)
+	{
+		transform.DOScale(GetCurrentScale(selectionState), scaleTweenTime)
+			.SetEase(scaleEase);
+	}
+
 	public void DoStartupResize(float delay)
 	{
 		targetScale = GetCurrentScale(SelectionState.notSelected);
@@ -132,5 +143,24 @@ public class Resizer : MonoBehaviour
 		gridTweenSequence.Append(tweenDown);
 
 		gridTweenSequence.PrependInterval(delay);
+	}
+
+	public void DoCollectTween(float delay, Action callback)
+	{
+		if (gridTweenSequence != null && gridTweenSequence.IsPlaying())
+		{
+			gridTweenSequence.Kill();
+		}
+
+		transform.DOScale(originScale * destroyScaleValue, destroyScaleTime)
+			.SetEase(Ease.InOutBack)
+			.SetDelay(delay)
+			.OnComplete(() =>
+			{
+				if (callback != null)
+				{
+					callback();
+				}
+			});
 	}
 }

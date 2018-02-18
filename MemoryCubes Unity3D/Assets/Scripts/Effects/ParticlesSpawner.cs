@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityTools.Base;
 
-public class ParticlesSpawner : MonoBehaviour
+public class ParticlesSpawner : MonoBehaviourSingleton<ParticlesSpawner>
 {
 	[SerializeField] private ParticleSystem particlesPrefab;
 
