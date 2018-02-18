@@ -16,23 +16,6 @@ public class TileAnimations : MonoBehaviourSingleton<TileAnimations>
 
     private List<TileAnimationBatch> animationBatches = new List<TileAnimationBatch>();
 
-    /// <summary>
-    /// This value is based on currently playing batches.
-    /// If there's a batch that's not playing, it will not be counted.
-    /// </summary>
-    /// <returns>float</returns>
-    private float GetCurrentBatchDelay()
-    {
-        float batchDelay = 0f;
-
-        for (int i = 0; i < animationBatches.Count; i++)
-        {
-            batchDelay += animationBatches[i].MyDuration;
-        }
-
-        return batchDelay;
-    }
-
     private TileAnimationBatch CreateNewAnimationBatch(List<GameObject> tileList, Action callback = null)
     {
         TileAnimationBatch tileAnimationBatch = new TileAnimationBatch(tileList, callback);
@@ -63,7 +46,7 @@ public class TileAnimations : MonoBehaviourSingleton<TileAnimations>
     public void PlayCollectLastStandingTilesAnimation(List<GameObject> tileList, Action callback = null)
     {
         CreateNewAnimationBatch(tileList, callback)
-            .PlayCollectLastStandingTilesAnimation(collectDelayPerTile, resizeLastStandingDelayPerTile, GetCurrentBatchDelay());
+            .PlayCollectLastStandingTilesAnimation(collectDelayPerTile, resizeLastStandingDelayPerTile);
     }
 
     private void OnAnimationBatchfinished(TileAnimationBatch tileAnimationBatch)

@@ -22,6 +22,8 @@ public class TileAnimator : MonoBehaviour
 	[SerializeField] private float gridScaleTime = 0.2f;
 
 	[Header("Collect Tween Values")]
+	[SerializeField] private Ease destroyScaleEase;
+
 	[SerializeField] private float destroyScaleValue = 1.15f;
 
 	[SerializeField] private float destroyScaleTime = 0.4f;
@@ -114,7 +116,7 @@ public class TileAnimator : MonoBehaviour
 		float scale = originScale * destroyScaleValue;
 
 		transform.DOScale(scale, destroyScaleTime)
-			.SetEase(Ease.InOutBack)
+			.SetEase(destroyScaleEase)
 			.SetDelay(delay)
 			.OnComplete(callback);
 	}

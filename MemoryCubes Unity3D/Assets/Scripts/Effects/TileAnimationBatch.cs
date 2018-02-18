@@ -10,20 +10,6 @@ public class TileAnimationBatch
 
     private int totalAnimationCount;
 
-    private float delayPerTile = 0f;
-
-    /// <summary>
-    /// Will only return a value bigger than "0" if animation batch is playing
-    /// </summary>
-    /// <returns>float</returns>
-    public float MyDuration
-    {
-        get
-        {
-            return totalAnimationCount * delayPerTile;
-        }
-    }
-
     public event Action<TileAnimationBatch> AnimationBatchFinishedEvent;
 
     public TileAnimationBatch(List<GameObject> tileList, Action callback = null)
@@ -35,11 +21,7 @@ public class TileAnimationBatch
         totalAnimationCount = tileList.Count;
     }
 
-    /// <summary>
-    /// Spawn particles and destroy tile gameobject
-    /// </summary>
-    /// <param name="tileAnimator"></param>
-    private void OnCollectAnimationFinished(TileAnimator tileAnimator)
+    private void PlayDestroyAnimation(TileAnimator tileAnimator)
     {
         // TODO: Move spawning of these particles to Destroyer
         ParticlesSpawner.Instance.Spawn(
@@ -50,6 +32,11 @@ public class TileAnimationBatch
 		Destroyer destroyer = tileAnimator.GetComponent<Destroyer>();
 
 		destroyer.DestroyCube();
+    }
+
+    private void OnCollectAnimationFinished(TileAnimator tileAnimator)
+    {
+        PlayDestroyAnimation(tileAnimator);
 
         CheckForAnimationBatchFinished(tileAnimator);
     }
@@ -78,34 +65,32 @@ public class TileAnimationBatch
 
     public void PlayCollectAnimation(float delayPerTile, float batchDelay = 0f)
     {
-        this.delayPerTile = delayPerTile;
-
         for (int i = 0; i < tileList.Count; i++)
         {
             TileAnimator tileAnimator = tileList[i].GetComponent<TileAnimator>();
 
-            float delay = batchDelay + (delayPerTile * i);
+            // NOTE: Not playing a tween when collecting during gameplay
+            PlayDestroyAnimation(tileAnimator);
+        }
 
-            tileAnimator.DoCollectTween(delay, () =>
-            {
-                OnCollectAnimationFinished(tileAnimator);
-            });
+        // Have to loop twice as we don't want to mess up the list
+        for (int i = 0; i < tileList.Count; i++)
+        {
+            TileAnimator tileAnimator = tileList[i].GetComponent<TileAnimator>();
+
+            CheckForAnimationBatchFinished(tileAnimator);
         }
     }
 
-    public void PlayCollectLastStandingTilesAnimation(float delayPerTile, float resizeDelay, float batchDelay = 0f)
+    public void PlayCollectLastStandingTilesAnimation(float collectDelay, float resizeDelay)
     {
-        this.delayPerTile = delayPerTile;
-
         for (int i = 0; i < tileList.Count; i++)
         {
             TileAnimator tileAnimator = tileList[i].GetComponent<TileAnimator>();
 
-            resizeDelay *= i;
+            float delay = resizeDelay * i;
 
-            float collectDelay = batchDelay + (delayPerTile * i);
-
-            tileAnimator.DoSelectedTween(resizeDelay, () =>
+            tileAnimator.DoSelectedTween(delay, () =>
             {
                 tileAnimator.DoCollectTween(collectDelay, () =>
                 {
