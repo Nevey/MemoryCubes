@@ -100,7 +100,7 @@ public class TileAnimationBatch
         }
     }
 
-    public void PlayBuildAnimation(float delayPerTile)
+    public void PlayBuildAnimation(float delayPerTile, int maxDelayedTiles = 30)
     {
         for (int i = 0; i < tileList.Count; i++)
         {
@@ -110,7 +110,9 @@ public class TileAnimationBatch
  
             TileAnimator tileAnimator = tile.GetComponent<TileAnimator>();
 
-            float delay = delayPerTile * i;
+            float delayMultiplier = i >= maxDelayedTiles ? maxDelayedTiles : i;
+
+            float delay = delayPerTile * delayMultiplier;
 
             tileAnimator.DoStartupResize(delay, () =>
             {
